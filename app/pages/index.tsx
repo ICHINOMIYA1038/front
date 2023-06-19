@@ -5,7 +5,7 @@ import styles from '@/styles/Home.module.css';
 
 interface Post {
   id: number;
-  title: string;
+  content: string;
 }
 
 interface HomeProps {
@@ -23,7 +23,8 @@ const Home: React.FC<HomeProps> = (props) => {
         {props.posts.map((post) => (
           <tr key={post.id}>
             <td>{post.id}.</td>
-            <td>{post.title}</td>
+            <td>{post.content}</td>
+            <td>これはテストだよ。</td>
           </tr>
         ))}
         </tbody>
