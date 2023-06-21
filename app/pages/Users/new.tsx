@@ -1,7 +1,7 @@
 import UserRegistrationForm from "@/components/UserRegistrationForm";
 import bodyParser from "body-parser";
 import { promisify } from "util";
-
+import { useRouter } from 'next/router';
 
 interface User {
     name: string;
@@ -38,6 +38,8 @@ function Home({ users }: HomeProps) {
       },
       body: JSON.stringify(userData)
     }).then(response => response.json()).then(data => {
+      const router = useRouter();
+      router.push('./55');
         console.log(data); // レスポンスのデータを表示
       })
       .catch(error => {

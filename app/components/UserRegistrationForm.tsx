@@ -6,7 +6,7 @@ import axios from 'axios';
 async function sendPageContent(content: any): Promise<void> {
   
   try {
-    const currentURL = window.location.href;
+    const currentURL = "http://localhost:8000/api/test";
     console.log(content)
     await axios.post(currentURL, {content}, {
       headers: {

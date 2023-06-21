@@ -23,7 +23,7 @@ interface User {
         <p>Name: {user.name}</p>
         <p>Email: {user.email}</p>
         {/* 他のユーザーの属性を表示するためのコードを追加 */}
-      </div>
+      </div>  
     );
   };
 export async function getServerSideProps(context: { params: any; }) {
