@@ -26,7 +26,7 @@ function Home({ users }: HomeProps) {
     
     if (req.method === "POST") {
         await getBody(req, res);
-      
+        console.log(req.p)
     
     const url = 'http://api:3000/users'; // 実際のURLに置き換える
       const userData:HomeProps = req.body.user

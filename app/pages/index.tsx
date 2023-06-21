@@ -24,7 +24,7 @@ const Home: React.FC<HomeProps> = (props) => {
           <tr key={post.id}>
             <td>{post.id}.</td>
             <td>{post.content}</td>
-            <td>これはテストだよ。</td>
+            <td>これはテスト</td>
           </tr>
         ))}
         </tbody>
