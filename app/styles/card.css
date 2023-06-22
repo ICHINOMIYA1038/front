@@ -1,0 +1,58 @@
+.card-container {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .card {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .card p{
+    user-select: none;
+  }
+  
+  .card-info {
+    font-weight: bold;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+
+  .card.clicked {
+    background-color: #c0c0c0;
+  }
+
+  .card.clicked p{
+    user-select: none;
+  }
+
+  .icon_area {
+    display: flex;
+    float:right
+  }
+  
+  .icon {
+    font-size: 40px;
+    color: rgb(12, 47, 150);
+  }
+  
+  .icon_text {
+    margin-left: 10px;
+    font-size: 20px;
+  }
+
+  .userscontainer{
+    display: flex;
+  }
+
+  .main {
+    width: 500px;
+  }
+  
+  .side {
+    flex: 1; /* 右側のカラムが可変幅 */
+  }

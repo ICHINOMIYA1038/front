@@ -1,4 +1,6 @@
 import React from 'react';
+import Card from '../../components/Card'
+import Sidebar from '@/components/Sidebar';
 
 interface User {
   user_id: string;
@@ -12,17 +14,18 @@ interface HomeProps {
 
 function Home({ users }: HomeProps) {
   return (
-    <div>
-      <h1>Users</h1>
-      <ul>
-        {users.map(user => (
-          <li key={user.user_id}>
-            <p>id:{user.user_id}</p>
-            <p>Name: {user.name}</p>
-            <p>Email: {user.email}</p>
-          </li>
-        ))}
-      </ul>
+    <div className='userscontainer'>
+      <div className='main'>
+        <h1>Users</h1>
+        <ul>
+          {users.map(user => (
+            <Card key={user.user_id} user={user}  />
+          ))}
+        </ul>
+      </div>
+      <div className='side'>
+      <Sidebar/>
+      </div>
     </div>
   );
 }
