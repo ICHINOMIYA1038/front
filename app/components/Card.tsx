@@ -24,8 +24,7 @@ function Card({ user }:any) {
   <div className={`card ${isClicked ? 'clicked' : ''}`}>
     
     <div className='icon_area'>
-    <DeleteButton tableName="users" primaryColumnName="user_id" id={user.user_id} endpointUrl="https://s" />
-        <ClearIcon className='icon' />
+    <DeleteButton tableName="users" primaryColumnName="user_id" id={user.user_id} endpointUrl="http://localhost:3000/users" />
         <span className='icon_text'></span>
     </div>
     

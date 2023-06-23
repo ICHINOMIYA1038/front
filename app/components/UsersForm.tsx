@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-
-async function sendPageContent(content: any): Promise<void> {
+async function sendPageContent(content: any, router:any): Promise<void> {
   
   try {
-    const currentURL = "http://localhost:8000/api/test";
+    const URL = "http://localhost:3000/users/45";
     console.log(content)
-    await axios.post(currentURL, {content}, {
+    await axios.patch(URL, content, {
       headers: {
         'Content-Type': 'application/json'
       }
     }); // POST先のURLを適切なものに置き換える
-    console.log('Page content successfully sent.');
+    
+    router.push("/users")
   } catch (error) {
     console.error('Error while sending page content:', error);
     throw error;
@@ -21,7 +21,7 @@ async function sendPageContent(content: any): Promise<void> {
   
 }
 
-const UserRegistrationForm: React.FC = () => {
+const UsersForm: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,7 +37,7 @@ const UserRegistrationForm: React.FC = () => {
         email: email
       }
     };
-    sendPageContent(content)
+    sendPageContent(content,router)
     
     // フォーム送信後にフォーム  をリセットする
     setName('');
@@ -67,4 +67,4 @@ const UserRegistrationForm: React.FC = () => {
   );
 };
 
-export default UserRegistrationForm;
+export default UsersForm;
