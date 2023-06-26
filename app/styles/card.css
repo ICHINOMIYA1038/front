@@ -56,3 +56,7 @@
   .side {
     flex: 1; /* 右側のカラムが可変幅 */
   }
+
+  .sampleBox{
+    height: 500px;
+  }

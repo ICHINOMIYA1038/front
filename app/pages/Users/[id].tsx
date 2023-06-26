@@ -1,3 +1,4 @@
+import Layout from '@/components/Layout';
 import React from 'react';
 
 
@@ -18,12 +19,12 @@ interface User {
         return <p>該当はありません</p>;
       }
     return (
-      <div>
+      <Layout>
         <h1>User Details</h1>
         <p>Name: {user.name}</p>
         <p>Email: {user.email}</p>
         {/* 他のユーザーの属性を表示するためのコードを追加 */}
-      </div>  
+      </Layout>  
     );
   };
 export async function getServerSideProps(context: { params: any; }) {

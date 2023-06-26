@@ -1,21 +1,21 @@
 import Head from "next/head";
 import styles from '../styles/Home.module.css'
+import Header from './Header'
+import Footer from './Footer'
+import Logo from './Logo'
+import Navbar from './NavBar'
+import NavLink from './NavLink'
 
 export const appName = "Sample App"
 
 function Layout({ children } :any ) {
   return (
-    <div>
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <header>
-        <h1>{appName}</h1>
-        <p>ここにはLayout.jsの内容が表示されています。</p>
-      </header>
-      <main className={styles.main}>
+    <div >
+      <Header />
+      <div style={{ display: "flex", justifyContent: "center" }}>
         { children }
-      </main>
+      </div>
+      <Footer/>
     </div>
   );
 }

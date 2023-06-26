@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
+import Layout from '@/components/Layout';
 
 interface Post {
   id: number;
@@ -16,7 +17,7 @@ interface HomeProps {
 //Homeコンポーネント
 const Home: React.FC<HomeProps> = (props) => {
   return (
-    <div>
+    <Layout>
       <h2>POSTの一覧</h2>
       <table>
       <tbody>
@@ -24,12 +25,12 @@ const Home: React.FC<HomeProps> = (props) => {
           <tr key={post.id}>
             <td>{post.id}.</td>
             <td>{post.content}</td>
-            <td>これはテスト</td>
+            <td>これはtest</td>
           </tr>
         ))}
         </tbody>
       </table>
-    </div>
+    </Layout>
   );
 };
 
