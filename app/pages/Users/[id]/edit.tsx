@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Layout from '@/components/Layout';
 
 interface User {
     user_id: string;
@@ -68,8 +69,9 @@ const UserEditFrom: React.FC<UserDetailProps> = ({user}) => {
   };
 
   return (
+    <Layout>
     <form onSubmit={handleSubmit}>
-      <h1>New User Registration</h1>
+      <h1>プロフィールの編集</h1>
       <label>
         Name:
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
@@ -83,12 +85,12 @@ const UserEditFrom: React.FC<UserDetailProps> = ({user}) => {
 
       <button type="submit">Register</button>
     </form>
+    </Layout>
   );
 };
 
 export async function getServerSideProps(context: { params: any; }) {
-    const id=context.params.id
-    console.log("aa")
+  const id=context.params.id
   // APIを使用してユーザーのデータを取得する処理
   const response = await fetch(`http://api:3000/users/${id}`, { method: 'GET' });
   const data = await response.json();
