@@ -2,6 +2,9 @@ import React from 'react';
 import Card from '../../components/Card'
 import Sidebar from '@/components/Sidebar';
 import Layout from '@/components/Layout';
+import { withAuthServerSideProps } from "@/components/auth";
+import { GetServerSideProps } from "next";
+
 
 interface User {
   user_id: string;
@@ -20,9 +23,11 @@ function Home({ users }: HomeProps) {
       <div className='mainContainer'>
         <h1>Users</h1>
         <ul>
-          {users.map(user => (
-            <Card key={user.user_id} user={user}  />
-          ))}
+        <div className="grid-container">
+            {users.map(user => (
+              <Card key={user.user_id} user={user} />
+            ))}
+          </div>
         </ul>
       </div>
       <div className='side'>
@@ -32,26 +37,7 @@ function Home({ users }: HomeProps) {
     </Layout>
   );
 }
+export const getServerSideProps:GetServerSideProps  = withAuthServerSideProps("users");
 
-export async function getStaticProps() {
-  try {
-    const response = await fetch('http://api:3000/users');
-    const data = await response.json();
-    const users: User[] = data || [];
-
-    return {
-      props: {
-        users,
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    return {
-      props: {
-        users: [],
-      },
-    };
-  }
-}
 
 export default Home;

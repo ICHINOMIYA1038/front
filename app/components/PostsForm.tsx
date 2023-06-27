@@ -8,7 +8,7 @@ async function sendPageContent(content: any, router:any): Promise<void> {
     const URL = "http://localhost:3000/posts";
     await axios.post(URL, content, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data',
       }
     }); // POST先のURLを適切なものに置き換える
     
@@ -22,22 +22,21 @@ async function sendPageContent(content: any, router:any): Promise<void> {
 
 const PostsForm: React.FC = () => {
   const [article, setArticle] = useState('');
-
+  const [pdfFile, setPdfFile] = useState<File | null>(null); // PDFファイルを管理するステート
   const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     // フォームの送信処理を実装する
-    const content = {
-      post: {
-        content: article,
-        user_id: "3"
-      }
-    };
-    sendPageContent(content,router)
+    const formData = new FormData();
+    formData.append('post[content]', article);
+    formData.append('post[user_id]', '3');
+    formData.append('post[mainfile]', pdfFile); // PDFファイルをフォームデータに追加
+    sendPageContent(formData,router)
     
     // フォーム送信後にフォーム  をリセットする
     setArticle('');
+    setPdfFile(null);
 
     // ユーザー登録後にリダイレクトする例
     //router.push('/success'); // ユーザー登録が成功した場合の遷移先を指定
@@ -49,6 +48,11 @@ const PostsForm: React.FC = () => {
       <label>
         本文:
         <input type="text" value={article} onChange={(e) => setArticle(e.target.value)} />
+      </label>
+
+      <label>
+        PDFファイル:
+        <input type="file" onChange={(e) => setPdfFile(e.target.files?.[0] || null)} />
       </label>
 
       <button type="submit">Register</button>

@@ -9,7 +9,7 @@ import Pdf from '@/components/Pdf';
 function Home({  }) {
   return (
     <Layout>
-    <Pdf />
+    <Pdf src="/sample.pdf" />
     </Layout>
   );
 }

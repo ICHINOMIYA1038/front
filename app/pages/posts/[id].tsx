@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout';
 import React from 'react';
+import Pdf from '@/components/Pdf';
 
 
 interface Post {
@@ -23,6 +24,7 @@ interface Post {
         <p>ID: {post.post_id}</p>
         <p>作成者:{post.user_id}</p>
         <p>CONTENT: {post.content}</p>
+        {post.file_url&&<Pdf src={post.file_url}/>}
         {/* 他のユーザーの属性を表示するためのコードを追加 */}
       </Layout>  
     );

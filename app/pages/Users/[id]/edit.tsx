@@ -14,14 +14,14 @@ interface User {
     user: User;
   }
 
-async function sendPageContent(content: any, router:any,id:any): Promise<void> {
+async function sendPageContent(formData: any, router:any,id:any): Promise<void> {
   
   try {
     const URL = `http://localhost:3000/users/${id}`;
-    console.log(content)
-    await axios.patch(URL, content, {
+    console.log(formData)
+    await axios.patch(URL, formData, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data'
       }
     }); // POST先のURLを適切なものに置き換える
     
@@ -37,6 +37,8 @@ const UserEditFrom: React.FC<UserDetailProps> = ({user}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [avatar, setAvatar] = useState(null);
+
 
   const router = useRouter();
   const { id } = router.query;
@@ -48,16 +50,15 @@ const UserEditFrom: React.FC<UserDetailProps> = ({user}) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     // フォームの送信処理を実装する
-    const content = {
-      user: {
-        name: name,
-        email: email
-      }
-    };
+
+    const formData = new FormData();
+    formData.append('user[name]', name);
+    formData.append('user[email]', email);
+    formData.append('user[avatar]', avatar);
 
 
     
-    sendPageContent(content,router,id)
+    sendPageContent(formData,router,id)
     
     // フォーム送信後にフォーム  をリセットする
     setName('');
@@ -81,6 +82,8 @@ const UserEditFrom: React.FC<UserDetailProps> = ({user}) => {
         Email:
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       </label>
+      <label htmlFor="avatar">Avatar:</label>
+      <input type="file" id="avatar" onChange={(e) => setAvatar(e.target.files[0])}accept="image/*" />
 
 
       <button type="submit">Register</button>
