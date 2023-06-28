@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Alert,
@@ -11,12 +11,12 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const LoginForm: React.FC = () => {
+const Login = () => {
   const router = useRouter();
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const handleSubmit = (event:any) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const axiosInstance = axios.create({
@@ -38,9 +38,9 @@ const LoginForm: React.FC = () => {
           Cookies.set("uid", response.headers["uid"]);
           Cookies.set("client", response.headers["client"]);
           Cookies.set("access-token", response.headers["access-token"]);
-          console.log(response.headers)
+          router.push("/home");
         })
-        .catch(function (error:any) {
+        .catch(function (error) {
           // Cookieからトークンを削除しています
           Cookies.remove("uid");
           Cookies.remove("client");
@@ -72,10 +72,14 @@ const LoginForm: React.FC = () => {
             id="password"
             autoComplete="current-password"
           />
-          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
             ログイン
           </Button>
-          {isError && (
+          {isError ? (
             <Alert
               onClose={() => {
                 setIsError(false);
@@ -85,13 +89,9 @@ const LoginForm: React.FC = () => {
             >
               {errorMessage}
             </Alert>
-          )}
+          ) : null}
         </Box>
       </Box>
     </Container>
   );
 };
-
-export default LoginForm;
-
-

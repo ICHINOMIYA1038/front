@@ -34,8 +34,6 @@ export default function SimpleBottomNavigation() {
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
-
-  console.log(shouldDisplay)
   
 
   return (
