@@ -55,7 +55,7 @@ const Home: React.FC<HomeProps> = (props:any) => {
         {props.posts.map((post) => (
           <tr key={post.post_id}>
             <td>{post.post_id}</td>
-            <td>{post.content}</td>
+            <td>{post.contentB}</td>
             <td>{post.user_id}</td>
           </tr>
         ))}
@@ -70,7 +70,7 @@ export const getStaticProps = async (context: { params: any; }) => {
     const id = context.params.id
     const response = await fetch(`http://api:3000/users/${id}/posts`, { method: 'GET' });
     const json = await response.json();
-
+    
     return {
       props: {
         posts: json,

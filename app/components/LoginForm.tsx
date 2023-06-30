@@ -10,8 +10,10 @@ import {
 } from "@mui/material/";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { GetServerSideProps } from 'next';
 
-const LoginForm: React.FC = () => {
+
+const LoginForm: React.FC = (props:any) => {
   const router = useRouter();
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -38,7 +40,13 @@ const LoginForm: React.FC = () => {
           Cookies.set("uid", response.headers["uid"]);
           Cookies.set("client", response.headers["client"]);
           Cookies.set("access-token", response.headers["access-token"]);
-          console.log(response.headers)
+          const referer = props.referer
+          if (referer && typeof referer === "string" && referer !== "/") {
+            router.push(referer);
+          } else {
+            // 直前のページが存在しない、またはホームページだった場合はホームにリダイレクト
+            router.push("/");
+          }
         })
         .catch(function (error:any) {
           // Cookieからトークンを削除しています
@@ -92,6 +100,8 @@ const LoginForm: React.FC = () => {
   );
 };
 
+
 export default LoginForm;
+
 
 

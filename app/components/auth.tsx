@@ -2,14 +2,10 @@
 
 import { GetServerSideProps } from "next";
 
-export const withAuthServerSideProps = (url: string): GetServerSideProps => {
-    console.log("auth")
-    return async (context) => {
+export const auth= async (context) =>{
     const { req, res } = context;
 
-    
-
-    const response = await fetch(`http://localhost:3000/${url}`, {
+    const response = await fetch(`http://api:3000/api/v1/auth/validate_token`, {
       headers: {
         "Content-Type": "application/json",
         uid: req.cookies["uid"],
@@ -18,23 +14,19 @@ export const withAuthServerSideProps = (url: string): GetServerSideProps => {
       },
     });
     if (!response.ok && response.status === 401) {
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
+      return new Promise<Boolean>((resolve) => {
+        resolve(false);
+      });
       };
-    }
+    
     if (response.status === 500) {
-        return {
-          redirect: {
-            destination: "/Login",
-            permanent: false,
-          },
-        };
-      }
-    // TODO: 他にも500エラーを考慮した分岐も必要
-    const props = await response.json();
-    return { props };
+      return new Promise<Boolean>((resolve) => {
+        resolve(false);
+      });
+    }
+    else{
+      return new Promise<Boolean>((resolve) => {
+        resolve(true);
+      });
+    }
   };
-};

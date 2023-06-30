@@ -1,5 +1,6 @@
 import UsersForm from "@/components/UsersForm";
 import Layout from '../../components/Layout'
+import {auth} from '@/components/auth'
 
 function Home() {
     return (
@@ -12,3 +13,23 @@ function Home() {
   }
 
 export default Home;
+
+export async function getServerSideProps(context: any) {
+  
+  const result = await auth(context);
+
+  if (!result) {
+    console.log("redirect");
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/Login",
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+
+};

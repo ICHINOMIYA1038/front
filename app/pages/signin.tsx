@@ -1,97 +1,90 @@
-import React, { ReactElement, useState } from "react";
-import { useRouter } from "next/router";
-import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  TextField,
-  Typography,
-} from "@mui/material/";
+import Head from 'next/head';
+import Image from 'next/image';
+import { Inter } from 'next/font/google';
+import styles from '@/styles/Home.module.css';
+import Layout from '@/components/Layout';
 import axios from "axios";
-import Cookies from "js-cookie";
 
-const Login = () => {
-  const router = useRouter();
-  const [isError, setIsError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+interface Post {
+  id: number;
+  content: string;
+}
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+interface HomeProps {
+  posts: Post[];
+}
+
+
+//Homeコンポーネント
+const Home: React.FC<HomeProps> = (props) => {
+  const handleClick = async () => {
+    try {
+      const axiosInstance = axios.create({
+        baseURL: `http://localhost:3000/api/v1/`,
+        timeout: 1000,
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+      const response = await axiosInstance
+      .post("auth/sign_in", {
+        email: "test@example.com",
+        password: "password",
+      })
+  
+      console.log(response)
+  
+      return {
+        props: {
+          posts: [],
+        },
+      };
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      return {
+        props: {
+          posts: [],
+        },
+      };
+    }
+    // ここにボタンがクリックされたときの処理を書くことができます
+  };
+  return (
+    <Layout>
+      <button onClick={handleClick}>ボタン</button>
+    </Layout>
+  );
+};
+
+export const getServerSideProps = async () => {
+  try {
     const axiosInstance = axios.create({
-      baseURL: `http://localhost:3000/api/v1/`,
+      baseURL: `http://api:3000/api/v1/`,
       headers: {
         "content-type": "application/json",
       },
     });
-    (async () => {
-      setIsError(false);
-      setErrorMessage("");
-      return await axiosInstance
-        .post("auth/sign_in", {
-          email: data.get("email"),
-          password: data.get("password"),
-        })
-        .then(function (response) {
-          // Cookieにトークンをセットしています
-          Cookies.set("uid", response.headers["uid"]);
-          Cookies.set("client", response.headers["client"]);
-          Cookies.set("access-token", response.headers["access-token"]);
-          router.push("/home");
-        })
-        .catch(function (error) {
-          // Cookieからトークンを削除しています
-          Cookies.remove("uid");
-          Cookies.remove("client");
-          Cookies.remove("access-token");
-          setIsError(true);
-          setErrorMessage(error.response.data.errors[0]);
-        });
-    })();
-  };
+    const response = await axiosInstance
+    .post("auth/sign_in", {
+      email: "test@example.com",
+      password: "password",
+    })
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <Box>
-        <Typography component="h1" variant="h5">
-          ログイン
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit}>
-          <TextField
-            id="email"
-            label="メールアドレス"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            name="password"
-            label="パスワード"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            ログイン
-          </Button>
-          {isError ? (
-            <Alert
-              onClose={() => {
-                setIsError(false);
-                setErrorMessage("");
-              }}
-              severity="error"
-            >
-              {errorMessage}
-            </Alert>
-          ) : null}
-        </Box>
-      </Box>
-    </Container>
-  );
+    console.log(response)
+
+    return {
+      props: {
+        posts: [],
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return {
+      props: {
+        posts: [],
+      },
+    };
+  }
 };
+
+export default Home;
