@@ -23,6 +23,7 @@ async function sendPageContent(content: any, router:any): Promise<void> {
 const PostsForm: React.FC = () => {
   const [article, setArticle] = useState('');
   const [pdfFile, setPdfFile] = useState<File | null>(null); // PDFファイルを管理するステート
+  const [image, setImage] = useState<File | null>(null); // PDFファイルを管理するステート
   const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -32,6 +33,7 @@ const PostsForm: React.FC = () => {
     formData.append('post[content]', article);
     formData.append('post[user_id]', '3');
     formData.append('post[mainfile]', pdfFile); // PDFファイルをフォームデータに追加
+    formData.append('post[postImage]', image);
     sendPageContent(formData,router)
     
     // フォーム送信後にフォーム  をリセットする
@@ -53,6 +55,11 @@ const PostsForm: React.FC = () => {
       <label>
         PDFファイル:
         <input type="file" onChange={(e) => setPdfFile(e.target.files?.[0] || null)} />
+      </label>
+
+      <label>
+        画像ファイル:
+        <input type="file" onChange={(e) => setImage(e.target.files?.[0] || null)} />
       </label>
 
       <button type="submit">Register</button>

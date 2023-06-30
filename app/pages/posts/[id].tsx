@@ -25,6 +25,7 @@ interface Post {
         <p>作成者:{post.user_id}</p>
         <p>CONTENT: {post.content}</p>
         {post.file_url&&<Pdf src={post.file_url}/>}
+        {post.image_url&&<img src={post.image_url}  style={{ width: '100px', height: '100px' }} />}
         {/* 他のユーザーの属性を表示するためのコードを追加 */}
       </Layout>  
     );
