@@ -44,7 +44,6 @@ const LoginForm: React.FC = (props:any) => {
       },
     });
 
-
     (async () => {
       setIsError(false);
       setErrorMessage("");
@@ -59,8 +58,18 @@ const LoginForm: React.FC = (props:any) => {
         Cookies.set("uid", response.headers["uid"]);
         Cookies.set("client", response.headers["client"]);
         Cookies.set("access-token", response.headers["access-token"]);
-        
-        
+    
+        try {
+          console.log(user_id)
+          const userResponse = await usersAxiosInstance.get(`users/${user_id}`);
+          const userImage = userResponse.data.data.user_image; // レスポンスからユーザーの画像を取得
+          console.log(userResponse)
+          Cookies.set("user_image", userImage);
+          
+          router.push(`/users/${user_id}`);
+        } catch (error) {
+          setErrorMessage(error);
+        }
       } catch (error) {
         Cookies.remove("user_id");
         Cookies.remove("uid");
@@ -72,16 +81,6 @@ const LoginForm: React.FC = (props:any) => {
           setErrorMessage(error.message);
         }
       }
-      try{
-        console.log(user_id)
-        const userResponse = await usersAxiosInstance.get(`users/${user_id}`);
-        const userImage = userResponse.data.user_image; // レスポンスからユーザーの画像を取得
-        Cookies.set("user_image", userImage);
-      }
-      catch(error){
-        setErrorMessage(error);
-      }
-      router.push(`/users/${user_id}`);
     })();
   };
 

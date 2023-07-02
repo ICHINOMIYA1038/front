@@ -15,7 +15,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ tableName, primaryColumnNam
     try {
       const confirmed = window.confirm('Are you sure you want to delete this item?');
       if (!confirmed){return}
-      const response = await axios.delete(`${endpointUrl}/${id}`);
+        const response = await axios.delete(`${endpointUrl}/${id}`);
       router.push(`/users`);
       // ここで必要な追加の処理を実行することもできます
     } catch (error) {
