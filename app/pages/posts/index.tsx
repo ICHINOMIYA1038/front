@@ -29,14 +29,13 @@ interface HomeProps {
 
 //Homeコンポーネント
 const Home: React.FC<HomeProps> = (props) => {
+  console.log(props.posts)
   return (
     <Layout>
       <h2>POSTの一覧</h2>
-      <div className="grid-container">
-        {props.posts.map(post => (
+      {props.posts.map(post => (
           <PostCard key={post.post_id} post={post} />
         ))}
-      </div>
       
 
     </Layout>

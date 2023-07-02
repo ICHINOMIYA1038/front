@@ -30,3 +30,15 @@ export const auth= async (context) =>{
       });
     }
   };
+
+  export const signout=async(context) =>{
+    const { req, res } = context;
+    const response = await fetch(`http://api:3000/api/v1/auth/sign_out`, {
+      headers: {
+        "Content-Type": "application/json",
+        uid: req.cookies["uid"],
+        client: req.cookies["client"],
+        "access-token": req.cookies["access-token"],
+      },
+   })
+  }

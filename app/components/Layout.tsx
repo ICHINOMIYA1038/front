@@ -12,7 +12,7 @@ function Layout({ children } :any ) {
   return (
     <div >
       <Header />
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div>
         { children }
       </div>
       <Footer/>

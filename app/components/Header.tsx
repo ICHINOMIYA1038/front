@@ -12,10 +12,23 @@ import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
+import Cookies from "js-cookie";
+import {useEffect} from "react"
+import {signout} from '@/components/auth'
 
 export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  
+  useEffect(() => {
+    console.log(getCookieValue("user_id"))
+    if(getCookieValue("user_id")!==null){
+      setAuth(true)
+    }else{
+      setAuth(false)
+    }
+    // クッキーから必要な値を取得するための処理を記述
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAuth(event.target.checked);
@@ -23,11 +36,30 @@ export default function MenuAppBar() {
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-  };
+  }; 
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const Logout = () => {
+    console.log(result)
+    setAuth(false)
+  };
+
+  const getCookieValue = (cookieName:string) => {
+    const cookieString = document.cookie;
+    const cookies = cookieString.split('; ');
+  
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if (name === cookieName) {
+        return decodeURIComponent(value);
+      }else{
+        return null
+      }
+    }
+  }
 
 /*
 <FormGroup>
@@ -47,22 +79,8 @@ export default function MenuAppBar() {
 return (
 
     <Box sx={{ flexGrow: 1 }}>
-        <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? 'Logout' : 'Login'}
-        />
-      </FormGroup>
-      
       <AppBar position="static">
         <Toolbar>
-          
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             SampleApp
           </Typography>
@@ -104,6 +122,7 @@ return (
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={Logout}>ログアウト</MenuItem>
               </Menu>
             </div>
           )}

@@ -59,11 +59,12 @@ export async function getServerSideProps(context: { params: any; }) {
 
   if(isRedirect(response)){
 
+    const errorMessage = "ログインが必要です"; // エラーメッセージを設定
+
     return {
       redirect: {
-        permanent: false, // 永続的なリダイレクトかどうか
-        destination: '/Login', // リダイレクト先
-        // destination: 'https://example.com/' // 別サイトでも指定可能
+        permanent: false,
+        destination: `/Login?error=${encodeURIComponent(errorMessage)}`, // リダイレクト先にエラーメッセージを渡す
       },
   }
   }

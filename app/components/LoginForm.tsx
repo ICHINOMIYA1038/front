@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent,useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   Alert,
@@ -17,6 +17,16 @@ const LoginForm: React.FC = (props:any) => {
   const router = useRouter();
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [user_id, setUserId] = useState('');
+  useEffect(() => {
+    
+    const { error } = router.query; // クエリパラメータからエラーメッセージを取得
+
+    if (error) {
+      setIsError(true);
+      setErrorMessage(decodeURIComponent(error as string)); // URLエンコードされたエラーメッセージをデコードして設定
+    }
+  }, []);
 
   const handleSubmit = (event:any) => {
     event.preventDefault();
@@ -27,46 +37,63 @@ const LoginForm: React.FC = (props:any) => {
         "content-type": "application/json",
       },
     });
+    const usersAxiosInstance = axios.create({
+      baseURL: `http://localhost:3000/`,
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+
     (async () => {
       setIsError(false);
       setErrorMessage("");
-      return await axiosInstance
-        .post("auth/sign_in", {
+      try {
+        const response = await axiosInstance.post("auth/sign_in", {
           email: data.get("email"),
           password: data.get("password"),
-        })
-        .then(function (response) {
-          // Cookieにトークンをセットしています
-          Cookies.set("uid", response.headers["uid"]);
-          Cookies.set("client", response.headers["client"]);
-          Cookies.set("access-token", response.headers["access-token"]);
-          const referer = props.referer
-          if (referer && typeof referer === "string" && referer !== "/") {
-            router.push(referer);
-          } else {
-            // 直前のページが存在しない、またはホームページだった場合はホームにリダイレクト
-            router.push("/");
-          }
-        })
-        .catch(function (error:any) {
-          // Cookieからトークンを削除しています
-          Cookies.remove("uid");
-          Cookies.remove("client");
-          Cookies.remove("access-token");
-          setIsError(true);
-          setErrorMessage(error.response.data.errors[0]);
         });
+        console.log(response.data.data.user_id)
+        setUserId(response.data.data.user_id);
+        Cookies.set("user_id", user_id);
+        Cookies.set("uid", response.headers["uid"]);
+        Cookies.set("client", response.headers["client"]);
+        Cookies.set("access-token", response.headers["access-token"]);
+        
+        
+      } catch (error) {
+        Cookies.remove("user_id");
+        Cookies.remove("uid");
+        Cookies.remove("client");
+        Cookies.remove("access-token");
+        setIsError(true);
+        if (error) {
+          console.log(error);
+          setErrorMessage(error.message);
+        }
+      }
+      try{
+        console.log(user_id)
+        const userResponse = await usersAxiosInstance.get(`users/${user_id}`);
+        const userImage = userResponse.data.user_image; // レスポンスからユーザーの画像を取得
+        Cookies.set("user_image", userImage);
+      }
+      catch(error){
+        setErrorMessage(error);
+      }
+      router.push(`/users/${user_id}`);
     })();
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <Box>
+      <Box style={{margin:"50px"}}>
         <Typography component="h1" variant="h5">
           ログイン
         </Typography>
-        <Box component="form" onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit} style={{textAlign:"center"}}>
           <TextField
+            style={{width:"70%" ,margin:"5px"}}
             id="email"
             label="メールアドレス"
             name="email"
@@ -74,17 +101,19 @@ const LoginForm: React.FC = (props:any) => {
             autoFocus
           />
           <TextField
+            style={{width:"70%" ,margin:"5px auto"}}
             name="password"
             label="パスワード"
             type="password"
             id="password"
             autoComplete="current-password"
           />
-          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" variant="contained" sx={{ display:"block",margin:"15px auto"}}>
             ログイン
           </Button>
           {isError && (
             <Alert
+              style={{width:"70%",display:"box",margin:"0 auto"}}
               onClose={() => {
                 setIsError(false);
                 setErrorMessage("");

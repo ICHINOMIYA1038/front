@@ -4,6 +4,10 @@ import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteButton from './Delete';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DownloadIcon from '@mui/icons-material/Download';
 
 
 interface Post {
@@ -19,22 +23,23 @@ interface Post {
     playtime:string,
     image_url:string,
     file_url:string,
-  
+    user_image_url:string
+    name:string
   
   }
 
-function PostCard({ post }:Post) {
+function PostCard({ post }:any) {
     const router = useRouter()
     const [isClicked, setIsClicked] = useState(false);
 
   return (
-  <div className={`card ${isClicked ? 'clicked' : ''}`}>
+  <div className={`PostCard ${isClicked ? 'clicked' : ''}`}>
     
     <div className="PostCardHeadar">
         <div className="PostCardHeaderLeft">
             <div className="PostCardUserProfile">
                 <img src={post.user_image_url} alt="Avatar" style={{ width: '100px', height: '100px' }} />
-                <p>{post.user_name}</p>
+                <p>{post.name}</p>
             </div>
             <div className="PostCardTitle">
                 <p>{post.title}</p>
@@ -46,15 +51,35 @@ function PostCard({ post }:Post) {
         </div>
         <div className="PostCardHeaderRight">
             <div className="PlotDetail">
-                <p>上演時間:{post.playTime}</p>
+                <p>上演時間:{post.playtime} 分</p>
                 <p>男:{post.number_of_men}</p>
                 <p>女:{post.number_of_women}</p>
             </div>
-            <img src={post.image_url} alt="Avatar" style={{ width: '100px', height: '100px' }} />
+            <img src={post.image_url} alt="Avatar" style={{ width: '200px', height: '200px' }} />
         </div>
     </div>
-    <div className="PostCardHooter"></div>
+    <div className="PostCardFooter">
+        <embed src={post.file_url} alt="Avatar" style={{ width: '660px', height: '450px' }}/>
+    </div>
+    <div className="impressionContainer">
     
+        <div className='DownloadIcon'>
+            <DownloadIcon id='interactive-icon' />
+            <span className='icon_text'>download</span>
+        </div>
+        <div className='FavoriteIcon'>
+            <FavoriteIcon id='interactive-icon' />
+            <span className='icon_text'>like</span>
+        </div>
+        <div className='ShareIcon'>
+            <ShareIcon id='interactive-icon' />
+            <span className='icon_text'>share</span>
+        </div>
+        <div className='VisibilityIcon'>
+            <VisibilityIcon id='interactive-icon' />
+            <span className='icon_text'>100 view</span>
+        </div>
+    </div>
   </div>
 );
 }
