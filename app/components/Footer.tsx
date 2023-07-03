@@ -9,8 +9,8 @@ const Footer :React.FC = ()=>{
     return (
 <footer className="footer">
   <div className="md-flex md-justify-between">
-    <a href="https://jajaaan.co.jp/" className="footer__logo">
-      <img src="https://jajaaan.co.jp/wp-content/themes/jajaaan/assets/images/dist/svg/logo.svg" width="140" height="20" alt="JAJAAAN Logo" />
+    <a href="/" className="footer__logo">
+      <img src="" />
     </a>
     <div className="grid">
       <div>

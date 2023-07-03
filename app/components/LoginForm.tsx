@@ -38,16 +38,6 @@ const LoginForm: React.FC = (props:any) => {
       },
     });
     
-
-    const Promise1 = new Promise(function (resolve, reject) {
-
-      
-      setTimeout(function() {
-        // 成功
-        resolve('成功!'); // resolve(渡したい値)
-      }, 3000);
-    });
-
     (async () => {
       setIsError(false);
       setErrorMessage("");
@@ -66,9 +56,9 @@ const LoginForm: React.FC = (props:any) => {
           baseURL: `http://localhost:3000/`,
           headers: {
             "content-type": "application/json",
-            uid: Cookies.get["uid"],
-            client: Cookies.get["client"],
-            "access-token": Cookies.get["access-token"],
+            uid: Cookies.get("uid"),
+            client: Cookies.get("client"),
+            "access-token": Cookies.get("access-token"),
           },
         });
         const userResponse = await usersAxiosInstance.get(`users/${response.data.data.user_id}`);

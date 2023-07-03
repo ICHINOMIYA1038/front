@@ -18,14 +18,24 @@ import {signout} from '@/components/auth'
 import router from 'next/router';
 
 export default function MenuAppBar() {
-  const [auth, setAuth] = React.useState(true);
+  const [auth, setAuth] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  
+  const [image_url,setImageUrl] = React.useState<string>("")
+
+
   useEffect(() => {
-    if(Cookies.get["user_id"]!==null){
+    if(Cookies.get("user_id")!==undefined){
       setAuth(true)
     }else{
       setAuth(false)
+    }
+    
+    console.log(auth)
+
+    if(Cookies.get("user_image")!==undefined){
+      const url = Cookies.get("user_image")
+      setImageUrl(url)
+      console.log(`ログ:${url}`)
     }
     // クッキーから必要な値を取得するための処理を記述
   }, []);
@@ -68,21 +78,6 @@ export default function MenuAppBar() {
     }
   }
 
-/*
-<FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? 'Logout' : 'Login'}
-        />
-      </FormGroup>
-*/
-  
 return (
 
     <Box sx={{ flexGrow: 1 }}>
@@ -107,8 +102,10 @@ return (
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                {image_url=="" && <AccountCircle/>}
+                {image_url!="" && <img src={image_url} width="35px" height="35px"/>}
               </IconButton>
+               
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
@@ -124,8 +121,14 @@ return (
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={()=>{
+                  handleClose();
+                  router.push(`/users/${Cookies.get("user_id")}`)
+                }}>プロフィール</MenuItem>
+                <MenuItem onClick={()=>{
+                  handleClose();
+                  router.push(`/posts/new`)
+                }}>投稿する</MenuItem>
                 <MenuItem onClick={Logout}>ログアウト</MenuItem>
               </Menu>
             </div>

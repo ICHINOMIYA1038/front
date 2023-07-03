@@ -55,7 +55,7 @@ const Home: React.FC<HomeProps> = (props:any) => {
         {props.posts.map((post) => (
           <tr key={post.post_id}>
             <td>{post.post_id}</td>
-            <td>{post.contentB}</td>
+            <td>{post.title}</td>
             <td>{post.user_id}</td>
           </tr>
         ))}

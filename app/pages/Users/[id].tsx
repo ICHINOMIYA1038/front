@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout';
 import React from 'react';
 import {authUser} from '@/components/authUsers'
+import PostCard from '@/components/PostCard';
 
 
 interface User {
@@ -16,7 +17,7 @@ interface User {
     user: User;
   }
   
-  const UserDetail: React.FC<UserDetailProps> = ({ user }) => {
+  const UserDetail: React.FC<UserDetailProps> = ({ user,posts }) => {
     
     if (!user) {
         return <p>該当はありません</p>;
@@ -28,6 +29,10 @@ interface User {
         <p>Email: {user.email}</p>
         {user.image_url && <img src={user.image_url} alt="Avatar" style={{ width: '100px', height: '100px' }} />}{/* 画像を表示 */}
         {/* 他のユーザーの属性を表示するためのコードを追加 */}
+
+        {posts.map(post => (
+          <PostCard key={post.post_id} post={post} />
+        ))}
       </Layout>  
     );
   };
@@ -50,12 +55,16 @@ export async function getServerSideProps(context: { params: any; }) {
 
 export default UserDetail;
 
+function isRedirect(response: any): response is { redirect: { destination: string; permanent: boolean } } {
+  return response && typeof response === "object" && "redirect" in response;
+}
+
 export async function getServerSideProps(context: { params: any; }) {
-  const id=context.params.id
+
+  /*ユーザーのデータの取得*/
+  const id = context.params.id
   const response = await authUser(`users/${id}`, context);
-  function isRedirect(response: any): response is { redirect: { destination: string; permanent: boolean } } {
-    return response && typeof response === "object" && "redirect" in response;
-  }
+  const user = JSON.parse(response as string) as User;
 
   if(isRedirect(response)){
 
@@ -69,11 +78,14 @@ export async function getServerSideProps(context: { params: any; }) {
   }
   }
 
-  const user = JSON.parse(response as string) as User;
-  console.log("user")
+  /*ユーザーの投稿データの取得*/
+  const postFetchResponse = await authUser(`users/${id}/posts`, context);
+  const posts = JSON.parse(postFetchResponse as string);
+
   return {
     props: {
-      user:user
+      user:user,
+      posts:posts
     },
   };
 };

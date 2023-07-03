@@ -8,7 +8,6 @@ function Home() {
       <Layout>
       <div>
         <PostsForm/>
-        <MyComponent/>
       </div>
       </Layout>
     );
