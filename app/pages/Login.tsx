@@ -5,38 +5,17 @@ import {useEffect, useState} from 'react';
 import { useRouter } from "next/router";
 
 
-function Home(referer) {
+function Home() {
   const router = useRouter();
   
     return (
       <Layout>
       <div>
-        <LoginForm referer={referer}/>
+        <LoginForm />
       </div>
       </Layout>
     );
   }
 
-  export async function  getServerSideProps({req}){
-    console.log(req.headers)
-    // ctx の中に遷移元の情報がある
-    const referer = req.headers.referer // https://ドメイン/...
-    console.log(`ref:${referer}`)
-    if(referer!=null)
-    {
-    return {
-      props: {
-          referer : referer
-      },
-    };
-    }
-    else 
-    return {
-      props: {
-        referer : null
-    }
-    }
-  };    
-  
 
 export default Home;

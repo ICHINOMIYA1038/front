@@ -37,11 +37,15 @@ const LoginForm: React.FC = (props:any) => {
         "content-type": "application/json",
       },
     });
-    const usersAxiosInstance = axios.create({
-      baseURL: `http://localhost:3000/`,
-      headers: {
-        "content-type": "application/json",
-      },
+    
+
+    const Promise1 = new Promise(function (resolve, reject) {
+
+      
+      setTimeout(function() {
+        // 成功
+        resolve('成功!'); // resolve(渡したい値)
+      }, 3000);
     });
 
     (async () => {
@@ -52,24 +56,28 @@ const LoginForm: React.FC = (props:any) => {
           email: data.get("email"),
           password: data.get("password"),
         });
-        console.log(response.data.data.user_id)
-        setUserId(response.data.data.user_id);
-        Cookies.set("user_id", user_id);
+        Cookies.set("user_id",response.data.data.user_id);
         Cookies.set("uid", response.headers["uid"]);
         Cookies.set("client", response.headers["client"]);
         Cookies.set("access-token", response.headers["access-token"]);
-    
-        try {
-          console.log(user_id)
-          const userResponse = await usersAxiosInstance.get(`users/${user_id}`);
-          const userImage = userResponse.data.data.user_image; // レスポンスからユーザーの画像を取得
-          console.log(userResponse)
-          Cookies.set("user_image", userImage);
-          
-          router.push(`/users/${user_id}`);
-        } catch (error) {
-          setErrorMessage(error);
-        }
+        
+
+        const usersAxiosInstance = axios.create({
+          baseURL: `http://localhost:3000/`,
+          headers: {
+            "content-type": "application/json",
+            uid: Cookies.get["uid"],
+            client: Cookies.get["client"],
+            "access-token": Cookies.get["access-token"],
+          },
+        });
+        const userResponse = await usersAxiosInstance.get(`users/${response.data.data.user_id}`);
+        const userImage = userResponse.data.image_url; 
+        console.log(userResponse)
+        Cookies.set("user_image", userImage);
+        
+        
+        router.push(`/users/${response.data.data.user_id}`);
       } catch (error) {
         Cookies.remove("user_id");
         Cookies.remove("uid");
