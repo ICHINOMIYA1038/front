@@ -3,7 +3,6 @@ import React from 'react';
 import {authUser} from '@/components/authUsers'
 import PostCard from '@/components/PostCard';
 
-
 interface User {
     user_id: string;
     name: string;

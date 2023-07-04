@@ -29,8 +29,6 @@ export default function MenuAppBar() {
     }else{
       setAuth(false)
     }
-    
-    console.log(auth)
 
     if(Cookies.get("user_image")!==undefined){
       const url = Cookies.get("user_image")
@@ -121,6 +119,7 @@ return (
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+                <Typography>    ユーザーID:1</Typography>
                 <MenuItem onClick={()=>{
                   handleClose();
                   router.push(`/users/${Cookies.get("user_id")}`)

@@ -8,6 +8,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
+import Cookies from "js-cookie";
+
 
 
 interface Post {
@@ -24,15 +26,32 @@ interface Post {
     image_url:string,
     file_url:string,
     user_image_url:string
-    name:string
-  
+    name:string  
   }
+
+
 
 function PostCard({ post }:any) {
     const router = useRouter()
     const [isClicked, setIsClicked] = useState(false);
-
-  return (
+    const [isFavorite,setIsFavorite] = useState(false);
+  
+    async function Favo(post_id:string){
+        const response = await fetch(`http://localhost:3000/posts/${post_id}/favorites`, { method: 'POST' ,
+          headers: {
+            "Content-Type": "application/json",
+            uid: Cookies.get("uid"),
+            client: Cookies.get("client"),
+            "access-token": Cookies.get("access-token"),
+          },
+        });
+        if(response.ok==true){
+          setIsFavorite(!isFavorite)
+        }
+      }
+  
+  
+    return (
   <div className={`PostCard ${isClicked ? 'clicked' : ''}`}>
     
     <div className="PostCardHeadar">
@@ -67,8 +86,8 @@ function PostCard({ post }:any) {
             <DownloadIcon id='interactive-icon' />
             <span className='icon_text'>download</span>
         </div>
-        <div className='FavoriteIcon'>
-            <FavoriteIcon id='interactive-icon' />
+        <div className='FavoriteIcon' onClick={() => Favo(post.post_id)}>
+            <FavoriteIcon id='interactive-icon' style={{ color: isFavorite ? 'red' : 'black' }} />
             <span className='icon_text'>like</span>
         </div>
         <div className='ShareIcon'>
