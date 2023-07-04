@@ -33,7 +33,6 @@ export default function MenuAppBar() {
     if(Cookies.get("user_image")!==undefined){
       const url = Cookies.get("user_image")
       setImageUrl(url)
-      console.log(`ログ:${url}`)
     }
     // クッキーから必要な値を取得するための処理を記述
   }, []);

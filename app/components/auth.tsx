@@ -1,6 +1,7 @@
 // lib/auth.tsx
 
 import { GetServerSideProps } from "next";
+import Cookies from "js-cookie";
 
 export const auth= async (context) =>{
     const { req, res } = context;
@@ -8,9 +9,9 @@ export const auth= async (context) =>{
     const response = await fetch(`http://api:3000/api/v1/auth/validate_token`, {
       headers: {
         "Content-Type": "application/json",
-        uid: req.cookies["uid"],
-        client: req.cookies["client"],
-        "access-token": req.cookies["access-token"],
+        uid: Cookies.get("uid"),
+        client: Cookies.get("client"),
+        "access-token": Cookies.get("access-token"),
       },
     });
     if (!response.ok && response.status === 401) {

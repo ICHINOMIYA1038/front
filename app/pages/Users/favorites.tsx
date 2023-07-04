@@ -7,15 +7,17 @@ import { GetServerSideProps } from "next";
 import { authUser } from '@/components/authUsers';
 import { useRouter } from 'next/router';
 import {useEffect} from 'react'
+import PostCard from '@/components/PostCard';
 
-
-function Home({ result, redirectDestination }: any) {
+function Home({ posts, redirectDestination }: any) {
   
   return (
     <Layout>
     <div className='userscontainer'>
       <div className='mainContainer'>
-        <h1>Users</h1>
+      {posts.map(post => (
+          <PostCard key={post.post_id} post={post} />
+        ))}
         <div className="grid-container">
           </div>
       </div>
@@ -25,7 +27,6 @@ function Home({ result, redirectDestination }: any) {
 }
 
 export async function getServerSideProps(context) {
-
   const response = await authUser("favo", context);
   function isRedirect(response: any): response is { redirect: { destination: string; permanent: boolean } } {
     return response && typeof response === "object" && "redirect" in response;
@@ -42,11 +43,11 @@ export async function getServerSideProps(context) {
   }
   }
 
+  console.log(response)
   const result = JSON.parse(response as string)
-  console.log(result)
   return {
     props: {
-        result:result
+        posts:result
     },
   };
 };

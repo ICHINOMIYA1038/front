@@ -36,8 +36,8 @@ function PostCard({ post }:any) {
     const [isClicked, setIsClicked] = useState(false);
     const [isFavorite,setIsFavorite] = useState(false);
   
-    async function Favo(post_id:string){
-        const response = await fetch(`http://localhost:3000/posts/${post_id}/favorites`, { method: 'POST' ,
+    async function Favo(){
+        const response = await fetch(`http://localhost:3000/posts/${post.post_id}/favorites`, { method: 'POST' ,
           headers: {
             "Content-Type": "application/json",
             uid: Cookies.get("uid"),
@@ -49,7 +49,43 @@ function PostCard({ post }:any) {
           setIsFavorite(!isFavorite)
         }
       }
-  
+
+      async function DeleteFavo(){
+        const response = await fetch(`http://localhost:3000/posts/${post.post_id}/favorites`, { method: 'DELETE' ,
+          headers: {
+            "Content-Type": "application/json",
+            uid: Cookies.get("uid"),
+            client: Cookies.get("client"),
+            "access-token": Cookies.get("access-token"),
+          },
+        });
+        if(response.ok==true){
+          setIsFavorite(!isFavorite)
+        }
+      }
+
+      async function Favolist(){
+        const response = await fetch(`http://localhost:3000/post/${post.post_id}/favo`, { method: 'GET' ,
+          headers: {
+            "Content-Type": "application/json",
+            uid: Cookies.get("uid"),
+            client: Cookies.get("client"),
+            "access-token": Cookies.get("access-token"),
+          },
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data.result)
+            if(data.result=="OK"){
+                setIsFavorite(true)
+            }else{
+                setIsFavorite(false)
+            }
+          }
+
+      }
+
+      Favolist();
   
     return (
   <div className={`PostCard ${isClicked ? 'clicked' : ''}`}>
@@ -86,7 +122,16 @@ function PostCard({ post }:any) {
             <DownloadIcon id='interactive-icon' />
             <span className='icon_text'>download</span>
         </div>
-        <div className='FavoriteIcon' onClick={() => Favo(post.post_id)}>
+        <div className='FavoriteIcon' onClick={() => {
+            
+            if(isFavorite){
+                DeleteFavo()
+            }else{
+                Favo()
+            }
+            }
+            
+            }>
             <FavoriteIcon id='interactive-icon' style={{ color: isFavorite ? 'red' : 'black' }} />
             <span className='icon_text'>like</span>
         </div>
