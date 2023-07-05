@@ -15,7 +15,7 @@ function Layout({ children } :any ) {
         <Header />
       </div>
       <div className="header-gap"></div>
-      <div>
+      <div style={{padding:"20px 40px"}}>
         { children }
       </div>
       <Footer/>

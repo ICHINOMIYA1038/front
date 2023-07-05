@@ -1,11 +1,10 @@
 .searchFormContainer{
   border: 1px solid rgba(12, 12, 12, 0.74);
   background: rgba(217, 217, 217, 0.00);
-  width: 1090px;
-  height: 1101px;
   flex-shrink: 0;
   margin: 0 auto;
   padding:25px 129px;
+  align-items: center;
 }
 
 .keywordContainer{
@@ -40,10 +39,29 @@
 }
 
 .keywordInput{
-  width: 542px;
+  width: 80%;
   height: 61px;
 }
 
 .keyword-field-radius fieldset{
   border-radius: 20px;
 }
+
+/*
+.manField,
+.womanField,
+.grossPeopleField,
+.playTimeField {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.manField,
+.womanField,
+.grossPeopleField,
+.playTimeField {
+  margin-top: 20px;
+}
+
+*/
