@@ -11,7 +11,10 @@ export const appName = "Sample App"
 function Layout({ children } :any ) {
   return (
     <div >
-      <Header />
+      <div className="sticky-header">
+        <Header />
+      </div>
+      <div className="header-gap"></div>
       <div>
         { children }
       </div>

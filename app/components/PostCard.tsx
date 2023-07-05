@@ -30,6 +30,20 @@ interface Post {
   }
 
 
+  function ChangeNameforPlaytime(option:Number) {
+    if (option === 0) {
+      return "30分未満";
+    } else if (option === 1) {
+      return "30分以上〜60分未満";
+    } else if (option === 2) {
+      return "60分以上〜90分未満";
+    } else if (option === 3) {
+      return "90分以上〜120分未満";
+    } else if (option === 4) {
+      return "120分以上";
+    }
+  }
+
 
 function PostCard({ post }:any) {
     const router = useRouter()
@@ -106,7 +120,7 @@ function PostCard({ post }:any) {
         </div>
         <div className="PostCardHeaderRight">
             <div className="PlotDetail">
-                <p>上演時間:{post.playtime} 分</p>
+                <p>上演時間:{ChangeNameforPlaytime(post.playtime)}</p>
                 <p>男:{post.number_of_men}</p>
                 <p>女:{post.number_of_women}</p>
             </div>

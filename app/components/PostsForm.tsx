@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material/";
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 async function sendPageContent(content: any, router:any): Promise<void> {
   
@@ -17,6 +18,9 @@ async function sendPageContent(content: any, router:any): Promise<void> {
     await axios.post(URL, content, {
       headers: {
         'Content-Type': 'multipart/form-data',
+        uid: Cookies.get("uid"),
+        client: Cookies.get("client"),
+        "access-token": Cookies.get("access-token"),
       }
     }); // POST先のURLを適切なものに置き換える
     router.push("/posts")
@@ -39,6 +43,9 @@ const PostsForm: React.FC = () => {
   const [duration, setDuration] = useState('');
   const [pdfFile, setPdfFile] = useState(null);
   const [image, setImage] = useState(null);
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTags] = useState([]);
+  
 
   useEffect(() => {
     
@@ -50,13 +57,18 @@ const PostsForm: React.FC = () => {
     }
   }, []);
 
+  //人数の合計を計算
+  useEffect(() => {
+    
+   setTotalParticipants(maleCount+femaleCount)
+  }, [maleCount,femaleCount]);
+
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     // フォームの送信処理を実装する
     const formData = new FormData();
     formData.append('post[title]', title);
-    formData.append('post[user_id]', '3');
     formData.append('post[mainfile]', pdfFile); // PDFファイルをフォームデータに追加
     formData.append('post[postImage]', image);
     formData.append('post[catchphrase]', catchphrase);
@@ -75,7 +87,6 @@ const PostsForm: React.FC = () => {
     });
 
     
-    
     // フォーム送信後にフォーム  をリセットする
     setTitle('');
     setCatchphrase("")
@@ -89,6 +100,10 @@ const PostsForm: React.FC = () => {
     // ユーザー登録後にリダイレクトする例
     //router.push('/success'); // ユーザー登録が成功した場合の遷移先を指定
   };
+
+  function setSumNumber() {
+    setTotalParticipants(maleCount+femaleCount)
+  }
 
   return (
     <div>
@@ -112,12 +127,14 @@ const PostsForm: React.FC = () => {
     <div className="post-form-number">
       <label className="post-form-label">
         男:
-        <input className="post-form-input" type="number" value={maleCount} onChange={(e) => setMaleCount(Number(e.target.value))} />
+        <input className="post-form-input" type="number" value={maleCount}  min={0}
+  max={21} onChange={(e) => {setMaleCount(Number(e.target.value));}} />
       </label>
 
       <label className="post-form-label">
         女:
-        <input className="post-form-input" type="number" value={femaleCount} onChange={(e) => setFemaleCount(Number(e.target.value))} />
+        <input className="post-form-input" type="number" value={femaleCount}   min={0}
+  max={21} onChange={(e) => setFemaleCount(Number(e.target.value))} />
       </label>
 
       <label className="post-form-label">
@@ -129,11 +146,11 @@ const PostsForm: React.FC = () => {
         上演時間:
       <select className="post-form-input" value={duration} onChange={(e) => setDuration(e.target.value)}>
         <option value="">選択してください</option>
-        <option value="30">30分未満</option>
-        <option value="60">30分以上〜60分未満</option>
-        <option value="90">60分以上〜90分未満</option>
-        <option value="120">90分以上〜120分未満</option>
-        <option value="121">120分以上</option>
+        <option value="0">30分未満</option>
+        <option value="1">30分以上〜60分未満</option>
+        <option value="2">60分以上〜90分未満</option>
+        <option value="3">90分以上〜120分未満</option>
+        <option value="4">120分以上</option>
       </select>
     </label>
 

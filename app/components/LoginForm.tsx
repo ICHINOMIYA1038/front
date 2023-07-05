@@ -46,10 +46,10 @@ const LoginForm: React.FC = (props:any) => {
           email: data.get("email"),
           password: data.get("password"),
         });
-        Cookies.set("user_id",response.data.data.user_id);
-        Cookies.set("uid", response.headers["uid"]);
-        Cookies.set("client", response.headers["client"]);
-        Cookies.set("access-token", response.headers["access-token"]);
+        Cookies.set("user_id",response.data.data.user_id , { expires: 7 });
+        Cookies.set("uid", response.headers["uid"] , { expires: 7 });
+        Cookies.set("client", response.headers["client"] , { expires: 7 });
+        Cookies.set("access-token", response.headers["access-token"], { expires: 7 }) ;
         
 
         const usersAxiosInstance = axios.create({
@@ -66,8 +66,7 @@ const LoginForm: React.FC = (props:any) => {
         console.log(userResponse)
         Cookies.set("user_image", userImage);
         
-        
-        router.push(`/users/${response.data.data.user_id}`);
+        router.push(`/users/profile/${response.data.data.user_id}`);
       } catch (error) {
         Cookies.remove("user_id");
         Cookies.remove("uid");

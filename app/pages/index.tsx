@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 import Layout from '@/components/Layout';
+import SearchForm from '@/components/search';
 
 interface Post {
   id: number;
@@ -18,18 +19,7 @@ interface HomeProps {
 const Home: React.FC<HomeProps> = (props) => {
   return (
     <Layout>
-      <h2>POSTの一覧</h2>
-      <table>
-      <tbody>
-        {props.posts.map((post) => (
-          <tr key={post.id}>
-            <td>{post.id}.</td>
-            <td>{post.content}</td>
-            <td>これはtest</td>
-          </tr>
-        ))}
-        </tbody>
-      </table>
+      <SearchForm/>
     </Layout>
   );
 };

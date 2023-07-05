@@ -177,3 +177,20 @@ hr {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+
+/*
+original
+*/
+
+.sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.header-gap{
+  height:64px
+}

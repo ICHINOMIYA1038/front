@@ -121,8 +121,12 @@ return (
                 <Typography>    ユーザーID:1</Typography>
                 <MenuItem onClick={()=>{
                   handleClose();
-                  router.push(`/users/${Cookies.get("user_id")}`)
+                  router.push(`/users/profile/${Cookies.get("user_id")}`)
                 }}>プロフィール</MenuItem>
+                <MenuItem onClick={()=>{
+                  handleClose();
+                  router.push(`/users/favorites`)
+                }}>お気に入り</MenuItem>
                 <MenuItem onClick={()=>{
                   handleClose();
                   router.push(`/posts/new`)
