@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { TextField, Button, Grid } from '@mui/material';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
+import Typography from '@mui/material/Typography';
+
 
 export default function SearchForm() {
-    const today = dayjs().format('MM-DD-YYYY')
-const [keyword, setKeyword] = useState('');
+  const today = dayjs().format('MM-DD-YYYY')
+  const [keyword, setKeyword] = useState('');
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
   const [minMaleCount, setMinMaleCount] = useState('');
@@ -15,6 +18,8 @@ const [keyword, setKeyword] = useState('');
   const [maxTotalCount, setMaxTotalCount] = useState('');
   const [minPlaytime, setMinPlaytime] = useState('');
   const [maxPlaytime, setMaxPlaytime] = useState('');
+  const router = useRouter();
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,135 +37,123 @@ const [keyword, setKeyword] = useState('');
       minPlaytime,
       maxPlaytime,
     };
+    const query = new URLSearchParams(searchParams).toString();
+    router.push(`/?${query}`);
+    
   };
 
-  
-  console.log(today)
-
   return (
-    <form onSubmit={handleSubmit} className="search-form">
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Keyword"
-            placeholder="Keyword"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            fullWidth
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Start Date"
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            fullWidth
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="End Date"
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            InputProps={{
-                inputProps: {
-                  min: '0001-01-01',
-                },
+   <div className="searchFormContainer">
+    <Grid container>
+    <Grid item>
+      <div className="keywordContainer">
+        <p>キーワード</p>
+        <div className="keyword-field-radius">
+        <TextField
+          className="keywordInput"
+          label="Rounded Text Field"
+          variant="outlined"
+          borderRadius="20px"
+        />
+        </div>
+      </div>
+    </Grid>
+    <Grid item>
+      <div className="queryContainer">
+        <div className="manField">
+        <Typography variant="subtitle1">男性人数</Typography>
+        <TextField
+                sx={{
+                  width: 80
               }}
-            fullWidth
-          />
-        </Grid>
+                label="男(最小)"
+                type="number"
+                size="small"
+                value={minMaleCount}
 
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Min Male Count"
-            type="number"
-            value={minMaleCount}
-            onChange={(e) => setMinMaleCount(e.target.value)}
-            fullWidth
-          />
-        </Grid>
+                onChange={(e) => setMinMaleCount(e.target.value)}
+              />
+        <span>〜</span>
+        <TextField
+                label="男(最大)"
+                type="number"
+                value={maxMaleCount}
+                size="small"
+                onChange={(e) => setMaxMaleCount(e.target.value)}
+              />
+        </div>
+        <div className="womanField">
+        <Typography variant="subtitle1">女性人数</Typography>
+        <TextField
+                label="女(最小)"
+                type="number"
+                size="small"
+                value={minMaleCount}
 
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Max Male Count"
-            type="number"
-            value={maxMaleCount}
-            onChange={(e) => setMaxMaleCount(e.target.value)}
-            fullWidth
-          />
-        </Grid>
+                onChange={(e) => setMinMaleCount(e.target.value)}
+              />
+        <span>〜</span>
+        <TextField
+                label="女(最大)"
+                type="number"
+                value={maxMaleCount}
+                size="small"
+                onChange={(e) => setMaxMaleCount(e.target.value)}
+              />
+        </div>
 
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Min Female Count"
-            type="number"
-            value={minFemaleCount}
-            onChange={(e) => setMinFemaleCount(e.target.value)}
-            fullWidth
-          />
-        </Grid>
+        <div className="grossPeopleField">
+        <Typography variant="subtitle1">総人数</Typography>
+        <TextField
+                label="総人数(最小)"
+                type="number"
+                size="small"
+                value={minMaleCount}
 
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Max Female Count"
-            type="number"
-            value={maxFemaleCount}
-            onChange={(e) => setMaxFemaleCount(e.target.value)}
-            fullWidth
-          />
-        </Grid>
+                onChange={(e) => setMinMaleCount(e.target.value)}
+              />
+        <span>〜</span>
+        <TextField
+                label="総人数(最大)"
+                type="number"
+                value={maxMaleCount}
+                size="small"
+                onChange={(e) => setMaxMaleCount(e.target.value)}
+              />
+        </div>
 
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Min Total Count"
-            type="number"
-            value={minTotalCount}
-            onChange={(e) => setMinTotalCount(e.target.value)}
-            fullWidth
-          />
-        </Grid>
+        <div className="playTimeField">
+        <Typography variant="subtitle1">上演時間</Typography>
+        <TextField
+                label="上演時間(最短)"
+                type="number"
+                size="small"
+                value={minMaleCount}
 
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Max Total Count"
-            type="number"
-            value={maxTotalCount}
-            onChange={(e) => setMaxTotalCount(e.target.value)}
-            fullWidth
-          />
-        </Grid>
+                onChange={(e) => setMinMaleCount(e.target.value)}
+              />
+        <span>〜</span>
+        <TextField
+                label="上演時間(最長)"
+                type="number"
+                value={maxMaleCount}
+                size="small"
+                onChange={(e) => setMaxMaleCount(e.target.value)}
+              />
+        </div>
 
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Min Playtime"
-            type="number"
-            value={minPlaytime}
-            onChange={(e) => setMinPlaytime(e.target.value)}
-            fullWidth
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Max Playtime"
-            type="number"
-            value={maxPlaytime}
-            onChange={(e) => setMaxPlaytime(e.target.value)}
-            fullWidth
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Button variant="contained" color="primary" type="submit">
-            Search
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+      </div>
+    </Grid>
+    <Grid item>
+      <div className="genreContainer"></div>
+    </Grid>
+    <Grid item>
+      <div className="categoryContainer"></div>
+    </Grid>
+    <Grid item>
+      <div className='tagContainer'></div>
+    </Grid>
+    </Grid>
+   </div>
   );
         }

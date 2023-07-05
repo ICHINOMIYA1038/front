@@ -13,8 +13,8 @@ function Home({ posts, redirectDestination }: any) {
   
   return (
     <Layout>
-    <div className='userscontainer'>
-      <div className='mainContainer'>
+    <div>
+      <div>
       {posts.map(post => (
           <PostCard key={post.post_id} post={post} />
         ))}

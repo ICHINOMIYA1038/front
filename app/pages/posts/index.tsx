@@ -36,8 +36,6 @@ const Home: React.FC<HomeProps> = (props) => {
       {props.posts.map(post => (
           <PostCard key={post.post_id} post={post} />
         ))}
-      
-
     </Layout>
   );
 };

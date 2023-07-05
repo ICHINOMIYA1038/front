@@ -28,7 +28,6 @@ async function sendPageContent(content: any, router:any): Promise<void> {
     console.error('Error while sending page content:', error);
     throw error; // エラー発生後に関数を中断する
   }
-  
 }
 
 const PostsForm: React.FC = () => {
