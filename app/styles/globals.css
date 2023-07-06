@@ -194,3 +194,7 @@ original
 .header-gap{
   height:64px
 }
+
+.selectedTagContainer{
+  padding: 1rem;
+}

@@ -21,18 +21,20 @@ const Home: React.FC<HomeProps> = (props) => {
   return (
     <Layout>
       <SearchForm/>
-      {props.posts.map(post => (
-          <PostCard key={post.post_id} post={post} />
-        ))}
+      {props.posts.slice(0, 10).map(post => (
+   < PostCard key={post.post_id} post={post} />
+    ))}
     </Layout>
   );
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async ({query}) => {
   try {
-    const response = await fetch('http://api:3000/search', { method: 'GET' });
+    const queryString = new URLSearchParams(query).toString();
+    const response = await fetch(`http://api:3000/search?${queryString}`, { method: 'GET' });
     const json = await response.json();
     
+    console.log(`ログ:http://api:3000/search?q=${query}`)
     return {
       props: {
         posts: json.data,

@@ -162,7 +162,7 @@ const PostsForm: React.FC = () => {
         イメージ画像:
         <input className="post-form-input" type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
       </label>
-
+      
       <button className="post-form-submit-button" type="submit">Register</button>
     </form>
     {isError && (

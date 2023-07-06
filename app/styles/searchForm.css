@@ -8,7 +8,6 @@
 }
 
 .keywordContainer{
-  border: 1px solid #000;
   background: rgba(255, 255, 255, 0.00);
   display: flex;
   align-items: center;
@@ -17,12 +16,13 @@
 }
 
 .queryContainer{
-  border: 1px solid #000;
+ 
   background: rgba(255, 255, 255, 0.00);
   align-items: center;
   padding: 30px 49px 40px 20px 
 }
 
+/*
 .genreContainer{
   border: 1px solid #000;
   background: rgba(255, 255, 255, 0.00);
@@ -37,6 +37,7 @@
   border: 1px solid #000;
   background: rgba(255, 255, 255, 0.00);
 }
+*/
 
 .keywordInput{
   width: 80%;
@@ -45,6 +46,10 @@
 
 .keyword-field-radius fieldset{
   border-radius: 20px;
+}
+
+.griditem-border{
+  
 }
 
 /*

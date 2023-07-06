@@ -3,13 +3,13 @@ import Card from '../../components/Card'
 import Sidebar from '@/components/Sidebar';
 import Layout from '@/components/Layout';
 import Pdf from '@/components/Pdf';
-
+import TagSelecter from '@/components/TagSelecter';
 
 
 function Home({  }) {
   return (
     <Layout>
-    <Pdf src="/sample.pdf" />
+    <TagSelecter/>
     </Layout>
   );
 }

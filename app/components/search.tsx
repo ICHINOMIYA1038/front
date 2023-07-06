@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
+import TagSelecter from '@/components/TagSelecter';
 
 
 export default function SearchForm() {
@@ -43,8 +44,6 @@ export default function SearchForm() {
 
     const searchParams = {
       keyword,
-      startDate,
-      endDate,
       minMaleCount,
       maxMaleCount,
       minFemaleCount,
@@ -61,10 +60,10 @@ export default function SearchForm() {
 
   return (
     <Grid container alignItems="center">
-    <Grid item xs={12}>
+    <Grid item xs={12} className="griditem-border">
       <div className="keywordContainer">
       <Grid container spacing={1} alignItems="center">
-      <Grid item xs={12} sm={12} md={2}>
+      <Grid item xs={12} sm={12} md={2} >
           <Typography variant="subtitle1" >キーワード</Typography>
         </Grid >
         <Grid item xs={12} sm={12} md={10}>
@@ -73,6 +72,7 @@ export default function SearchForm() {
           className="keywordInput"
           label="Rounded Text Field"
           variant="outlined"
+          onChange={(e) => setKeyword(e.target.value)}
         />
         </div>
         </Grid>
@@ -80,7 +80,7 @@ export default function SearchForm() {
       </div>
       
     </Grid>
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} md={6} className="griditem-border">
       <div className="queryContainer">
         <Grid container spacing={1} alignItems="center" >
         
@@ -199,90 +199,12 @@ export default function SearchForm() {
         </Grid> 
       </div>
     </Grid>
-    <Grid item xs={12} md={6}>
-      <div className="genreContainer">
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          startIcon={isOpen.item1 ? <CloseIcon /> : <ExpandMoreIcon />}
-          onClick={() => handleToggle('item1')}
-        >
-          {isOpen.item1 ? '閉じる' : '開く'}
-        </Button>
-        {isOpen.item1 && (
-          <>
-            <Typography variant="body1">コンテンツ1</Typography>
-          </>
-        )}
-
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          startIcon={isOpen.item2 ? <CloseIcon /> : <ExpandMoreIcon />}
-          onClick={() => handleToggle('item2')}
-        >
-          {isOpen.item2 ? '閉じる' : 'ホラー'}
-        </Button>
-        {isOpen.item2 && (
-          <>
-            <Typography variant="body1">コンテンツ2</Typography>
-          </>
-        )}
-
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          startIcon={isOpen.item3 ? <CloseIcon /> : <ExpandMoreIcon />}
-          onClick={() => handleToggle('item3')}
-        >
-          {isOpen.item3 ? '閉じる' : '開く'}
-        </Button>
-        {isOpen.item3 && (
-          <>
-            <Typography variant="body1">コンテンツ3</Typography>
-          </>
-        )}
-
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          startIcon={isOpen.item4 ? <CloseIcon /> : <ExpandMoreIcon />}
-          onClick={() => handleToggle('item4')}
-        >
-          {isOpen.item4 ? '閉じる' : '開く'}
-        </Button>
-        {isOpen.item4 && (
-          <>
-            <Typography variant="body1">コンテンツ4</Typography>
-          </>
-        )}
-
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          startIcon={isOpen.item5 ? <CloseIcon /> : <ExpandMoreIcon />}
-          onClick={() => handleToggle('item5')}
-        >
-          {isOpen.item5 ? '閉じる' : '開く'}
-        </Button>
-        {isOpen.item5 && (
-          <>
-            <Typography variant="body1">コンテンツ5</Typography>
-          </>
-        )}
+    <Grid item xs={12} md={6} className="griditem-border">
+      <div className='tagContainer'>
+        <TagSelecter/>
       </div>
     </Grid>
-    <Grid item xs={12} md={6}>
-      <div className="categoryContainer"></div>
-    </Grid>
-    <Grid item xs={12} md={6}>
-      <div className='tagContainer'></div>
-    </Grid>
+    <button className="post-form-submit-button" type="submit" onClick={handleSubmit}>Register</button>
     </Grid>
   );
         }
