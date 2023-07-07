@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextField, Button, Grid } from '@mui/material';
+import { TextField, Button, Grid,Autocomplete, MenuItem } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import Typography from '@mui/material/Typography';
@@ -19,8 +19,8 @@ export default function SearchForm() {
   const [maxFemaleCount, setMaxFemaleCount] = useState('');
   const [minTotalCount, setMinTotalCount] = useState('');
   const [maxTotalCount, setMaxTotalCount] = useState('');
-  const [minPlaytime, setMinPlaytime] = useState('');
-  const [maxPlaytime, setMaxPlaytime] = useState('');
+  const [minPlaytime, setMinPlaytime] = useState(0);
+  const [maxPlaytime, setMaxPlaytime] = useState(4);
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState({
@@ -173,29 +173,32 @@ export default function SearchForm() {
         <Typography variant="subtitle1">上演時間</Typography>
         </Grid>
         <Grid item xs={9}>
-        <TextField
-        sx={{
-          width: "45%"
-      }}
-                label="上演時間(最短)"
-                type="number"
-                size="small"
-                value={minPlaytime}
-
-                onChange={(e) => setMinPlaytime(e.target.value)}
-              />
-        <span>〜</span>
-        <TextField
-        sx={{
-          width: "45%"
-      }}
-                label="上演時間(最長)"
-                type="number"
-                value={maxPlaytime}
-                size="small"
-                onChange={(e) => setMaxPlaytime(e.target.value)}
-              />
-              </Grid>
+      <TextField
+        select
+        value={minPlaytime}
+        onChange={(e) => setMinPlaytime(e.target.value)}
+        sx={{ width: '45%' }}
+      >
+        <MenuItem value={0}>30分未満</MenuItem>
+        <MenuItem value={1}>30分以上〜60分未満</MenuItem>
+        <MenuItem value={2}>60分以上〜90分未満</MenuItem>
+        <MenuItem value={3}>90分以上〜120分未満</MenuItem>
+        <MenuItem value={4}>120分以上</MenuItem>
+      </TextField>
+      <span>〜</span>
+      <TextField
+        select
+        value={maxPlaytime}
+        onChange={(e) => setMaxPlaytime(e.target.value)}
+        sx={{ width: '45%' }}
+      >
+        <MenuItem value={0}>30分未満</MenuItem>
+        <MenuItem value={1}>30分以上〜60分未満</MenuItem>
+        <MenuItem value={2}>60分以上〜90分未満</MenuItem>
+        <MenuItem value={3}>90分以上〜120分未満</MenuItem>
+        <MenuItem value={4}>120分以上</MenuItem>
+      </TextField>
+    </Grid>
         </Grid> 
       </div>
     </Grid>

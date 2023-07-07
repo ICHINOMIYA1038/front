@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useState} from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
@@ -49,7 +49,11 @@ function PostCard({ post }:any) {
     const router = useRouter()
     const [isClicked, setIsClicked] = useState(false);
     const [isFavorite,setIsFavorite] = useState(false);
-  
+    useEffect(() => {
+      Favolist();
+    }, []);
+
+
     async function Favo(){
         const response = await fetch(`http://localhost:3000/posts/${post.post_id}/favorites`, { method: 'POST' ,
           headers: {
@@ -99,7 +103,7 @@ function PostCard({ post }:any) {
 
       }
 
-      Favolist();
+      
   
     return (
   <div className={`PostCard ${isClicked ? 'clicked' : ''}`}>

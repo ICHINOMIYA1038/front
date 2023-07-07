@@ -10,6 +10,7 @@ import {
 } from "@mui/material/";
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import TagSelecter from '@/components/TagSelecter';
 
 async function sendPageContent(content: any, router:any): Promise<void> {
   
@@ -40,10 +41,11 @@ const PostsForm: React.FC = () => {
   const [femaleCount, setFemaleCount] = useState(0);
   const [totalParticipants, setTotalParticipants] = useState(0);
   const [duration, setDuration] = useState('');
-  const [pdfFile, setPdfFile] = useState(null);
-  const [image, setImage] = useState(null);
+  const [pdfFile, setPdfFile] = useState<null|File>(null);
+  const [image, setImage] = useState<null|File>(null);
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState([]);
+  const [selectedTag,setSelectedTags] = useState([]);
   
 
   useEffect(() => {
@@ -68,13 +70,21 @@ const PostsForm: React.FC = () => {
     // フォームの送信処理を実装する
     const formData = new FormData();
     formData.append('post[title]', title);
-    formData.append('post[mainfile]', pdfFile); // PDFファイルをフォームデータに追加
-    formData.append('post[postImage]', image);
+    if(pdfFile!=null){
+      formData.append('post[mainfile]', pdfFile);
+    }
+    if(image!=null){
+      formData.append('post[postImage]', image);
+    }
+     // PDFファイルをフォームデータに追加
     formData.append('post[catchphrase]', catchphrase);
     formData.append('post[number_of_men]', maleCount); // PDFファイルをフォームデータに追加
     formData.append('post[number_of_women]', femaleCount);
     formData.append('post[total_number_of_people]', totalParticipants);
     formData.append('post[playtime]', duration); // PDFファイルをフォームデータに追加
+    formData.append('post[tags]', selectedTag)
+    console.log(selectedTag)
+
     sendPageContent(formData,router)
     .then(() => {
       setIsError(true);
@@ -94,7 +104,7 @@ const PostsForm: React.FC = () => {
     setTotalParticipants(0)
     setDuration("")
     setPdfFile(null);
-    setImage(null)
+    setImage(null);
 
     // ユーザー登録後にリダイレクトする例
     //router.push('/success'); // ユーザー登録が成功した場合の遷移先を指定
@@ -103,6 +113,11 @@ const PostsForm: React.FC = () => {
   function setSumNumber() {
     setTotalParticipants(maleCount+femaleCount)
   }
+
+  const handleChildStateChange = (value) => {
+
+    setSelectedTags(value);
+  };
 
   return (
     <div>
@@ -162,6 +177,8 @@ const PostsForm: React.FC = () => {
         イメージ画像:
         <input className="post-form-input" type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
       </label>
+
+      <TagSelecter onChildStateChange={handleChildStateChange}/>
       
       <button className="post-form-submit-button" type="submit">Register</button>
     </form>
