@@ -21,6 +21,8 @@ export default function SearchForm() {
   const [maxTotalCount, setMaxTotalCount] = useState('');
   const [minPlaytime, setMinPlaytime] = useState(0);
   const [maxPlaytime, setMaxPlaytime] = useState(4);
+  const [sort_by, setSortIndex] = useState(0);
+  const [tags,setSelectedTags] = useState([]);
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState({
@@ -31,11 +33,10 @@ export default function SearchForm() {
     item5: false
   });
 
-  const handleToggle = (item) => {
-    setIsOpen((prevOpen) => ({
-      ...prevOpen,
-      [item]: !prevOpen[item]
-    }));
+
+  const handleChildStateChange = (value) => {
+
+    setSelectedTags(value);
   };
 
 
@@ -52,6 +53,8 @@ export default function SearchForm() {
       maxTotalCount,
       minPlaytime,
       maxPlaytime,
+      sort_by,
+      tags,
     };
     const query = new URLSearchParams(searchParams).toString();
     router.push(`/?${query}`);
@@ -70,7 +73,7 @@ export default function SearchForm() {
         <div className="keyword-field-radius">
         <TextField
           className="keywordInput"
-          label="Rounded Text Field"
+          label="キーワード"
           variant="outlined"
           onChange={(e) => setKeyword(e.target.value)}
         />
@@ -204,10 +207,24 @@ export default function SearchForm() {
     </Grid>
     <Grid item xs={12} md={6} className="griditem-border">
       <div className='tagContainer'>
-        <TagSelecter/>
+        <TagSelecter  onChildStateChange={handleChildStateChange} />
       </div>
     </Grid>
     <button className="post-form-submit-button" type="submit" onClick={handleSubmit}>Register</button>
+    <TextField
+        select
+        value={sort_by}
+        onChange={(e) => setSortIndex(e.target.value)}
+        sx={{ width: '45%' }}
+      >
+        <MenuItem value={0}>お気に入り順</MenuItem>
+        <MenuItem value={1}>人数順(男)</MenuItem>
+        <MenuItem value={2}>人数順(女)</MenuItem>
+        <MenuItem value={3}>上演時間</MenuItem>
+        <MenuItem value={4}>作成日</MenuItem>
+        <MenuItem value={5}>更新日</MenuItem>
+      </TextField>
     </Grid>
+
   );
         }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {useState} from 'react';
 import { useRouter } from 'next/router';
-import { Button } from '@mui/material';
+import { Button,Chip,TextField } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteButton from './Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -50,6 +50,7 @@ function PostCard({ post }:any) {
     const [isClicked, setIsClicked] = useState(false);
     const [isFavorite,setIsFavorite] = useState(false);
     useEffect(() => {
+      console.log(post)
       Favolist();
     }, []);
 
@@ -123,6 +124,19 @@ function PostCard({ post }:any) {
             <Button/>
         </div>
         <div className="PostCardHeaderRight">
+          <div className="tagsContainer">
+            {post.tags &&
+                          post.tags.map(elem => (
+                            <Chip
+                            key={elem}
+                            label={elem.name}
+                            clickable
+                            style={{ margin: '0.5rem' }}
+                          />
+                  ))}
+            
+
+          </div>
             <div className="PlotDetail">
                 <p>上演時間:{ChangeNameforPlaytime(post.playtime)}</p>
                 <p>男:{post.number_of_men}</p>

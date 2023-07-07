@@ -12,29 +12,22 @@ import { useState ,useEffect} from 'react';
 
 
 //Homeコンポーネント
-export const TagSelecter = ({ onChildStateChange }) => {
+export const TagSelecter = ({ onChildStateChange}) => {
     const [selectedTags, setSelectedTags] = useState([]);
     let tags = ['ホラー', 'アクション', '感動', '不条理劇', 'コメディ', '会話劇', 'アングラ', 'コンテンポラリー', '抽象劇', '具象劇', '群像劇', 'Tag12', 'Tag13', 'Tag14', 'Tag15', 'Tag16', 'Tag17', 'Tag18', 'Tag19', 'Tag20'];
     const [validation, setValidation] = useState({ error: false, message: '' })
 
+    console.log(typeof onChildStateChange); // 結果: "string"
+
     useEffect(() => {
       onChildStateChange(selectedTags);
     }, [selectedTags]);
-
-    function tagFileter(name:string){
-        const regex = new RegExp(name);
-  tags = tags.filter(tag => regex.test(tag));
-    }
-
-    console.log(selectedTags)
-
 
     const handleTagClick=(tag)=>{
         if (selectedTags.includes(tag)) {
             setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
           } else {
             setSelectedTags([...selectedTags, tag]);
-           
           }
     }
 
@@ -44,7 +37,6 @@ export const TagSelecter = ({ onChildStateChange }) => {
 
     const handleInputChange=(event, value)=>{
       setSelectedTags(value);
-      onChildStateChange(selectedTags)
     }
 
   return (

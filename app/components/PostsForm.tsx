@@ -82,8 +82,10 @@ const PostsForm: React.FC = () => {
     formData.append('post[number_of_women]', femaleCount);
     formData.append('post[total_number_of_people]', totalParticipants);
     formData.append('post[playtime]', duration); // PDFファイルをフォームデータに追加
-    formData.append('post[tags]', selectedTag)
-    console.log(selectedTag)
+    formData.append('tags', selectedTag)
+    for (let value of formData.entries()) { 
+      console.log(value); 
+  }
 
     sendPageContent(formData,router)
     .then(() => {
