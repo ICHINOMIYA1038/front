@@ -42,7 +42,7 @@ function Home({ users, redirectDestination }: HomeProps) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSsideProps(context) {
 
   const response = await authUser("users", context);
   function isRedirect(response: any): response is { redirect: { destination: string; permanent: boolean } } {

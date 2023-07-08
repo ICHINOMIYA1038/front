@@ -4,6 +4,9 @@ import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 import Layout from '@/components/Layout';
 import PostCard from '@/components/PostCard';
+import { Pagination } from '@mui/material';
+import {useState,useEffect} from 'react'
+import { useRouter } from 'next/router';
 
 interface Post {
   post_id: number;
@@ -19,7 +22,6 @@ interface Post {
   image_url:string,
   file_url:string,
 
-
 }
 
 interface HomeProps {
@@ -27,27 +29,46 @@ interface HomeProps {
 }
 
 
+
 //Homeコンポーネント
 const Home: React.FC<HomeProps> = (props) => {
-  console.log(props.posts)
+  const router = useRouter();
+  const [page, setPage] = useState(1)
+  const [per, setPer] = useState(1)
+
+  const handlePageChange = (event, newPage) => {
+    setPage(newPage);
+    router.push(`/posts?page=${newPage}&per=${props.pagination.limit_value}`);
+  };
+
   return (
     <Layout>
-      <h2>POSTの一覧</h2>
       {props.posts.map(post => (
           <PostCard key={post.post_id} post={post} />
         ))}
+    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      <Pagination 
+        count={props.pagination.total_pages}          //総ページ数
+        color="primary"     //ページネーションの色
+        onChange={handlePageChange}
+        page={props.pagination.current_page}         //現在のページ番号
+        />
+    </div>
     </Layout>
   );
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async (context) => {
   try {
-    const response = await fetch('http://api:3000/posts', { method: 'GET' });
+    const page = context.query.page || 1; // ページ番号をクエリパラメータから取得、指定がない場合は1
+    const per = context.query.per || 4;
+    const response = await fetch(`http://api:3000/posts?paged=${page}&per=${per}`, { method: 'GET' });
     const json = await response.json();
 
     return {
       props: {
-        posts: json
+        posts: json.posts,
+        pagination: json.pagination
       },
     };
   } catch (error) {
