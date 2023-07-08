@@ -87,10 +87,10 @@ export default function SearchForm() {
       <div className="queryContainer">
         <Grid container spacing={1} alignItems="center" >
         
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={3}>
           <Typography variant="subtitle1">男性人数</Typography>
         </Grid >
-        <Grid item xs={9}>
+        <Grid item xs={12} sm={9}>
         <TextField
                 sx={{
                   width: "45%"
@@ -118,10 +118,10 @@ export default function SearchForm() {
         </Grid>
 
 
-        <Grid item xs={3}>
+        <Grid item  xs={12} sm={3}>
           <Typography variant="subtitle1">女性人数</Typography>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={12} sm={9}>
         <TextField
         sx={{
           width: "45%"
@@ -145,10 +145,10 @@ export default function SearchForm() {
                 onChange={(e) => setMaxFemaleCount(e.target.value)}
               />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={3}>
         <Typography variant="subtitle1">総人数</Typography>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={12} sm={9}>
         <TextField
         sx={{
           width: "45%"
@@ -172,10 +172,10 @@ export default function SearchForm() {
                 onChange={(e) => setMaxTotalCount(e.target.value)}
               />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={3}>
         <Typography variant="subtitle1">上演時間</Typography>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={12} sm={9}>
       <TextField
         select
         value={minPlaytime}
@@ -207,7 +207,7 @@ export default function SearchForm() {
     </Grid>
     <Grid item xs={12} md={6} className="griditem-border">
       <div className='tagContainer'>
-        <TagSelecter  onChildStateChange={handleChildStateChange} />
+        <TagSelecter  onChildStateChange={handleChildStateChange}/>
       </div>
     </Grid>
     <button className="post-form-submit-button" type="submit" onClick={handleSubmit}>Register</button>

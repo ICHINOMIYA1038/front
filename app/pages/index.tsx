@@ -34,7 +34,7 @@ export const getServerSideProps = async ({query}) => {
     const response = await fetch(`http://api:3000/search?${queryString}`, { method: 'GET' });
     const json = await response.json();
     
-    console.log(`ログ:http://api:3000/search?q=${query}`)
+    console.log(json)
     return {
       props: {
         posts: json.data,
