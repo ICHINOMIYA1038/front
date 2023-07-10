@@ -23,6 +23,7 @@
     "make-dir": "^4.0.0",
     "next": "13.4.6",
     "pdfjs-dist": "^3.7.107",
+    "query-string": "^8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "semver": "7.5.3"

@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import TagSelecter from '@/components/TagSelecter';
+import queryString from 'query-string';
+
 
 
 export default function SearchForm() {
@@ -23,6 +25,7 @@ export default function SearchForm() {
   const [maxPlaytime, setMaxPlaytime] = useState(4);
   const [sort_by, setSortIndex] = useState(0);
   const [tags,setSelectedTags] = useState([]);
+
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState({
@@ -43,6 +46,12 @@ export default function SearchForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const pagequery = window.location.search;
+    const queryParams = queryString.parse(pagequery);
+
+    const page = 1;
+    const per = 8;
+
     const searchParams = {
       keyword,
       minMaleCount,
@@ -55,10 +64,17 @@ export default function SearchForm() {
       maxPlaytime,
       sort_by,
       tags,
+      page: page, // pageのクエリパラメータを追加
+      per: per, // perのクエリパラメータを追加
     };
+    
+   
+    
+
+
     const query = new URLSearchParams(searchParams).toString();
     router.push(`/?${query}`);
-    
+        
   };
 
   return (

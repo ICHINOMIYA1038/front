@@ -37,7 +37,8 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         permanent: false, // 永続的なリダイレクトかどうか
-        destination: '/Login', // リダイレクト先
+        destination: '/Login?error=NeedtoLogin', // リダイレクト先
+
         // destination: 'https://example.com/' // 別サイトでも指定可能
       },
   }

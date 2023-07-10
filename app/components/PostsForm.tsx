@@ -12,25 +12,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import TagSelecter from '@/components/TagSelecter';
 
-async function sendPageContent(content: any, router:any): Promise<void> {
-  
-  try {
-    const URL = "http://localhost:3000/posts";
-    await axios.post(URL, content, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        uid: Cookies.get("uid"),
-        client: Cookies.get("client"),
-        "access-token": Cookies.get("access-token"),
-      }
-    }); // POST先のURLを適切なものに置き換える
-    router.push("/posts")
-  } catch (error) {
-    console.error('Error while sending page content:', error);
-    throw error; // エラー発生後に関数を中断する
-  }
-}
-
 const PostsForm: React.FC = () => {
   const router = useRouter();
   const [isError, setIsError] = useState<boolean>(false);
@@ -65,6 +46,29 @@ const PostsForm: React.FC = () => {
   }, [maleCount,femaleCount]);
 
 
+  async function sendPageContent(content: any, router:any): Promise<void> {
+  
+    try {
+      const URL = "http://localhost:3000/posts";
+      const response=  await axios.post(URL, content, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          uid: Cookies.get("uid"),
+          client: Cookies.get("client"),
+          "access-token": Cookies.get("access-token"),
+        }
+      }); // POST先のURLを適切なものに置き換える
+      router.push("/")
+  
+    } catch (error) {
+      console.error('Error while sending page content:', error);
+      setIsError(true)
+      setErrorMessage(error.response.data.error)
+      throw error; // エラー発生後に関数を中断する
+    }
+  }
+
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     // フォームの送信処理を実装する
@@ -88,13 +92,12 @@ const PostsForm: React.FC = () => {
   }
 
     sendPageContent(formData,router)
-    .then(() => {
+    .then(() => {  
       setIsError(true);
       setErrorMessage("完了しました。");
     })
     .catch((error) => {
-      setIsError(true);
-      setErrorMessage("投稿に失敗しました。");
+
     });
 
     

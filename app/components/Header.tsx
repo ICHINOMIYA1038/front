@@ -16,6 +16,30 @@ import Cookies from "js-cookie";
 import {useEffect} from "react"
 import {signout} from '@/components/auth'
 import router from 'next/router';
+import SearchIcon from '@mui/icons-material/Search';
+import SearchLinkButton from './button/SearchLinkButton';
+import PostLinkButton from './button/PostLinkButton';
+import { createTheme, Snackbar, ThemeProvider } from "@mui/material";
+import SigninButton from './button/SignInButton';
+
+
+//primaryとsecondaryで、色を指定します
+const myTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#9c27b0",
+    },
+    secondary: {
+      main: "#FABFBF",
+    },
+    accent: {
+      main: "#FF9800",
+    },
+  },
+});
+
+
+
 
 export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(false);
@@ -77,72 +101,99 @@ export default function MenuAppBar() {
 
 return (
 
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={()=>{
-            router.push("/")
-          }}
-          style={{
-            cursor: 'pointer',
-          }}
-          >
-            SampleApp
-          </Typography>
-          {auth && (
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                {image_url=="" && <AccountCircle/>}
-                {image_url!="" && <img src={image_url} width="35px" height="35px"/>}
-              </IconButton>
-               
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+<Box sx={{ flexGrow: 1 }}>
+      <ThemeProvider theme={myTheme}>
+        <AppBar position="static">
+          <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex',userSelect:'none' }}>
+              <img
+                src="header.png"
+                alt=""
+                height="50px"
+                onClick={() => {
+                  router.push('/');
                 }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                style={{
+                  cursor: 'pointer',
+                  userSelect: 'none', // 選択不可に設定
                 }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <Typography>    ユーザーID:1</Typography>
-                <MenuItem onClick={()=>{
-                  handleClose();
-                  router.push(`/users/profile/${Cookies.get("user_id")}`)
-                }}>プロフィール</MenuItem>
-                <MenuItem onClick={()=>{
-                  handleClose();
-                  router.push(`/users/favorites`)
-                }}>お気に入り</MenuItem>
-                <MenuItem onClick={()=>{
-                  handleClose();
-                  router.push(`/posts/new`)
-                }}>投稿する</MenuItem>
-                <MenuItem onClick={Logout}>ログアウト</MenuItem>
-              </Menu>
+              />
             </div>
-          )}
-          {!auth && 
-           <Button type="submit" color="success" variant="contained" onClick={linkToSignin}>
-           サインイン
-         </Button>
-            
-          }
-        </Toolbar>
-      </AppBar>
+            <div style={{ display: 'flex' }}>
+              <PostLinkButton  func={() => {
+                  router.push(`/posts/new`);
+                }}/>
+              <SearchLinkButton func={() => {
+                  router.push(`/`);
+                }}/>
+
+              {auth && (
+                <div>
+                  <IconButton
+                    size="large"
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleMenu}
+                    color="inherit"
+                  >
+                    {image_url === '' && <AccountCircle />}
+                    {image_url !== '' && <img src={image_url} width="35px" height="35px" />}
+                  </IconButton>
+
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <Typography>ユーザーID:1</Typography>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        router.push(`/users/profile/${Cookies.get('user_id')}`);
+                      }}
+                    >
+                      プロフィール
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        router.push(`/users/favorites`);
+                      }}
+                    >
+                      お気に入り
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        router.push(`/posts/new`);
+                      }}
+                    >
+                      投稿する
+                    </MenuItem>
+                    <MenuItem onClick={Logout}>ログアウト</MenuItem>
+                  </Menu>
+                </div>
+              )}
+              {!auth && (
+                <SigninButton  func={() => {
+                  router.push(`/Login`);
+                }}/>
+              )}
+            </div>
+          </Toolbar>
+        </AppBar>
+      </ThemeProvider>
     </Box>
   );
 }

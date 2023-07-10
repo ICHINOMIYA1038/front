@@ -23,10 +23,13 @@ const LoginForm: React.FC = (props:any) => {
     const { error } = router.query; // クエリパラメータからエラーメッセージを取得
 
     if (error) {
-      setIsError(true);
-      setErrorMessage(decodeURIComponent(error as string)); // URLエンコードされたエラーメッセージをデコードして設定
+      if(decodeURIComponent(error as string)=="NeedtoLogin"){
+        setErrorMessage("ログインが必要です");
+        setIsError(true);
+      }
+       // URLエンコードされたエラーメッセージをデコードして設定
     }
-  }, []);
+  }, [router.query]);
 
   const handleSubmit = (event:any) => {
     event.preventDefault();
@@ -63,7 +66,6 @@ const LoginForm: React.FC = (props:any) => {
         });
         const userResponse = await usersAxiosInstance.get(`users/${response.data.data.user_id}`);
         const userImage = userResponse.data.image_url; 
-        console.log(userResponse)
         Cookies.set("user_image", userImage);
         
         router.push(`/users/profile/${response.data.data.user_id}`);

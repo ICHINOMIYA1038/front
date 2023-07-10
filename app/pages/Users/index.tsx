@@ -42,8 +42,8 @@ function Home({ users, redirectDestination }: HomeProps) {
   );
 }
 
-export async function getServerSsideProps(context) {
-
+export async function getServerSideProps(context) {
+  console.log(`ログ}`)
   const response = await authUser("users", context);
   function isRedirect(response: any): response is { redirect: { destination: string; permanent: boolean } } {
     return response && typeof response === "object" && "redirect" in response;
@@ -61,7 +61,7 @@ export async function getServerSsideProps(context) {
   }
 
   const users = JSON.parse(response as string) as User[];
-  console.log("user")
+  console.log(`ログ${users}`)
   return {
     props: {
       users:users,

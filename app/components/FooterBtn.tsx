@@ -6,6 +6,11 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useMediaQuery } from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
+import CreateIcon from '@mui/icons-material/Create';
+import { createTheme, Snackbar, ThemeProvider } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+
 
 export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0);
@@ -45,9 +50,9 @@ export default function SimpleBottomNavigation() {
           value={value}
           onChange={handleChange}
         >
-          <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+          <BottomNavigationAction label="検索する" icon={<SearchIcon/>} />
+          <BottomNavigationAction label="投稿する" icon={<CreateIcon />} />
+          <BottomNavigationAction label="ログインする" icon={<LoginIcon />} />
         </BottomNavigation>
       )}
     </Box>

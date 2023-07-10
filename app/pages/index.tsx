@@ -5,6 +5,9 @@ import styles from '@/styles/Home.module.css';
 import Layout from '@/components/Layout';
 import SearchForm from '@/components/search';
 import PostCard from '@/components/PostCard';
+import { useRouter } from 'next/router';
+import {useState,useEffect} from 'react'
+import { Pagination } from '@mui/material';
 
 interface Post {
   id: number;
@@ -18,26 +21,53 @@ interface HomeProps {
 
 //Homeコンポーネント
 const Home: React.FC<HomeProps> = (props) => {
+  const router = useRouter();
+  const [page, setPage] = useState(1)
+  const [per, setPer] = useState(1)
+
+  const handlePageChange = (event, newPage) => {
+    setPage(newPage);
+    const searchParams = props.query ; // 既存のクエリパラメータをコピー
+  
+    searchParams.page = newPage; // ページを更新
+    searchParams.per = props.pagination.limit_value; // 1ページあたりの件数を維持（もしくは新しい値に更新）
+  
+    const queryString = new URLSearchParams(searchParams).toString();
+    router.push(`/?${queryString}`);
+  };
+
   return (
     <Layout>
       <SearchForm/>
-      {props.posts.slice(0, 10).map(post => (
+      {props.posts.map(post => (
    < PostCard key={post.post_id} post={post} />
     ))}
+
+  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      <Pagination 
+        count={props.pagination.total_pages}          //総ページ数
+        color="primary"     //ページネーションの色
+        onChange={handlePageChange}
+        page={props.pagination.current_page}         //現在のページ番号
+        />
+    </div>
     </Layout>
   );
 };
 
 export const getServerSideProps = async ({query}) => {
   try {
+    const page = query.page || 1; // ページ番号をクエリパラメータから取得、指定がない場合は1
+    const per = query.per || 8;
     const queryString = new URLSearchParams(query).toString();
-    const response = await fetch(`http://api:3000/search?${queryString}`, { method: 'GET' });
+    const response = await fetch(`http://api:3000/search?${queryString}&paged=${page}&per=${per}`, { method: 'GET' });
     const json = await response.json();
     
-    console.log(json)
     return {
       props: {
-        posts: json.data,
+        posts: json.posts,
+        pagination: json.pagination,
+        query:query
       },
     };
   } catch (error) {

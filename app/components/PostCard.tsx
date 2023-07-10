@@ -9,6 +9,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
 import Cookies from "js-cookie";
+import LoginPopup from "@/components/LoginPopup";
 
 
 
@@ -49,8 +50,8 @@ function PostCard({ post }:any) {
     const router = useRouter()
     const [isClicked, setIsClicked] = useState(false);
     const [isFavorite,setIsFavorite] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
     useEffect(() => {
-      console.log(post)
       Favolist();
     }, []);
 
@@ -64,8 +65,15 @@ function PostCard({ post }:any) {
             "access-token": Cookies.get("access-token"),
           },
         });
-        if(response.ok==true){
-          setIsFavorite(!isFavorite)
+        
+        if (response.ok) {
+          setIsFavorite(!isFavorite);
+        } else {
+          const data = await response.json();
+          console.log(data.error); // エラーメッセージをコンソールに表示
+          setErrorMessage(data.error);
+          // エラーメッセージを表示するための処理を追加
+          // 例えば、エラーメッセージをステートに設定して表示するなど
         }
       }
 
@@ -78,8 +86,14 @@ function PostCard({ post }:any) {
             "access-token": Cookies.get("access-token"),
           },
         });
-        if(response.ok==true){
-          setIsFavorite(!isFavorite)
+        if (response.ok) {
+          setIsFavorite(!isFavorite);
+        } else {
+          const data = await response.json();
+          console.log(data.error); // エラーメッセージをコンソールに表示
+      
+          // エラーメッセージを表示するための処理を追加
+          // 例えば、エラーメッセージをステートに設定して表示するなど
         }
       }
 
@@ -94,7 +108,6 @@ function PostCard({ post }:any) {
         });
         if (response.ok) {
             const data = await response.json();
-            console.log(data.result)
             if(data.result=="OK"){
                 setIsFavorite(true)
             }else{
@@ -176,6 +189,11 @@ function PostCard({ post }:any) {
             <span className='icon_text'>100 view</span>
         </div>
     </div>
+    <div>      
+      {errorMessage && (
+        <LoginPopup errorMessage={errorMessage} onClose={() => setErrorMessage(null)} />
+      )}
+      </div>
   </div>
 );
 }
