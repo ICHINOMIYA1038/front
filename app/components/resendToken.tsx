@@ -14,7 +14,7 @@ import { GetServerSideProps } from 'next';
 import Link from 'next/link'
 
 
-const LoginForm: React.FC = (props:any) => {
+const ResendToken: React.FC = (props:any) => {
   const router = useRouter();
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -36,7 +36,7 @@ const LoginForm: React.FC = (props:any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const axiosInstance = axios.create({
-      baseURL: `http://localhost:3000/api/v1/`,
+      baseURL: `http://localhost:3000/api/v1/auth`,
       headers: {
         "content-type": "application/json",
       },
@@ -46,54 +46,19 @@ const LoginForm: React.FC = (props:any) => {
       setIsError(false);
       setErrorMessage("");
       try {
-        const response = await axiosInstance.post("auth/sign_in", {
+        const response = await axiosInstance.post("/confirmation", {
           email: data.get("email"),
           password: data.get("password"),
+          redirect_url :"http://localhost:8000/confirmation_success"
         });
-        Cookies.set("user_id",response.data.data.user_id , { expires: 7 });
-        Cookies.set("uid", response.headers["uid"] , { expires: 7 });
-        Cookies.set("client", response.headers["client"] , { expires: 7 });
-        Cookies.set("access-token", response.headers["access-token"], { expires: 7 }) ;
+    
         
-
-        const usersAxiosInstance = axios.create({
-          baseURL: `http://localhost:3000/`,
-          headers: {
-            "content-type": "application/json",
-            uid: Cookies.get("uid"),
-            client: Cookies.get("client"),
-            "access-token": Cookies.get("access-token"),
-          },
-        });
-        const userResponse = await usersAxiosInstance.get(`users/${response.data.data.user_id}`);
-        const userImage = userResponse.data.image_url; 
-        Cookies.set("user_image", userImage);
-        
-        router.push(`/users/profile/${response.data.data.user_id}`);
+        console.log(response)
       } catch (error) {
-        if(error.response.data.errors[0].includes("A confirmation email was sent to your account"))
-        {
-          const resendResponse = await axiosInstance.post("/auth/confirmation", {
-            email: data.get("email"),
-            password: data.get("password"),
-            redirect_url :"http://localhost:8000/confirmation_success"
-          });
-
-          if(resendResponse.statusText="OK"){
-              setIsError(true);
-              setErrorMessage("本登録が済んでおりません。メールをご確認ください。");
-              return
-          }
-
-        }
-        Cookies.remove("user_id");
-        Cookies.remove("uid");
-        Cookies.remove("client");
-        Cookies.remove("access-token");
         setIsError(true);
         if (error) {
           console.log(error);
-          setErrorMessage("メールアドレスかパスワードが間違っています");
+          setErrorMessage(error.message);
         }
       }
     })();
@@ -127,20 +92,14 @@ const LoginForm: React.FC = (props:any) => {
           </Button>
           <Typography variant="body2" color="textSecondary" align="center">
             アカウントをお持ちでない場合は、
-            <Link href="/SignUp" variant="body2" style={{ color: 'blue' }}>
+            <Link href="/SignUp" variant="body2">
               新規登録
             </Link>
             してください。
           </Typography>
-          <Typography variant="body2" color="textSecondary" align="center">
-            パスワードを忘れた方は
-            <Link href="/resetPassword" variant="body2" style={{ color: 'blue' }}>
-            こちら
-            </Link>
-          </Typography>
           {isError && (
             <Alert
-              style={{width:"70%",display:"box",margin:"10px auto"}}
+              style={{width:"70%",display:"box",margin:"0 auto"}}
               onClose={() => {
                 setIsError(false);
                 setErrorMessage("");
@@ -157,7 +116,7 @@ const LoginForm: React.FC = (props:any) => {
 };
 
 
-export default LoginForm;
+export default ResendToken;
 
 
 

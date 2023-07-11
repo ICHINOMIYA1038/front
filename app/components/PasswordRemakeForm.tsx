@@ -13,10 +13,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { GetServerSideProps } from 'next';
 import Link from 'next/link'
+import { access } from "fs";
 
 
 
-const SignUpForm: React.FC = (props:any) => {
+const PasswordRemakeForm: React.FC = (props:any) => {
   const router = useRouter();
   const [isEmailError, setIsEmailError] = useState<boolean>(false);
   const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
@@ -25,20 +26,28 @@ const SignUpForm: React.FC = (props:any) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [password_confirmation, setConfirmPassword] = useState("");
+  const [reset_password_token, setToken] = useState("");
   const [user_id, setUserId] = useState('');
+  const [uid,setUid] = useState("");
+  const [accessToken,setAccesstoken] = useState("");
+  const [client,setClient] = useState("");
+
   useEffect(() => {
     
-    const { error } = router.query; // クエリパラメータからエラーメッセージを取得
-
-    if (error) {
-      if(decodeURIComponent(error as string)=="NeedtoLogin"){
-        setErrorMessage("ログインが必要です");
-        setIsError(true);
-      }
-       // URLエンコードされたエラーメッセージをデコードして設定
+    const { uid, 'access-token': accessToken, client } = router.query;
+    setUid(uid as string);
+    setAccesstoken(accessToken as string);
+    setClient(client as string);
+  
+    if (reset_password_token) {
+      
+        setToken(decodeURIComponent(reset_password_token as string));
     }
+    else{
+      //  router.push("/Login?error=不明なエラーが発生しました")
+    }
+       // URLエンコードされたエラーメッセージをデコードして設定
   }, [router.query]);
 
   const handleSubmit = (event:any) => {
@@ -47,38 +56,14 @@ const SignUpForm: React.FC = (props:any) => {
     setErrorMessage("");
     setIsSuccess(false);
     setSuccessMessage("");
-    setIsEmailError(false);
     setIsPasswordError(false);
         // バリデーションチェック
-        if (!email && !password) {
-            setIsError(true);
-            setIsEmailError(true);
-            setIsPasswordError(true);
-            setErrorMessage( "メールアドレスとパスワードを入力してください。");
-            return
-        }
-
-        if (!email) {
-            setIsError(true);
-            setIsEmailError(true);
-            setErrorMessage( "メールアドレスを入力してください。");
-            return
-        }
 
         if (!password) {
             setIsError(true);
             setIsPasswordError(true);
             setErrorMessage("パスワードを入力してください。");
             return
-          }
-      
-          // メールアドレスのバリデーションチェック
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(email)) {
-            setIsError(true);
-            setIsEmailError(true);
-            setErrorMessage("正しいメールアドレスの形式で入力してください。");
-            return;
           }
       
           // パスワードのバリデーションチェック
@@ -89,12 +74,8 @@ const SignUpForm: React.FC = (props:any) => {
             return;
           }
 
-
-
-
-
     const data = new FormData(event.currentTarget);
-    if (password !== confirmPassword) {
+    if (password !== password_confirmation) {
         setIsError(true);
         setErrorMessage("パスワードが一致しません");
         return;
@@ -110,24 +91,24 @@ const SignUpForm: React.FC = (props:any) => {
     (async () => {
 
       try {
-        const response = await axiosInstance.post("auth", {
-          "email": data.get("email"),
+        const response = await axiosInstance.put("auth/password", {
           "password": data.get("password"),
-          "confirm_success_url":"http://localhost:8000/confirmation_success"
+          "password_confirmation":data.get("password_confirmation"),
+          "uid":uid,
+          "access-token":accessToken,
+          "client":client
         });
         console.log(response)
         if(response.statusText=='OK'){
           setIsSuccess(true)
-          setSuccessMessage("メールアドレスに認証URLをお送りしました")
-          setPassword("")
-          setEmail("")
-          setConfirmPassword("")
+          setSuccessMessage("パスワードがリセットされました。")
         }
       } catch (error) {
         setIsError(true);
         console.log(error);
-        if (error.response.data.errors.full_messages[0]=="Email has already been taken") {
-          setErrorMessage("このメールアドレスは既に利用されています。");
+        if (error.response) {
+          
+         
         }else{
           setErrorMessage("不明なエラーが発生しました")
         }
@@ -137,21 +118,10 @@ const SignUpForm: React.FC = (props:any) => {
 
   return (
 <Container component="main" maxWidth="xs">
-  <Box style={{ margin: "10px" }}>
+<Box component="form" onSubmit={handleSubmit} style={{textAlign:"center"}}>
     <Typography component="h1" variant="h5">
-      新規ユーザー登録
+      パスワードのリセット
     </Typography>
-    <Box component="form" onSubmit={handleSubmit} style={{ textAlign: "center" }}>
-      <TextField
-        style={{ width: "70%", margin: "5px" }}
-        id="email"
-        label="メールアドレス"
-        name="email"
-        autoComplete="email"
-        autoFocus
-        onChange={(e) => setEmail(e.target.value)}
-        error={isEmailError}
-      />
       <TextField
         style={{ width: "70%", margin: "5px auto" }}
         name="password"
@@ -165,25 +135,18 @@ const SignUpForm: React.FC = (props:any) => {
       />
       <TextField
         style={{ width: "70%", margin: "5px auto" }}
-        name="confirmPassword"
+        name="password_confirmation"
         label="パスワードの再入力"
         type="password"
-        id="confirmPassword"
-        value={confirmPassword}
+        id="password_confirmation"
+        value={password_confirmation}
         autoComplete="new-password"
         onChange={(e) => setConfirmPassword(e.target.value)}
         error={isPasswordError}
       />
       <Button type="submit" variant="contained" sx={{ display: "block", margin: "15px auto" }}>
-        ユーザー登録
+        パスワードのリセット
       </Button>
-      <Typography variant="body2" color="textSecondary" align="center">
-            アカウントをお持ちの場合は、
-            <Link href="/Login" variant="body2" style={{ color: 'blue' }}>
-              ログイン
-            </Link>
-            してください。
-          </Typography>
       {isError && (
         <Alert
           style={{  display: "box", margin: "0 auto",whiteSpace: "normal"  }}
@@ -210,13 +173,12 @@ const SignUpForm: React.FC = (props:any) => {
         </Alert>
       )}
     </Box>
-  </Box>
 </Container>
   );
 };
 
 
-export default SignUpForm;
+export default PasswordRemakeForm;
 
 
 
