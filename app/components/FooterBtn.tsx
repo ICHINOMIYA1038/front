@@ -10,6 +10,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import CreateIcon from '@mui/icons-material/Create';
 import { createTheme, Snackbar, ThemeProvider } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import router from 'next/router';
 
 
 export default function SimpleBottomNavigation() {
@@ -50,9 +51,15 @@ export default function SimpleBottomNavigation() {
           value={value}
           onChange={handleChange}
         >
-          <BottomNavigationAction label="検索する" icon={<SearchIcon/>} />
-          <BottomNavigationAction label="投稿する" icon={<CreateIcon />} />
-          <BottomNavigationAction label="ログインする" icon={<LoginIcon />} />
+          <BottomNavigationAction label="検索する"  icon={<SearchIcon/>} onClick={()=>{
+      router.push("/")
+    }}/>
+          <BottomNavigationAction label="投稿する" icon={<CreateIcon />} onClick={()=>{
+      router.push("/posts/new")
+    }}/>
+          <BottomNavigationAction label="ログインする" icon={<LoginIcon />} onClick={()=>{
+      router.push("/Login")
+    }}/>
         </BottomNavigation>
       )}
     </Box>

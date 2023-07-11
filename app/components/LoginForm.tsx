@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { GetServerSideProps } from 'next';
+import Link from 'next/link'
 
 
 const LoginForm: React.FC = (props:any) => {
@@ -85,13 +86,13 @@ const LoginForm: React.FC = (props:any) => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Box style={{margin:"50px"}}>
+      <Box style={{margin:"10px"}}>
         <Typography component="h1" variant="h5">
           ログイン
         </Typography>
         <Box component="form" onSubmit={handleSubmit} style={{textAlign:"center"}}>
           <TextField
-            style={{width:"70%" ,margin:"5px"}}
+            style={{margin:"5px auto"}}
             id="email"
             label="メールアドレス"
             name="email"
@@ -99,7 +100,7 @@ const LoginForm: React.FC = (props:any) => {
             autoFocus
           />
           <TextField
-            style={{width:"70%" ,margin:"5px auto"}}
+            style={{margin:"5px auto"}}
             name="password"
             label="パスワード"
             type="password"
@@ -109,6 +110,13 @@ const LoginForm: React.FC = (props:any) => {
           <Button type="submit" variant="contained" sx={{ display:"block",margin:"15px auto"}}>
             ログイン
           </Button>
+          <Typography variant="body2" color="textSecondary" align="center">
+            アカウントをお持ちでない場合は、
+            <Link href="/SignUp" variant="body2">
+              新規登録
+            </Link>
+            してください。
+          </Typography>
           {isError && (
             <Alert
               style={{width:"70%",display:"box",margin:"0 auto"}}
