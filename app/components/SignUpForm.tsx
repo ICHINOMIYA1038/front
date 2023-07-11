@@ -7,6 +7,7 @@ import {
   Container,
   TextField,
   Typography,
+  CheckIcon
 } from "@mui/material/";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -14,12 +15,15 @@ import { GetServerSideProps } from 'next';
 import Link from 'next/link'
 
 
+
 const SignUpForm: React.FC = (props:any) => {
   const router = useRouter();
   const [isEmailError, setIsEmailError] = useState<boolean>(false);
   const [isPasswordError, setIsPasswordError] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -41,6 +45,8 @@ const SignUpForm: React.FC = (props:any) => {
     event.preventDefault();
     setIsError(false);
     setErrorMessage("");
+    setIsSuccess(false);
+    setSuccessMessage("");
     setIsEmailError(false);
     setIsPasswordError(false);
         // バリデーションチェック
@@ -107,46 +113,26 @@ const SignUpForm: React.FC = (props:any) => {
         const response = await axiosInstance.post("auth", {
           "email": data.get("email"),
           "password": data.get("password"),
+          "confirm_success_url":"http://localhost:8000/confirmation_success"
         });
-        Cookies.set("user_id",response.data.data.user_id , { expires: 7 });
-        Cookies.set("uid", response.headers["uid"] , { expires: 7 });
-        Cookies.set("client", response.headers["client"] , { expires: 7 });
-        Cookies.set("access-token", response.headers["access-token"], { expires: 7 }) ;
-        
-    if(response.response.data.errors.full_message){
-        setIsError(true)
-        setErrorMessage(response.data.errors.full_message)
-        return
-    }
-    if(response.status=="error"){
-        setIsError(true)
-        setErrorMessage(response.errors.full_messages)
-        return
-    }
-
-        const usersAxiosInstance = axios.create({
-          baseURL: `http://localhost:3000/`,
-          headers: {
-            "content-type": "application/json",
-            uid: Cookies.get("uid"),
-            client: Cookies.get("client"),
-            "access-token": Cookies.get("access-token"),
-          },
-        });
-        const userResponse = await usersAxiosInstance.get(`users/${response.data.data.user_id}`);
-        const userImage = userResponse.data.image_url; 
-        Cookies.set("user_image", userImage);
-        
-        router.push(`/users/profile/${response.data.data.user_id}`);
+        console.log(response)
+        if(response.statusText=='OK'){
+          setIsSuccess(true)
+          setSuccessMessage("メールアドレスに認証URLをお送りしました。")
+        }
       } catch (error) {
         Cookies.remove("user_id");
         Cookies.remove("uid");
         Cookies.remove("client");
         Cookies.remove("access-token");
         setIsError(true);
-        if (error) {
+        console.log(error);
+        if (error.response) {
+          
             console.log(error.response.data.errors.full_messages)
           setErrorMessage(error.response.data.errors.full_messages[0]);
+        }else{
+          setErrorMessage("不明なエラーが発生しました")
         }
       }
     })();
@@ -211,6 +197,19 @@ const SignUpForm: React.FC = (props:any) => {
           severity="error"
         >
           {errorMessage}
+        </Alert>
+      )}
+      {(isSuccess && !isError) && (
+        <Alert
+          
+          style={{  display: "box", margin: "0 auto",whiteSpace: "normal"  }}
+          onClose={() => {
+            setIsSuccess(false);
+            setSuccessMessage("");
+          }}
+          severity="success"
+        >
+          {successMessage}
         </Alert>
       )}
     </Box>
