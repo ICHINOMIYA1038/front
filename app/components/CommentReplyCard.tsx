@@ -26,7 +26,7 @@ function CommentReplyCard({ comment }:any) {
                 <p>{comment.name}</p>
             </div>
             <div className='CommentContents'>
-                <p>{comment.content}</p>
+                <p>{comment.body}</p>
             </div>
         </div>
     );

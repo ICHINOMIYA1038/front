@@ -26,7 +26,7 @@ function CommentCard({ comment }:any) {
             <p>{comment.name}</p>
         </div>
         <div className='CommentContents'>
-            <p>{comment.content}</p>
+            <p>{comment.body}</p>
         </div>
         {comment.children && comment.children.map(child => (
           <CommentReplyCard key={child.post_id} post={child} />
