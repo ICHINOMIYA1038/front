@@ -46,7 +46,7 @@ interface Post {
   }
 
 
-function PostCard({ post }:any) {
+function PostCardDetail({ post }:any) {
     const router = useRouter()
     const [isClicked, setIsClicked] = useState(false);
     const [isFavorite,setIsFavorite] = useState(false);
@@ -183,9 +183,21 @@ function PostCard({ post }:any) {
       alt="Avatar"
     className="embedPDF"
     />
-    <button className="ViewDetailsButton" onClick={() => router.push(`/posts/${post.post_id}`)}>
-      詳細を確認する      
-</button>
+    </div>
+
+    <div className="SynopsisContainer">
+      <p>あらすじ</p>
+      <p>{post.synopsis}</p>
+
+    </div>
+     
+    <div className="CopyRightContainer">
+      <p>著作権: 無料</p>
+      <p>脚色や改変は適宜行ってください。
+          特に制限はありません。
+          是非とも感想などでもご連絡いただけると嬉しいです。
+      </p>
+
     </div>
     
     <div className="impressionContainer">
@@ -221,8 +233,9 @@ function PostCard({ post }:any) {
         <LoginPopup errorMessage={errorMessage} onClose={() => setErrorMessage(null)} />
       )}
       </div>
+
   </div>
 );
 }
 
-export default PostCard;
+export default PostCardDetail;

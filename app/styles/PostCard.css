@@ -1,5 +1,16 @@
+@media (min-width: 801px) {
 .PostCard{
     background-color: antiquewhite;
+    width:750px;
+    height: 300+521px;
+    outline: groove 1px black;
+    margin:25px auto;
+    font-size: 20px;
+
+}
+
+.PostCardclicked{
+    background-color: lightblue;
     width:750px;
     height: 300+521px;
     outline: groove 1px black;
@@ -15,18 +26,18 @@
 }
 
 .PostCardHeaderLeft{
-    flex-basis: 65%
+    flex-basis: 55%
 }
 
 .PostCardHeaderRight{
-    flex-basis: 35%
+    flex-basis: 45%
 }
 
 .PostCardHeaderRight img{
-    max-width:200px;
-    max-height: 200px;
+    max-width:100px;
+    max-height: 100px;
     display: block;
-    margin: auto;
+    margin: 10px auto;
 }
 
 .PostCardUserProfile{
@@ -49,18 +60,37 @@
     margin-top:15px;
 }
 
-.PlotDetail{
-    margin-top: 50px;
+.PlotDetail {
+    margin-top: 0px;
     display: flex;
-    gap:6px
-    
-}
+    gap: 6px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .PersonCount {
+    display: flex;
+    gap: 6px;
+  }
+
+  .Underline {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .Emphasize {
+    font-weight: bold;
+    text-decoration: underline;
+  }
 
 .PostCardFooter{
     margin:auto;
     text-align: center;
     margin-bottom: 15px;
+    width: '660px';
+    height: '450px';
 }
+
 
 .impressionContainer{
     display:flex;
@@ -74,3 +104,73 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+.tagsContainer{
+    padding-top:15px;
+    text-align: center;
+}
+
+.embedPDF {
+    width: 660px;
+    height: 450px;
+  }
+  
+}
+
+@media (max-width: 800px) {
+    .PostCard {
+      display: flex;
+      flex-direction: column;
+      outline: groove 1px black;
+      margin:25px auto;
+      font-size: 20px;
+      background-color: antiquewhite;
+      text-align: center;
+    }
+
+    .PostCardclicked{
+        background-color: lightblue;
+        width:750px;
+        height: 300+521px;
+        outline: groove 1px black;
+        margin:25px auto;
+        font-size: 20px;
+    
+    }
+
+
+    .PostCardHeaderLeft,
+    .PostCardHeaderRight {
+      width: 100%;
+    }
+    .PostCardHeaderRight .tagsContainer {
+      flex-wrap: wrap;
+    }
+    .PostCardHeaderRight img {
+      width: 100%;
+      height: auto;
+      margin:10px auto;
+    }
+    .impressionContainer {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .embedPDF {
+        width: 100%;
+        height: 500px;
+      }
+  }
+
+  .ViewDetailsButton {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    margin:20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width:50%;
+  }
+  
+  .ViewDetailsButton:hover {
+    background-color: darkblue;
+  }
