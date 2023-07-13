@@ -208,3 +208,43 @@ original
   padding: 20px;
   border: 1px solid #ccc;
 }
+
+
+/*
+コメントカード
+*/
+.CommentParentContainer {
+  display: flex;
+  flex-direction: column;
+  margin:0px auto;
+  max-width: 700px;
+}
+
+.CommentUserProfile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.CommentUserProfile img {
+  width: 80px;
+  height: 80px;
+}
+
+.CommentUserProfile p {
+  margin-left: 10px;
+}
+
+.CommentContents {
+  margin-left: 30px;
+  margin-bottom: 10px;
+}
+
+.CommentReplyContainer {
+  margin-left: 20px;
+}
+
+hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
