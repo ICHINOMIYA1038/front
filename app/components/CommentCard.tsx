@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {useState} from 'react';
 import { useRouter } from 'next/router';
-import { Button,Chip,TextField } from '@mui/material';
+import { Button,Chip,TextField,Alert } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteButton from './Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -17,6 +17,8 @@ import axios from 'axios';
 function CommentCard({ comment }:any) {
     const router = useRouter()
     const [commentInput, setCommentInput] = useState('');
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const [isError, setIsError] = useState<boolean>(false);
 
     const handleCommentChange = (e) => {
         setCommentInput(e.target.value);
@@ -25,7 +27,7 @@ function CommentCard({ comment }:any) {
       const handleCommentSubmit = () => {
         const payload = {
           post_id: comment.post_id,
-          comment_id: comment.comment_id,
+          parent_comment_id: comment.comment_id,
           body: commentInput,
         };
 
@@ -33,19 +35,21 @@ function CommentCard({ comment }:any) {
             "Content-Type": "application/json",
             uid: Cookies.get("uid"),
             client: Cookies.get("client"),
-            "access-token": Cookies.get("access-tokne"),
-
+            "access-token": Cookies.get("access-token"),
         }
+        console.log(headers)
 
         axios.post('http://localhost:3000/comments', payload,  { headers })
         .then((response) => {
           // 送信成功時の処理
-          console.log('コメントが送信されました');
           setCommentInput('');
+          router.reload();
         })
         .catch((error) => {
+          console.log(error)
           // 送信失敗時の処理
-          console.error('コメントの送信中にエラーが発生しました', error);
+          setIsError(true);
+          setErrorMessage();
         });
     };
       
@@ -76,6 +80,18 @@ function CommentCard({ comment }:any) {
           rows={4}
         />
         <Button variant="contained" onClick={handleCommentSubmit}>送信</Button>
+        {isError && (
+            <Alert
+              style={{width:"70%",display:"box",margin:"10px auto"}}
+              onClose={() => {
+                setIsError(false);
+                setErrorMessage("");
+              }}
+              severity="error"
+            >
+              {errorMessage}
+            </Alert>
+          )}
       </div>
         </div>
 );
