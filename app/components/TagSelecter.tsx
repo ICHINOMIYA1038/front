@@ -45,28 +45,9 @@ export const TagSelecter = ({ onChildStateChange,tags}) => {
 
     }
 
-    async function getTagData(){
-      try {
-        const response = await fetch('http://api:3000/tags');
-        const data = await response.json();
-        console.log(`tag:${data}`)
-        return {
-          props: {
-            data
-          },
-        };
-      } catch (error) {
-        console.error('データの取得に失敗しました', error);
-        return {
-          props: {
-            data: null,
-          },
-        };
-      }
-    }
 
   return (
-    <div>
+    <div className="tagContainer">
  
   
          <div className="selectedTagContainer" >

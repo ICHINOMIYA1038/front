@@ -195,9 +195,7 @@ original
   height:64px
 }
 
-.selectedTagContainer{
-  padding: 1rem;
-}
+
 
 .popup {
   position: fixed;
@@ -241,10 +239,99 @@ original
 }
 
 .CommentReplyContainer {
-  margin-left: 20px;
+  margin-left: 80px;
 }
 
 hr {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.CommentInputContainer{
+  margin:0px auto;
+  max-width: 700px;
+}
+
+.CommentInputReplyContainer{
+
+}
+
+.CommentInputHeaderTitile{
+  margin:30px auto;
+  max-width: 750px;
+  line-height: 160%;
+  font-size: 160%;
+  color: white;
+  background-color: navy;
+  font-weight: 900;
+  text-align: center;
+  padding: auto;
+}
+
+.supportDocument{
+  margin:0px auto;
+  max-width: 750px;
+  background-color: white;
+  padding:80px;
+}
+
+
+
+.supportDocument h2 {
+  text-align: center;
+}
+
+.supportDocument h3 {
+  /* h3 のスタイルを指定 */
+}
+
+.supportDocument p {
+  /* p タグのスタイルを指定 */
+}
+
+.contactForm{
+  margin:0px auto;
+  max-width: 750px;
+  background-color: white;
+  padding:80px;
+}
+
+.contactForm h2 {
+  text-align: center;
+}
+
+.tagContainer{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  padding:30px
+}
+
+.selectedTagContainer{
+  margin:0px auto;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  
+}
+
+@media (min-width: 500px) {
+
+  .tagContainer{
+    width: 350px;
+    padding:30px
+  }
+  
+}
+
+@media (min-width: 800px) {
+
+  .tagContainer{
+    
+    width: 500px;
+    padding:30px
+
+  }
+  
 }

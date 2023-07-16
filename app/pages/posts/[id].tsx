@@ -1,10 +1,14 @@
 import Layout from '@/components/Layout';
+import {useState} from 'react';
+import { useRouter } from 'next/router';
 import React from 'react';
 import Pdf from '@/components/Pdf';
 import PostCard from '@/components/PostCard';
 import PostCardDetail from '@/components/PostCardDetail';
 import CommentCard from '@/components/CommentCard';
-
+import { Button,Chip,TextField,Alert } from '@mui/material';
+import axios from 'axios';
+import Cookies from "js-cookie";
 
 interface Post {
     post_id: string;
@@ -17,17 +21,87 @@ interface Post {
   }
   
   const UserDetail: React.FC<UserDetailProps> = ({ post ,comments }) => {
-    
+    const router = useRouter()
+    const [commentInput, setCommentInput] = useState('');
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const [isError, setIsError] = useState<boolean>(false);
+
+    const handleCommentChange = (e) => {
+      setCommentInput(e.target.value);
+    };
+  
+    const handleCommentSubmit = () => {
+      if(commentInput==""){
+        setIsError(true);
+        setErrorMessage("コメントを入力してください")
+      }
+
+      const payload = {
+        post_id: post.post_id,
+        body: commentInput,
+      };
+
+      const headers= {
+          "Content-Type": "application/json",
+          uid: Cookies.get("uid"),
+          client: Cookies.get("client"),
+          "access-token": Cookies.get("access-token"),
+      }
+      console.log(headers)
+
+      axios.post('http://localhost:3000/comments', payload,  { headers })
+      .then((response) => {
+        // 送信成功時の処理
+        setCommentInput('');
+        router.reload();
+      })
+      .catch((error) => {
+        console.log(error)
+        // 送信失敗時の処理
+        setIsError(true);
+        setErrorMessage();
+      });
+  };
+
     if (!post) {
         return <p>該当はありません</p>;
       }
     return (
       <Layout>
         <PostCardDetail post={post}/>
+        <div className="CommentInputHeaderTitile">
+          {comments.length}件のコメント
+        </div>
+        <div className="CommentInputContainer">
+        <TextField
+          value={commentInput}
+          onChange={handleCommentChange}
+          label="コメントを入力してください"
+          variant="outlined"
+          fullWidth
+          multiline
+          rows={4}
+        />
+        <Button variant="contained" onClick={handleCommentSubmit}>送信</Button>
+        {isError && (
+            <Alert
+              style={{width:"70%",display:"box",margin:"10px auto"}}
+              onClose={() => {
+                setIsError(false);
+                setErrorMessage("");
+              }}
+              severity="error"
+            >
+              {errorMessage}
+            </Alert>
+          )}
+      </div>
         {comments && comments.map(comment => (
           <CommentCard key={post.post_id} comment={comment} />
         ))}
+        
       </Layout>  
+      
     );
   };
 export async function getServerSideProps(context: { params: any; }) {

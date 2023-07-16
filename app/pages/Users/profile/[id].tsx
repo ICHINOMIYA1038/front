@@ -25,7 +25,10 @@ interface User {
       <Layout>
         <h1>User Details</h1>
         <p>Name: {user.name}</p>
-        <p>Email: {user.email}</p>
+        <p>{user.location}</p>
+        <p>{user.group}</p>
+        <p>{user.website}</p>
+        <p>{user.bio}</p>
         {user.image_url && <img src={user.image_url} alt="Avatar" style={{ width: '100px', height: '100px' }} />}{/* 画像を表示 */}
         {/* 他のユーザーの属性を表示するためのコードを追加 */}
 

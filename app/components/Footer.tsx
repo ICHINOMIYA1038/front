@@ -14,34 +14,33 @@ const Footer :React.FC = ()=>{
     </a>
     <div className="grid">
       <div>
-        <p className="footer__navi-heading">SERVICE</p>
+        <p className="footer__navi-heading">このサイトについて</p>
         <ul className="footer__navi">
-          <li><a href="#">サービスA</a></li>
-          <li><a href="#">サービスB</a></li>
-          <li><a href="#">サービスC</a></li>
+          <li><a href="/support/aboutus">運営者概要</a></li>
+          <li><a href="/support/press-release">プレスリリース</a></li>
+          <li><a href="#"></a></li>
         </ul>
       </div>
       <div>
-        <p className="footer__navi-heading">FOLLOW US</p>
+        <p className="footer__navi-heading">ヘルプ</p>
         <ul className="footer__navi">
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Twitter</a></li>
-          <li><a href="#">Instagram</a></li>
+          <li><a href="/support/contact">お問い合わせ</a></li>
+          <li><a href="/support/privacy-policy">プライバシーポリシー</a></li>
         </ul>
       </div>
       <div>
-        <p className="footer__navi-heading">ABOUT</p>
+        <p className="footer__navi-heading">利用規約等</p>
         <ul className="footer__navi">
-          <li><a href="#">会社概要</a></li>
-          <li><a href="#">お問い合わせ</a></li>
-          <li><a href="#">サイトマップ</a></li>
-          <li><a href="#">プライバシーポリシー</a></li>
+          <li><a href="/support/tos">利用規約</a></li>
+          <li><a href="#"></a></li>
+          <li><a href="#"></a></li>
+          <li><a href="#"></a></li>
         </ul>
       </div>
     </div>
   </div>
   <hr />
-  <p className="copyright">© 2023 <a href="https://jajaaan.co.jp/">JAJAAAN Inc.</a> All Rights Reserved.
+  <p className="copyright">© 2023 <a href="">すくりぷれい</a> All Rights Reserved.
   </p>
   <FooterBtn/>
 </footer>

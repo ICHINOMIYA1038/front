@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import {useState} from 'react';
-import { useRouter } from 'next/router';
+import React  from 'react';
+import {useState,useRef,useEffect} from 'react';
+import { useRouter} from 'next/router';
 import { Button,Chip,TextField,Alert } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteButton from './Delete';
@@ -16,6 +16,9 @@ import axios from 'axios';
 
 function CommentCard({ comment }:any) {
     const router = useRouter()
+    const [showReplyForm, setShowReplyForm] = useState(false);
+    const [showReply, setShowReply] = useState(false);
+    const [replyInput, setReplyInput] = useState('');
     const [commentInput, setCommentInput] = useState('');
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isError, setIsError] = useState<boolean>(false);
@@ -25,6 +28,10 @@ function CommentCard({ comment }:any) {
       };
     
       const handleCommentSubmit = () => {
+        if(commentInput==""){
+          setIsError(true);
+          setErrorMessage("コメントを入力してください")
+        }
         const payload = {
           post_id: comment.post_id,
           parent_comment_id: comment.comment_id,
@@ -37,8 +44,6 @@ function CommentCard({ comment }:any) {
             client: Cookies.get("client"),
             "access-token": Cookies.get("access-token"),
         }
-        console.log(headers)
-
         axios.post('http://localhost:3000/comments', payload,  { headers })
         .then((response) => {
           // 送信成功時の処理
@@ -52,7 +57,22 @@ function CommentCard({ comment }:any) {
           setErrorMessage();
         });
     };
+
+    const toggleReply = () => {
+      setShowReplyForm(!showReplyForm);
+    };
+
+    const toggleShowReply = () => {
+      setShowReply(!showReply);
+    };
       
+    const closeReply = () => {
+      setShowReply(false);
+    };
+
+    const closeReplyForm = () => {
+      setShowReplyForm(false);
+    };
 
     return (
         <div className="CommentParentContainer">
@@ -63,35 +83,61 @@ function CommentCard({ comment }:any) {
         <div className='CommentContents'>
             <p>{comment.body}</p>
         </div>
-        {comment.child_comments && comment.child_comments.map(child => (
+        { 
+        
+        showReply ? (
+          <>{
+         comment.child_comments.map(child => (
           <CommentReplyCard key={child.post_id} comment={child} />
-        ))
+        ))}
+        <Button className="CloseButton" onClick={closeReply}>閉じる</Button>
+         
+        </>
+        ):  (
+          <>{comment.child_comments.length !=0 &&
+          <Button onClick={toggleShowReply}>{`${comment.child_comments.length}件の返信を見る`}</Button>
+          }
+          </>
+        )
         
         }
        <hr />
-       <div className="CommentInputContainer">
-        <TextField
-          value={commentInput}
-          onChange={handleCommentChange}
-          label="返信を入力してください"
-          variant="outlined"
-          fullWidth
-          multiline
-          rows={4}
-        />
-        <Button variant="contained" onClick={handleCommentSubmit}>送信</Button>
-        {isError && (
-            <Alert
-              style={{width:"70%",display:"box",margin:"10px auto"}}
-              onClose={() => {
-                setIsError(false);
-                setErrorMessage("");
-              }}
-              severity="error"
-            >
-              {errorMessage}
-            </Alert>
-          )}
+       <div className="CommentInputReplyContainer">
+       {
+       
+       showReplyForm ? (
+          <>
+            <TextField
+              value={commentInput}
+              onChange={handleCommentChange}
+              label="返信を入力してください"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+            />
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button variant="contained" onClick={handleCommentSubmit}>送信</Button>
+              <Button className="CloseButton" onClick={closeReplyForm}>閉じる</Button>
+            </div>
+            {isError && (
+              <Alert
+                style={{ width: "70%", display: "box", margin: "10px auto" }}
+                onClose={() => {
+                  setIsError(false);
+                  setErrorMessage("");
+                }}
+                severity="error"
+              >
+                {errorMessage}
+              </Alert>
+            )}
+          </>
+        ) : (
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button onClick={toggleReply}>返信をする</Button>
+          </div>
+        )}
       </div>
         </div>
 );

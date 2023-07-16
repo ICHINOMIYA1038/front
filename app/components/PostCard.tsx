@@ -10,6 +10,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
 import Cookies from "js-cookie";
 import LoginPopup from "@/components/LoginPopup";
+import ShareButton from '@/components/Share';
 
 
 
@@ -49,6 +50,7 @@ interface Post {
 function PostCard({ post }:any) {
     const router = useRouter()
     const [isClicked, setIsClicked] = useState(false);
+    const [isShareClicked, setisShareClicked] = useState(false);
     const [isFavorite,setIsFavorite] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     useEffect(() => {
@@ -207,7 +209,16 @@ function PostCard({ post }:any) {
             <FavoriteIcon id='interactive-icon' style={{ color: isFavorite ? 'red' : 'black' }} />
             <span className='icon_text'>like</span>
         </div>
-        <div className='ShareIcon'>
+        <div className='ShareIcon'onClick={() => {
+            
+            if(isShareClicked){
+                setisShareClicked(false)
+            }else{
+              setisShareClicked(true)
+            }
+            }
+            
+            }>
             <ShareIcon id='interactive-icon' />
             <span className='icon_text'>share</span>
         </div>
@@ -219,6 +230,15 @@ function PostCard({ post }:any) {
     <div>      
       {errorMessage && (
         <LoginPopup errorMessage={errorMessage} onClose={() => setErrorMessage(null)} />
+      )}
+      {isShareClicked && (
+        <ShareButton onClose={
+          () => {
+            
+          if(isShareClicked){
+              setisShareClicked(false)
+  
+          }}}/>
       )}
       </div>
   </div>
