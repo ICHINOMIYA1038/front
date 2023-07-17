@@ -92,7 +92,7 @@ function CommentCard({ comment }:any) {
         
         showReply ? (
           <>{
-         comment.child_comments.map(child => (
+         comment.child_comments.map((child: { post_id: any; }) => (
           <CommentReplyCard key={child.post_id} comment={child} />
         ))}
         <Button className="CloseButton" onClick={closeReply}>閉じる</Button>
