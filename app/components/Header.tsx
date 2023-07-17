@@ -25,9 +25,6 @@ const myTheme = createTheme({
     secondary: {
       main: "#FABFBF",
     },
-    accent: {
-      main: "#FF9800",
-    },
   },
 });
 
@@ -37,8 +34,8 @@ const myTheme = createTheme({
 export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [image_url,setImageUrl] = React.useState<string>("")
-  const [user_id,setUserId] = React.useState<string>("")
+  const [image_url,setImageUrl] = React.useState<string|undefined>("")
+  const [user_id,setUserId] = React.useState<string|undefined>("")
 
 
   useEffect(() => {

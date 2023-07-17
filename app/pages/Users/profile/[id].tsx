@@ -9,11 +9,16 @@ interface User {
     email: string;
     avatar: string;
     image_url: string; // 追加
+    location:string,
+    group:string,
+    website:string,
+    bio:string
     // 他のユーザーの属性を追加
   }
   
   interface UserDetailProps {
     user: User;
+    posts:any
   }
   
   const UserDetail: React.FC<UserDetailProps> = ({ user,posts }) => {
@@ -32,7 +37,7 @@ interface User {
         {user.image_url && <img src={user.image_url} alt="Avatar" style={{ width: '100px', height: '100px' }} />}{/* 画像を表示 */}
         {/* 他のユーザーの属性を表示するためのコードを追加 */}
 
-        {posts.map(post => (
+        {posts.map((post: { post_id: any; }) => (
           <PostCard key={post.post_id} post={post} />
         ))}
       </Layout>  

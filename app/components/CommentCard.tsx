@@ -23,7 +23,12 @@ function CommentCard({ comment }:any) {
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isError, setIsError] = useState<boolean>(false);
 
-    const handleCommentChange = (e) => {
+    const apiEndpoint = process.env.NEXT_PUBLIC_RAILS_API;
+    //const apiEndpoint = "http://localhost:3000";
+
+    console.log(apiEndpoint)
+
+    const handleCommentChange = (e:any) => {
         setCommentInput(e.target.value);
       };
     
@@ -44,7 +49,7 @@ function CommentCard({ comment }:any) {
             client: Cookies.get("client"),
             "access-token": Cookies.get("access-token"),
         }
-        axios.post('http://localhost:3000/comments', payload,  { headers })
+        axios.post(`${apiEndpoint}/comments`, payload,  { headers })
         .then((response) => {
           // 送信成功時の処理
           setCommentInput('');
@@ -54,7 +59,7 @@ function CommentCard({ comment }:any) {
           console.log(error)
           // 送信失敗時の処理
           setIsError(true);
-          setErrorMessage();
+          setErrorMessage("エラー");
         });
     };
 
