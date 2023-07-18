@@ -20,7 +20,7 @@ const Home: React.FC<HomeProps> = (props) => {
   const handleClick = async () => {
     try {
       const axiosInstance = axios.create({
-        baseURL: `http://localhost:3000/api/v1/`,
+        baseURL: `${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/`,
         timeout: 1000,
         headers: {
           "content-type": "application/json",

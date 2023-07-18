@@ -36,7 +36,7 @@ const LoginForm: React.FC = (props:any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const axiosInstance = axios.create({
-      baseURL: `http://localhost:3000/api/v1/`,
+      baseURL: `${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/`,
       headers: {
         "content-type": "application/json",
       },
@@ -57,7 +57,7 @@ const LoginForm: React.FC = (props:any) => {
         
 
         const usersAxiosInstance = axios.create({
-          baseURL: `http://localhost:3000/`,
+          baseURL: `${process.env.NEXT_PUBLIC_RAILS_API}`,
           headers: {
             "content-type": "application/json",
             uid: Cookies.get("uid"),
@@ -70,7 +70,7 @@ const LoginForm: React.FC = (props:any) => {
         Cookies.set("user_image", userImage);
         
         router.push(`/users/profile/${response.data.data.user_id}`);
-      } catch (error) {
+      } catch (error:any) {
         if(error.response.data.errors[0].includes("A confirmation email was sent to your account"))
         {
           const resendResponse = await axiosInstance.post("/auth/confirmation", {
@@ -127,14 +127,14 @@ const LoginForm: React.FC = (props:any) => {
           </Button>
           <Typography variant="body2" color="textSecondary" align="center">
             アカウントをお持ちでない場合は、
-            <Link href="/SignUp" variant="body2" style={{ color: 'blue' }}>
+            <Link href="/SignUp" style={{ color: 'blue' }}>
               新規登録
             </Link>
             してください。
           </Typography>
           <Typography variant="body2" color="textSecondary" align="center">
             パスワードを忘れた方は
-            <Link href="/resetPassword" variant="body2" style={{ color: 'blue' }}>
+            <Link href="/resetPassword" style={{ color: 'blue' }}>
             こちら
             </Link>
           </Typography>

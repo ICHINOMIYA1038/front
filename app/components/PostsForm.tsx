@@ -42,7 +42,7 @@ const PostsForm: React.FC = () => {
 
   async function sendPageContent(content: any, router: any): Promise<void> {
     try {
-      const URL = "http://localhost:3000/posts";
+      const URL = `${process.env.NEXT_PUBLIC_RAILS_API}/posts`;
       const response = await axios.post(URL, content, {
         headers: {
           'Content-Type': 'multipart/form-data',

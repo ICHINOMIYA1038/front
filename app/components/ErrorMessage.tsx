@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function ErrorMessagePopup({ message, onClose }) {
+function ErrorMessagePopup({ message, onClose }:any) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       onClose();

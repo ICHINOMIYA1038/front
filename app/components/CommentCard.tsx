@@ -2,16 +2,11 @@ import React  from 'react';
 import {useState,useRef,useEffect} from 'react';
 import { useRouter} from 'next/router';
 import { Button,Chip,TextField,Alert } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
-import DeleteButton from './Delete';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DownloadIcon from '@mui/icons-material/Download';
 import Cookies from "js-cookie";
-import LoginPopup from "@/components/LoginPopup";
 import CommentReplyCard from './CommentReplyCard';
 import axios from 'axios';
+
+
 
 
 function CommentCard({ comment }:any) {
@@ -23,11 +18,6 @@ function CommentCard({ comment }:any) {
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isError, setIsError] = useState<boolean>(false);
 
-    const apiEndpoint = process.env.NEXT_PUBLIC_RAILS_API;
-    //const apiEndpoint = "http://localhost:3000";
-
-    console.log(apiEndpoint)
-
     const handleCommentChange = (e:any) => {
         setCommentInput(e.target.value);
       };
@@ -36,6 +26,7 @@ function CommentCard({ comment }:any) {
         if(commentInput==""){
           setIsError(true);
           setErrorMessage("コメントを入力してください")
+          return;
         }
         const payload = {
           post_id: comment.post_id,
@@ -49,13 +40,13 @@ function CommentCard({ comment }:any) {
             client: Cookies.get("client"),
             "access-token": Cookies.get("access-token"),
         }
-        axios.post(`${apiEndpoint}/comments`, payload,  { headers })
-        .then((response) => {
+        axios.post(`${process.env.NEXT_PUBLIC_RAILS_API}/comments`, payload,  { headers })
+        .then(() => {
           // 送信成功時の処理
           setCommentInput('');
           router.reload();
         })
-        .catch((error) => {
+        .catch((error:any) => {
           console.log(error)
           // 送信失敗時の処理
           setIsError(true);

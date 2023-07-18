@@ -25,7 +25,7 @@ const SearchLinkButton = ({func}) => {
     whiteSpace:'nowrap',
   };
 
-  const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+  const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));
 
   return (
     <div style={buttonStyle} onClick={func}>

@@ -2,9 +2,7 @@ import Head from "next/head";
 import styles from '../styles/Home.module.css'
 import Header from './Header'
 import Footer from './Footer'
-import Logo from './Logo'
-import Navbar from './NavBar'
-import NavLink from './NavLink'
+
 
 export const appName = "Sample App"
 

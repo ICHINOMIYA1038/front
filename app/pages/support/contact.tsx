@@ -14,19 +14,19 @@ function Home() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(false);
 
-  const handleNameChange = (e) => {
+  const handleNameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
-  const handleInquiryTypeChange = (e) => {
+  const handleInquiryTypeChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setInquiryType(e.target.value);
   };
 
-  const handleMessageChange = (e) => {
+  const handleMessageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
 
@@ -56,7 +56,7 @@ function Home() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     if (validateForm()) {
@@ -68,8 +68,8 @@ function Home() {
       };
 
       axios
-        .post('http://localhost:3000/contacts', payload)
-        .then((response) => {
+        .post(`${process.env.NEXT_PUBLIC_RAILS_API}/contacts`, payload)
+        .then((response:any) => {
           // 送信成功時の処理
           setSubmitSuccess(true);
           setName('');
@@ -78,7 +78,7 @@ function Home() {
           setMessage('');
           router.reload();
         })
-        .catch((error) => {
+        .catch((error:any) => {
           // 送信失敗時の処理
           console.log(error);
           setSubmitError(true);

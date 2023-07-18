@@ -24,7 +24,7 @@ const ResetPasswordForm: React.FC = (props:any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const axiosInstance = axios.create({
-      baseURL: `http://localhost:3000/api/v1/auth`,
+      baseURL: `${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/auth`,
       headers: {
         "content-type": "application/json",
       },
@@ -72,14 +72,14 @@ const ResetPasswordForm: React.FC = (props:any) => {
           </Button>
           <Typography variant="body2" color="textSecondary" align="center">
             アカウントをお持ちでない場合は、
-            <Link href="/SignUp" variant="body2" style={{ color: 'blue' }}>
+            <Link href="/SignUp" style={{ color: 'blue' }}>
               新規登録
             </Link>
             してください。
           </Typography>
           <Typography variant="body2" color="textSecondary" align="center">
             アカウントをお持ちの場合は、
-            <Link href="/Login" variant="body2" style={{ color: 'blue' }} >
+            <Link href="/Login"  style={{ color: 'blue' }} >
               ログイン
             </Link>
             してください。

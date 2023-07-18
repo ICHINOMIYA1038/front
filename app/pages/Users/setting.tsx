@@ -28,32 +28,32 @@ function Home() {
     const [website, setWebsite] = useState('');
     const [location, setLocation] = useState('');
     const [bio, setBio] = useState('');
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<Record<string, string>>({});
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [submitError, setSubmitError] = useState(false);
   
-    const handleNameChange = (e) => {
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setName(e.target.value);
     };
   
-    const handleGroupChange = (e) => {
+    const handleGroupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setGroup(e.target.value);
     };
   
-    const handleWebsiteChange = (e) => {
+    const handleWebsiteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setWebsite(e.target.value);
     };
   
-    const handleLocationChange = (e) => {
+    const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setLocation(e.target.value);
     };
   
-    const handleBioChange = (e) => {
+    const handleBioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setBio(e.target.value);
     };
   
     const validateForm = () => {
-      const errors = {};
+      const errors:Record<string, string> = {};
   
       if (!name.trim()) {
         errors.name = '名前は必須です';
@@ -68,7 +68,7 @@ function Home() {
       return Object.keys(errors).length === 0;
     };
   
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
   
       if (validateForm()) {
@@ -88,8 +88,8 @@ function Home() {
         }
   
         axios
-          .post('http://localhost:3000/setting', payload,{headers})
-          .then((response) => {
+          .post(`${process.env.NEXT_PUBLIC_RAILS_API}/setting`, payload,{headers})
+          .then((response:any) => {
             // 送信成功時の処理
             setSubmitSuccess(true);
             setName('');
@@ -99,7 +99,7 @@ function Home() {
             setBio('');
             router.reload();
           })
-          .catch((error) => {
+          .catch((error:any) => {
             // 送信失敗時の処理
             console.log(error);
             setSubmitError(true);

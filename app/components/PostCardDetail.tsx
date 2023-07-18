@@ -57,7 +57,7 @@ function PostCardDetail({ post }:any) {
 
 
     async function Favo(){
-        const response = await fetch(`http://localhost:3000/posts/${post.post_id}/favorites`, { method: 'POST' ,
+        const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/posts/${post.post_id}/favorites`, { method: 'POST' ,
           headers: {
             "Content-Type": "application/json",
             uid: Cookies.get("uid"),
@@ -78,7 +78,7 @@ function PostCardDetail({ post }:any) {
       }
 
       async function DeleteFavo(){
-        const response = await fetch(`http://localhost:3000/posts/${post.post_id}/favorites`, { method: 'DELETE' ,
+        const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/${post.post_id}/favorites`, { method: 'DELETE' ,
           headers: {
             "Content-Type": "application/json",
             uid: Cookies.get("uid"),
@@ -98,7 +98,7 @@ function PostCardDetail({ post }:any) {
       }
 
       async function Favolist(){
-        const response = await fetch(`http://localhost:3000/post/${post.post_id}/favo`, { method: 'GET' ,
+        const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/post/${post.post_id}/favo`, { method: 'GET' ,
           headers: {
             "Content-Type": "application/json",
             uid: Cookies.get("uid"),
@@ -140,7 +140,7 @@ function PostCardDetail({ post }:any) {
           <div className="tagsContainer">
       
               {post.tags &&
-                post.tags.slice(0, 3).map(elem => (
+                post.tags.slice(0, 3).map((elem: { name: any; }) => (
                   <Chip
                     key={elem}
                     label={elem.name}
@@ -180,7 +180,6 @@ function PostCardDetail({ post }:any) {
     <div className="PostCardFooter">
     <embed
       src={post.file_url}
-      alt="Avatar"
     className="embedPDF"
     />
     </div>

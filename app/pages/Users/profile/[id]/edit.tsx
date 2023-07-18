@@ -17,7 +17,7 @@ interface User {
 async function sendPageContent(formData: any, router:any,id:any): Promise<void> {
   
   try {
-    const URL = `http://localhost:3000/users/${id}`;
+    const URL = `${process.env.NEXT_PUBLIC_RAILS_API}/users/${id}`;
     console.log(formData)
     await axios.patch(URL, formData, {
       headers: {

@@ -7,7 +7,6 @@ import {
   Container,
   TextField,
   Typography,
-  CheckIcon
 } from "@mui/material/";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -82,7 +81,7 @@ const PasswordRemakeForm: React.FC = (props:any) => {
       }
   
     const axiosInstance = axios.create({
-      baseURL: `http://localhost:3000/api/v1/`,
+      baseURL: `${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/`,
       headers: {
         "content-type": "application/json",
       },
@@ -103,7 +102,7 @@ const PasswordRemakeForm: React.FC = (props:any) => {
           setIsSuccess(true)
           setSuccessMessage("パスワードがリセットされました。")
         }
-      } catch (error) {
+      } catch (error:any) {
         setIsError(true);
         console.log(error);
         if (error.response) {
@@ -130,7 +129,7 @@ const PasswordRemakeForm: React.FC = (props:any) => {
         id="password"
         value={password}
         autoComplete="new-password"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword(e.target.value)}
         error={isPasswordError}
       />
       <TextField
@@ -141,7 +140,7 @@ const PasswordRemakeForm: React.FC = (props:any) => {
         id="password_confirmation"
         value={password_confirmation}
         autoComplete="new-password"
-        onChange={(e) => setConfirmPassword(e.target.value)}
+        onChange={(e:any) => setConfirmPassword(e.target.value)}
         error={isPasswordError}
       />
       <Button type="submit" variant="contained" sx={{ display: "block", margin: "15px auto" }}>

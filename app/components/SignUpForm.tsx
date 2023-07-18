@@ -101,7 +101,7 @@ const SignUpForm: React.FC = (props:any) => {
       }
   
     const axiosInstance = axios.create({
-      baseURL: `http://localhost:3000/api/v1/`,
+      baseURL: `${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/`,
       headers: {
         "content-type": "application/json",
       },
@@ -149,7 +149,7 @@ const SignUpForm: React.FC = (props:any) => {
         name="email"
         autoComplete="email"
         autoFocus
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setEmail(e.target.value)}
         error={isEmailError}
       />
       <TextField
@@ -160,7 +160,7 @@ const SignUpForm: React.FC = (props:any) => {
         id="password"
         value={password}
         autoComplete="new-password"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e:any) => setPassword(e.target.value)}
         error={isPasswordError}
       />
       <TextField
@@ -171,7 +171,7 @@ const SignUpForm: React.FC = (props:any) => {
         id="confirmPassword"
         value={confirmPassword}
         autoComplete="new-password"
-        onChange={(e) => setConfirmPassword(e.target.value)}
+        onChange={(e:any) => setConfirmPassword(e.target.value)}
         error={isPasswordError}
       />
       <Button type="submit" variant="contained" sx={{ display: "block", margin: "15px auto" }}>
@@ -179,7 +179,7 @@ const SignUpForm: React.FC = (props:any) => {
       </Button>
       <Typography variant="body2" color="textSecondary" align="center">
             アカウントをお持ちの場合は、
-            <Link href="/Login" variant="body2" style={{ color: 'blue' }}>
+            <Link href="/Login"  style={{ color: 'blue' }}>
               ログイン
             </Link>
             してください。

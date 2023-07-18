@@ -5,7 +5,7 @@ import axios from 'axios';
 async function sendPageContent(content: any, router:any): Promise<void> {
   
   try {
-    const URL = "http://localhost:3000/users/";
+    const URL = `${process.env.NEXT_PUBLIC_RAILS_API}/users/`;
     await axios.post(URL, content, {
       headers: {
         'Content-Type': 'application/json'

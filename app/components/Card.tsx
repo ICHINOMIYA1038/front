@@ -20,11 +20,14 @@ function Card({ user }:any) {
     const handleMouseOut = ()=>{
       setIsClicked(false);
     }
+
+    const endpointUrl = `${process.env.NEXT_PUBLIC_RAILS_API}/users`;
+    
   return (
   <div className={`card ${isClicked ? 'clicked' : ''}`}>
     
     <div className='icon_area'>
-    <DeleteButton tableName="users" primaryColumnName="user_id" id={user.user_id} endpointUrl="http://localhost:3000/users" />
+    <DeleteButton tableName="users" primaryColumnName="user_id" id={user.user_id} endpointUrl={endpointUrl} />
         <span className='icon_text'></span>
     </div>
     

@@ -3,10 +3,10 @@
 import { GetServerSideProps } from "next";
 import Cookies from "js-cookie";
 
-export const auth= async (context) =>{
+export const auth= async (context: { req: any; res: any; }) =>{
     const { req, res } = context;
 
-    const response = await fetch(`http://api:3000/api/v1/auth/validate_token`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/auth/validate_token`, {
       headers: {
         "Content-Type": "application/json",
         uid: Cookies.get("uid"),
@@ -32,9 +32,9 @@ export const auth= async (context) =>{
     }
   };
 
-  export const signout=async(context) =>{
+  export const signout=async(context: { req: any; res: any; }) =>{
     const { req, res } = context;
-    const response = await fetch(`http://api:3000/api/v1/auth/sign_out`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/auth/sign_out`, {
       headers: {
         "Content-Type": "application/json",
         uid: req.cookies["uid"],

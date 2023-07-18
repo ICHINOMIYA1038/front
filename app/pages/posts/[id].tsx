@@ -26,7 +26,7 @@ interface Post {
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isError, setIsError] = useState<boolean>(false);
 
-    const handleCommentChange = (e) => {
+    const handleCommentChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
       setCommentInput(e.target.value);
     };
   
@@ -34,6 +34,7 @@ interface Post {
       if(commentInput==""){
         setIsError(true);
         setErrorMessage("コメントを入力してください")
+        return
       }
 
       const payload = {
@@ -49,17 +50,17 @@ interface Post {
       }
       console.log(headers)
 
-      axios.post('http://localhost:3000/comments', payload,  { headers })
-      .then((response) => {
+      axios.post(`${process.env.NEXT_PUBLIC_RAILS_API}/comments`, payload,  { headers })
+      .then((response:any) => {
         // 送信成功時の処理
         setCommentInput('');
         router.reload();
       })
-      .catch((error) => {
+      .catch((error:any) => {
         console.log(error)
         // 送信失敗時の処理
         setIsError(true);
-        setErrorMessage();
+        setErrorMessage("不明なエラー");
       });
   };
 
@@ -96,7 +97,7 @@ interface Post {
             </Alert>
           )}
       </div>
-        {comments && comments.map(comment => (
+        {comments && comments.map((comment: any) => (
           <CommentCard key={post.post_id} comment={comment} />
         ))}
         
