@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import { TextField, Button, Grid,Autocomplete, MenuItem } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import TagSelecter from '@/components/TagSelecter';
 import queryString from 'query-string';
+import {useEffect} from 'react'
 
 
 
@@ -23,28 +24,23 @@ export default function SearchForm() {
   const [maxTotalCount, setMaxTotalCount] = useState('');
   const [minPlaytime, setMinPlaytime] = useState(0);
   const [maxPlaytime, setMaxPlaytime] = useState(4);
-  const [sort_by, setSortIndex] = useState(0);
+  const [sort_by, setSortIndex] = useState(0); 
+  const [sortDirection, setSortDirection] = useState(0); //デフォルトは昇順
   const [tags,setSelectedTags] = useState([]);
 
   const router = useRouter();
 
-  const [isOpen, setIsOpen] = useState({
-    item1: false,
-    item2: false,
-    item3: false,
-    item4: false,
-    item5: false
-  });
-
-
-  const handleChildStateChange = (value) => {
+  const handleChildStateChange = (value: SetStateAction<never[]>) => {
 
     setSelectedTags(value);
   };
 
+  useEffect(() => {
+    handleSubmit()
+  }, [sortDirection, sort_by]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+   
 
     const pagequery = window.location.search;
     const queryParams = queryString.parse(pagequery);
@@ -63,9 +59,10 @@ export default function SearchForm() {
       minPlaytime,
       maxPlaytime,
       sort_by,
+      sortDirection,
       tags,
-      page: page, // pageのクエリパラメータを追加
-      per: per, // perのクエリパラメータを追加
+      page: page.toString, // pageのクエリパラメータを追加
+      per: per.toString, // perのクエリパラメータを追加
     };
     
    
@@ -91,7 +88,7 @@ export default function SearchForm() {
           className="keywordInput"
           label="キーワード"
           variant="outlined"
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setKeyword(e.target.value)}
         />
         </div>
         </Grid>
@@ -116,7 +113,7 @@ export default function SearchForm() {
                 size="small"
                 value={minMaleCount}
 
-                onChange={(e) => setMinMaleCount(e.target.value)}
+                onChange={(e: { target: { value: SetStateAction<string>; }; }) => setMinMaleCount(e.target.value)}
               />
         <span>〜</span>
         <TextField
@@ -127,7 +124,7 @@ export default function SearchForm() {
                 type="number"
                 value={maxMaleCount}
                 size="small"
-                onChange={(e) => setMaxMaleCount(e.target.value)}
+                onChange={(e: { target: { value: SetStateAction<string>; }; }) => setMaxMaleCount(e.target.value)}
               />
         
 
@@ -147,7 +144,7 @@ export default function SearchForm() {
                 size="small"
                 value={minFemaleCount}
 
-                onChange={(e) => setMinFemaleCount(e.target.value)}
+                onChange={(e: { target: { value: SetStateAction<string>; }; }) => setMinFemaleCount(e.target.value)}
               />
         <span>〜</span>
         <TextField
@@ -158,7 +155,7 @@ export default function SearchForm() {
                 type="number"
                 value={maxFemaleCount}
                 size="small"
-                onChange={(e) => setMaxFemaleCount(e.target.value)}
+                onChange={(e: { target: { value: SetStateAction<string>; }; }) => setMaxFemaleCount(e.target.value)}
               />
         </Grid>
         <Grid item xs={12} sm={3}>
@@ -174,7 +171,7 @@ export default function SearchForm() {
                 size="small"
                 value={minTotalCount}
 
-                onChange={(e) => setMinTotalCount(e.target.value)}
+                onChange={(e: { target: { value: SetStateAction<string>; }; }) => setMinTotalCount(e.target.value)}
               />
         <span>〜</span>
         <TextField
@@ -185,7 +182,7 @@ export default function SearchForm() {
                 type="number"
                 value={maxTotalCount}
                 size="small"
-                onChange={(e) => setMaxTotalCount(e.target.value)}
+                onChange={(e: { target: { value: SetStateAction<string>; }; }) => setMaxTotalCount(e.target.value)}
               />
         </Grid>
         <Grid item xs={12} sm={3}>
@@ -195,7 +192,7 @@ export default function SearchForm() {
       <TextField
         select
         value={minPlaytime}
-        onChange={(e) => setMinPlaytime(e.target.value)}
+        onChange={(e: { target: { value: SetStateAction<number>; }; }) => setMinPlaytime(e.target.value)}
         sx={{ width: '45%' }}
       >
         <MenuItem value={0}>30分未満</MenuItem>
@@ -208,7 +205,7 @@ export default function SearchForm() {
       <TextField
         select
         value={maxPlaytime}
-        onChange={(e) => setMaxPlaytime(e.target.value)}
+        onChange={(e: { target: { value: SetStateAction<number>; }; }) => setMaxPlaytime(e.target.value)}
         sx={{ width: '45%' }}
       >
         <MenuItem value={0}>30分未満</MenuItem>
@@ -223,22 +220,30 @@ export default function SearchForm() {
     </Grid>
     <Grid item xs={12} md={6} className="griditem-border">
       <div className='tagContainer'>
-        <TagSelecter  onChildStateChange={handleChildStateChange}/>
+        <TagSelecter  onChildStateChange={handleChildStateChange} tags={undefined}/>
       </div>
     </Grid>
-    <button className="post-form-submit-button" type="submit" onClick={handleSubmit}>Register</button>
+    <Button className="post-form-submit-button" type="submit" onClick={handleSubmit}>検索</Button>
     <TextField
         select
         value={sort_by}
-        onChange={(e) => setSortIndex(e.target.value)}
-        sx={{ width: '45%' }}
+        onChange={(e: { target: { value: SetStateAction<number>; }; }) => setSortIndex(e.target.value)}
+         sx={{ width: '45%' }}
       >
         <MenuItem value={0}>お気に入り順</MenuItem>
         <MenuItem value={1}>人数順(男)</MenuItem>
         <MenuItem value={2}>人数順(女)</MenuItem>
-        <MenuItem value={3}>上演時間</MenuItem>
+        <MenuItem value={3}>総人数</MenuItem>
         <MenuItem value={4}>作成日</MenuItem>
-        <MenuItem value={5}>更新日</MenuItem>
+      </TextField>
+      <TextField
+        select
+        value={sortDirection}
+        onChange={(e: { target: { value: SetStateAction<number>; }; }) => setSortDirection(e.target.value)}
+        sx={{ width: '10%' }}
+      >
+        <MenuItem value={0}>昇順</MenuItem>
+        <MenuItem value={1}>降順</MenuItem>
       </TextField>
     </Grid>
 

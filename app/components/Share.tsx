@@ -9,48 +9,53 @@ import {
   HatenaIcon,
   LineIcon,
   TwitterIcon,
+  EmailShareButton,
+  EmailIcon,
 } from "react-share";
 
 const URL = 'https://localhost:8000/';
 const QUOTE = '共有するときのメッセージ';
 
-const ShareButton = ({onClose}) => {
+const ShareButton = ({onClose}:any) => {
     const handleClose = onClose
-
+    const iconSize = 36;
 
   return (
     <div className="popup">
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
+<Grid container spacing={2} style={{ textAlign: "center" }} >
+      <Grid item xs={12} style={{ textAlign: "center" }}>
+        <p style={{ fontWeight: "bold" }}>共有する</p>
+      </Grid>
+      <Grid item xs={6} style={{ textAlign: "center" }} >
         <FacebookShareButton url={URL} quote={QUOTE}>
-          <FacebookIcon size={24} round />
+          <FacebookIcon size={iconSize} round />
         </FacebookShareButton>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={6} style={{ textAlign: "center" }}>
         <TwitterShareButton url={URL} title={QUOTE}>
-          <TwitterIcon size={24} round />
+          <TwitterIcon size={iconSize} round />
         </TwitterShareButton>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={6} style={{ textAlign: "center" }}>
         <LineShareButton url={URL} title={QUOTE}>
-          <LineIcon size={24} round />
+          <LineIcon size={iconSize} round />
         </LineShareButton>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={6} style={{ textAlign: "center" }}>
         <HatenaShareButton
           url={URL}
           title={QUOTE}
           windowWidth={660}
           windowHeight={460}
         >
-          <HatenaIcon size={24} round />
+          <HatenaIcon size={iconSize} round />
         </HatenaShareButton>
       </Grid>
 
-      <Grid item xs={12}>
-      <div className="close-button">
-        <IconButton onClick={handleClose}>
-          <CloseIcon />
+      <Grid item xs={12} style={{ textAlign: "center" }}>
+      <div className="popup-close-button">
+        <IconButton onClick={handleClose} >
+          <CloseIcon fontSize="large"/>
         </IconButton>
       </div>
       </Grid>

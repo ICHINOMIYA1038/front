@@ -51,8 +51,10 @@ function PostCard({ post }:any) {
     const [isShareClicked, setisShareClicked] = useState(false);
     const [isFavorite,setIsFavorite] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [favo_num,setFavoNum] = useState(0);
     useEffect(() => {
       Favolist();
+      setFavoNum(post.favo_num)
     }, []);
 
 
@@ -68,12 +70,10 @@ function PostCard({ post }:any) {
         
         if (response.ok) {
           setIsFavorite(!isFavorite);
+          setFavoNum(favo_num+1)
         } else {
           const data = await response.json();
-          console.log(data.error); // エラーメッセージをコンソールに表示
           setErrorMessage(data.error);
-          // エラーメッセージを表示するための処理を追加
-          // 例えば、エラーメッセージをステートに設定して表示するなど
         }
       }
 
@@ -88,12 +88,9 @@ function PostCard({ post }:any) {
         });
         if (response.ok) {
           setIsFavorite(!isFavorite);
+          setFavoNum(favo_num-1)
         } else {
           const data = await response.json();
-          console.log(data.error); // エラーメッセージをコンソールに表示
-      
-          // エラーメッセージを表示するための処理を追加
-          // 例えば、エラーメッセージをステートに設定して表示するなど
         }
       }
 
@@ -120,7 +117,7 @@ function PostCard({ post }:any) {
       
   
     return (
-  <div className={`PostCard ${isClicked ? 'clicked' : ''}`}>
+  <div className={`PostCard ${isClicked ? 'clicked' : ''} PopUpContainer`}>
     
     <div className="PostCardHeadar">
         <div className="PostCardHeaderLeft">
@@ -184,7 +181,7 @@ function PostCard({ post }:any) {
     />
     <button className="ViewDetailsButton" onClick={() => router.push(`/posts/${post.post_id}`)}>
       詳細を確認する      
-</button>
+    </button>
     </div>
     
     <div className="impressionContainer">
@@ -204,7 +201,7 @@ function PostCard({ post }:any) {
             
             }>
             <FavoriteIcon id='interactive-icon' style={{ color: isFavorite ? 'red' : 'black' }} />
-            <span className='icon_text'>like</span>
+            <span className='icon_text'>{favo_num}</span>
         </div>
         <div className='ShareIcon'onClick={() => {
             
@@ -221,7 +218,7 @@ function PostCard({ post }:any) {
         </div>
         <div className='VisibilityIcon'>
             <VisibilityIcon id='interactive-icon' />
-            <span className='icon_text'>100 view</span>
+            <span className='icon_text'>{post.access_num} view</span>
         </div>
     </div>
     <div>      
