@@ -4,7 +4,7 @@ import React from 'react';
 import { useMediaQuery } from '@mui/material';
 
 
-const SigninButton = ({ func }) => {
+const SigninButton = ({ func }:any) => {
   const buttonStyle = {
     display: 'flex',
     alignItems: 'center',
@@ -22,8 +22,8 @@ const SigninButton = ({ func }) => {
   const textStyle = {
     fontWeight: 'bold',
     color: 'black', // 黒色に設定
-    userSelect: 'none', // 選択不可に設定
-    whiteSpace:'nowrap',
+    userSelect: 'none' as const, // 選択不可に設定
+    whiteSpace:'nowrap' as const,
   };
 
   const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));

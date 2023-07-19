@@ -54,7 +54,7 @@ const ResendToken: React.FC = (props:any) => {
     
         
         console.log(response)
-      } catch (error) {
+      } catch (error:any) {
         setIsError(true);
         if (error) {
           console.log(error);

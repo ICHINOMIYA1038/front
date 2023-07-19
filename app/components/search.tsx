@@ -75,6 +75,7 @@ export default function SearchForm() {
   };
 
   return (
+    <>
     <Grid container alignItems="center">
     <Grid item xs={12} className="griditem-border">
       <div className="keywordContainer">
@@ -223,12 +224,15 @@ export default function SearchForm() {
         <TagSelecter  onChildStateChange={handleChildStateChange} tags={undefined}/>
       </div>
     </Grid>
-    <Button className="post-form-submit-button" type="submit" onClick={handleSubmit}>検索</Button>
+    <Grid item xs={12} style={{textAlign:"center"}}>
+      <Button size="large"  color="primary" variant="contained" style={{width:"80%"}} onClick={handleSubmit}>検索</Button>
+    </Grid>
+    </Grid>
+    <div className='sortContainer'>
     <TextField
         select
         value={sort_by}
         onChange={(e: { target: { value: SetStateAction<number>; }; }) => setSortIndex(e.target.value)}
-         sx={{ width: '45%' }}
       >
         <MenuItem value={0}>お気に入り順</MenuItem>
         <MenuItem value={1}>人数順(男)</MenuItem>
@@ -240,12 +244,11 @@ export default function SearchForm() {
         select
         value={sortDirection}
         onChange={(e: { target: { value: SetStateAction<number>; }; }) => setSortDirection(e.target.value)}
-        sx={{ width: '10%' }}
       >
         <MenuItem value={0}>昇順</MenuItem>
         <MenuItem value={1}>降順</MenuItem>
       </TextField>
-    </Grid>
-
+    </div>
+    </>
   );
         }

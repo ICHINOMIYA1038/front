@@ -15,21 +15,7 @@ import PostLinkButton from './button/PostLinkButton';
 import { createTheme, ThemeProvider } from "@mui/material";
 import SigninButton from './button/SignInButton';
 
-
 //primaryとsecondaryで、色を指定します
-const myTheme = createTheme({
-  palette: {
-    primary: {
-      main: "#9c27b0",
-    },
-    secondary: {
-      main: "#FABFBF",
-    },
-  },
-});
-
-
-
 
 export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(false);
@@ -73,7 +59,7 @@ export default function MenuAppBar() {
 return (
 
 <Box sx={{ flexGrow: 1 }}>
-      <ThemeProvider theme={myTheme}>
+      
         <AppBar position="static">
           <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex',userSelect:'none' }}>
@@ -128,7 +114,7 @@ return (
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <Typography>ユーザーID:{user_id}</Typography>
+                    <Typography style={{textAlign:"center"}}>ユーザーID:{user_id}</Typography>
                     <MenuItem
                       onClick={() => {
                         handleClose();
@@ -173,7 +159,6 @@ return (
             </div>
           </Toolbar>
         </AppBar>
-      </ThemeProvider>
     </Box>
   );
 }

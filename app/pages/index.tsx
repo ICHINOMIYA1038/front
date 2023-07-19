@@ -20,12 +20,12 @@ interface HomeProps {
 
 
 //Homeコンポーネント
-const Home: React.FC<HomeProps> = (props) => {
+const Home: React.FC<HomeProps> = (props:any) => {
   const router = useRouter();
   const [page, setPage] = useState(1)
   const [per, setPer] = useState(1)
 
-  const handlePageChange = (event, newPage) => {
+  const handlePageChange = (event:any, newPage:any) => {
     setPage(newPage);
     const searchParams = props.query ; // 既存のクエリパラメータをコピー
   
@@ -39,7 +39,7 @@ const Home: React.FC<HomeProps> = (props) => {
   return (
     <Layout>
       <SearchForm/>
-      {props.posts.map(post => (
+      {props.posts.map((post: { post_id: any; }) => (
    < PostCard key={post.post_id} post={post} />
     ))}
 
@@ -55,7 +55,7 @@ const Home: React.FC<HomeProps> = (props) => {
   );
 };
 
-export const getServerSideProps = async ({query}) => {
+export const getServerSideProps = async ({query}:any) => {
   try {
     const page = query.page || 1; // ページ番号をクエリパラメータから取得、指定がない場合は1
     const per = query.per || 8;

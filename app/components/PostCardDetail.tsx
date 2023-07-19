@@ -2,15 +2,14 @@ import React, { useEffect } from 'react';
 import {useState} from 'react';
 import { useRouter } from 'next/router';
 import { Button,Chip,TextField } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
-import DeleteButton from './Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
 import Cookies from "js-cookie";
 import LoginPopup from "@/components/LoginPopup";
-
+import ShareButton from '@/components/Share';
+import { useMediaQuery } from '@mui/material';
 
 
 interface Post {
@@ -49,62 +48,57 @@ interface Post {
 function PostCardDetail({ post }:any) {
     const router = useRouter()
     const [isClicked, setIsClicked] = useState(false);
+    const [isShareClicked, setisShareClicked] = useState(false);
     const [isFavorite,setIsFavorite] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [favo_num,setFavoNum] = useState(0);
     useEffect(() => {
       Favolist();
+      setFavoNum(post.favo_num)
     }, []);
 
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("uid", Cookies.get("uid") || "");
+    headers.append("client", Cookies.get("client") || "");
+    headers.append("access-token", Cookies.get("access-token") || "");
 
+    const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));
+
+    const handleDownload = () => {
+      // ファイルをダウンロードする処理を記述する
+      window.open(post.file_url, '_blank');
+    };
     async function Favo(){
         const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/posts/${post.post_id}/favorites`, { method: 'POST' ,
-          headers: {
-            "Content-Type": "application/json",
-            uid: Cookies.get("uid"),
-            client: Cookies.get("client"),
-            "access-token": Cookies.get("access-token"),
-          },
+          headers: headers
         });
         
         if (response.ok) {
           setIsFavorite(!isFavorite);
+          setFavoNum(favo_num+1)
         } else {
           const data = await response.json();
-          console.log(data.error); // エラーメッセージをコンソールに表示
           setErrorMessage(data.error);
-          // エラーメッセージを表示するための処理を追加
-          // 例えば、エラーメッセージをステートに設定して表示するなど
         }
       }
 
       async function DeleteFavo(){
         const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/${post.post_id}/favorites`, { method: 'DELETE' ,
-          headers: {
-            "Content-Type": "application/json",
-            uid: Cookies.get("uid"),
-            client: Cookies.get("client"),
-            "access-token": Cookies.get("access-token"),
-          },
+          headers: headers
         });
         if (response.ok) {
           setIsFavorite(!isFavorite);
+          setFavoNum(favo_num-1)
+
         } else {
           const data = await response.json();
-          console.log(data.error); // エラーメッセージをコンソールに表示
-      
-          // エラーメッセージを表示するための処理を追加
-          // 例えば、エラーメッセージをステートに設定して表示するなど
         }
       }
 
       async function Favolist(){
         const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/post/${post.post_id}/favo`, { method: 'GET' ,
-          headers: {
-            "Content-Type": "application/json",
-            uid: Cookies.get("uid"),
-            client: Cookies.get("client"),
-            "access-token": Cookies.get("access-token"),
-          },
+          headers: headers
         });
         if (response.ok) {
             const data = await response.json();
@@ -120,7 +114,7 @@ function PostCardDetail({ post }:any) {
       
   
     return (
-  <div className={`PostCard ${isClicked ? 'clicked' : ''}`}>
+    <div className={`PostCard ${isClicked ? 'clicked' : ''} PopUpContainer`}>
     
     <div className="PostCardHeadar">
         <div className="PostCardHeaderLeft">
@@ -134,7 +128,6 @@ function PostCardDetail({ post }:any) {
             <div className="PostCardDescription">
                 <p>{post.catchphrase}</p>
             </div>
-            <Button/>
         </div>
         <div className="PostCardHeaderRight">
           <div className="tagsContainer">
@@ -202,8 +195,8 @@ function PostCardDetail({ post }:any) {
     <div className="impressionContainer">
     
         <div className='DownloadIcon'>
-            <DownloadIcon id='interactive-icon' />
-            <span className='icon_text'>download</span>
+        <DownloadIcon id='interactive-icon' onClick={handleDownload}/>
+          {isMediumScreen && <span className='icon_text'>download</span>}
         </div>
         <div className='FavoriteIcon' onClick={() => {
             
@@ -216,20 +209,41 @@ function PostCardDetail({ post }:any) {
             
             }>
             <FavoriteIcon id='interactive-icon' style={{ color: isFavorite ? 'red' : 'black' }} />
-            <span className='icon_text'>like</span>
+            <span className='icon_text'>{favo_num}</span>
         </div>
-        <div className='ShareIcon'>
+        <div className='ShareIcon'onClick={() => {
+            if(isShareClicked){
+                setisShareClicked(false)
+            }else{
+              setisShareClicked(true)
+            }}
+            }>
             <ShareIcon id='interactive-icon' />
-            <span className='icon_text'>share</span>
+            {isMediumScreen && <span className='icon_text'>share</span>}
         </div>
         <div className='VisibilityIcon'>
             <VisibilityIcon id='interactive-icon' />
-            <span className='icon_text'>100 view</span>
+            {
+            isMediumScreen && <span className='icon_text'>{post.access_num} view</span>
+            }
+            {
+            !isMediumScreen && 
+            <span className='icon_text'>{post.access_num}</span>
+            }
         </div>
     </div>
     <div>      
       {errorMessage && (
         <LoginPopup errorMessage={errorMessage} onClose={() => setErrorMessage(null)} />
+      )}
+      {isShareClicked && (
+        <ShareButton onClose={
+          () => {
+            
+          if(isShareClicked){
+              setisShareClicked(false)
+  
+          }}}/>
       )}
       </div>
 

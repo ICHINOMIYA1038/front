@@ -6,13 +6,13 @@ import Layout from '@/components/Layout';
 import SearchForm from '@/components/search';
 import PostCard from '@/components/PostCard';
 import { Chip,TextField,Autocomplete } from '@mui/material';
-import { useState ,useEffect} from 'react';
+import { useState ,useEffect, JSXElementConstructor, Key, PromiseLikeOfReactNode, ReactElement, ReactNode} from 'react';
 
 
 
 
 //Homeコンポーネント
-export const TagSelecter = ({ onChildStateChange,tags}) => {
+export const TagSelecter = ({ onChildStateChange,tags}:any) => {
     const [selectedTags, setSelectedTags] = useState([]);
     
     
@@ -28,7 +28,7 @@ export const TagSelecter = ({ onChildStateChange,tags}) => {
       onChildStateChange(selectedTags);
     }, [selectedTags]);
 
-    const handleTagClick=(tag)=>{
+    const handleTagClick=(tag:any)=>{
         if (selectedTags.includes(tag)) {
             setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
           } else {
@@ -36,13 +36,12 @@ export const TagSelecter = ({ onChildStateChange,tags}) => {
           }
     }
 
-    const handleDeleteTag=(tag)=>{
+    const handleDeleteTag=(tag:any)=>{
         setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
       }
 
-    const handleInputChange=(event, value)=>{
+    const handleInputChange=(event:any, value:any)=>{
       setSelectedTags(value);
-
     }
 
 
@@ -55,8 +54,9 @@ export const TagSelecter = ({ onChildStateChange,tags}) => {
     multiple //複数選択できるようになる --- ①
     freeSolo //任意の入力値を管理できる（デフォルトはオプション選択のみ）
     filterSelectedOptions //選択されたオプションを非表示にする --- ②
-    options={tagnames.map(option => option)} //ドロップダウンメニューの項目：文字列の配列
+    options={tagnames.map((option: any) => option)} //ドロップダウンメニューの項目：文字列の配列
     value={selectedTags} //入力欄に表示される値：①のときは文字列の配列、指定しないときは文字列 --- ③
+    
     onChange={handleInputChange} //コールバック関数（オプションを選択か「Enter」を押すとイベントが起きる）： function --- ④
     sx={{
       width: 600,
@@ -75,12 +75,12 @@ export const TagSelecter = ({ onChildStateChange,tags}) => {
   />
       </div>
       <div className="selectedTagContainer">
-      {tagnames.slice(0, 10).map((tag) => (
+      {tagnames.slice(0, 10).map((tag: boolean | Key | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | PromiseLikeOfReactNode | null | undefined) => (
         <Chip
           key={tag}
           label={tag}
           clickable
-          color={selectedTags.includes(tag) ? 'primary' : 'default'}
+          color={selectedTags.includes(tag) ? 'secondary' : 'default'}
           onClick={() => handleTagClick(tag)}
           style={{ margin: '0.5rem' }}
         />

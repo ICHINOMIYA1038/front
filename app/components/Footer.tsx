@@ -10,7 +10,7 @@ const Footer :React.FC = ()=>{
 <footer className="footer">
   <div className="md-flex md-justify-between">
     <a href="/" className="footer__logo">
-      <img src="" />
+      <img src="/footer.png" />
     </a>
     <div className="grid">
       <div>
@@ -39,8 +39,7 @@ const Footer :React.FC = ()=>{
       </div>
     </div>
   </div>
-  <hr />
-  <p className="copyright">© 2023 <a href="">すくりぷれい</a> All Rights Reserved.
+  <p className="copyright">© 2023 <a href="">戯曲の森</a> All Rights Reserved.
   </p>
   <FooterBtn/>
 </footer>

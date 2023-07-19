@@ -9,6 +9,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import Cookies from "js-cookie";
 import LoginPopup from "@/components/LoginPopup";
 import ShareButton from '@/components/Share';
+import { useMediaQuery } from '@mui/material';
 
 
 
@@ -57,6 +58,12 @@ function PostCard({ post }:any) {
       setFavoNum(post.favo_num)
     }, []);
 
+    const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));
+
+    const handleDownload = () => {
+      // ファイルをダウンロードする処理を記述する
+      window.open(post.file_url, '_blank');
+    };
 
     async function Favo(){
         const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/posts/${post.post_id}/favorites`, { method: 'POST' ,
@@ -179,17 +186,16 @@ function PostCard({ post }:any) {
       src={post.file_url}
     className="embedPDF"
     />
-    <button className="ViewDetailsButton" onClick={() => router.push(`/posts/${post.post_id}`)}>
+    <Button  color="primary" size="large" variant="outlined" onClick={() => router.push(`/posts/${post.post_id}`)}>
       詳細を確認する      
-    </button>
+    </Button>
     </div>
     
     <div className="impressionContainer">
-    
         <div className='DownloadIcon'>
-            <DownloadIcon id='interactive-icon' />
-            <span className='icon_text'>download</span>
-        </div>
+          <DownloadIcon id='interactive-icon' onClick={handleDownload}/>
+          {isMediumScreen && <span className='icon_text'>download</span>}
+      </div>
         <div className='FavoriteIcon' onClick={() => {
             
             if(isFavorite){
@@ -204,21 +210,24 @@ function PostCard({ post }:any) {
             <span className='icon_text'>{favo_num}</span>
         </div>
         <div className='ShareIcon'onClick={() => {
-            
             if(isShareClicked){
                 setisShareClicked(false)
             }else{
               setisShareClicked(true)
-            }
-            }
-            
+            }}
             }>
             <ShareIcon id='interactive-icon' />
-            <span className='icon_text'>share</span>
+            {isMediumScreen && <span className='icon_text'>share</span>}
         </div>
         <div className='VisibilityIcon'>
             <VisibilityIcon id='interactive-icon' />
-            <span className='icon_text'>{post.access_num} view</span>
+            {
+            isMediumScreen && <span className='icon_text'>{post.access_num} view</span>
+            }
+            {
+            !isMediumScreen && 
+            <span className='icon_text'>{post.access_num}</span>
+            }
         </div>
     </div>
     <div>      

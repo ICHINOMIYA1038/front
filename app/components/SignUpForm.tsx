@@ -7,7 +7,6 @@ import {
   Container,
   TextField,
   Typography,
-  CheckIcon
 } from "@mui/material/";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -123,9 +122,8 @@ const SignUpForm: React.FC = (props:any) => {
           setEmail("")
           setConfirmPassword("")
         }
-      } catch (error) {
+      } catch (error:any) {
         setIsError(true);
-        console.log(error);
         if (error.response.data.errors.full_messages[0]=="Email has already been taken") {
           setErrorMessage("このメールアドレスは既に利用されています。");
         }else{

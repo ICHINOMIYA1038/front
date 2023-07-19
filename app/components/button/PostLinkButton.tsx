@@ -4,7 +4,7 @@ import React from 'react';
 import { useMediaQuery } from '@mui/material';
 
 
-const PostLinkButton = ({func}) => {
+const PostLinkButton = ({func}:any) => {
   const buttonStyle = {
     display: 'flex',
     alignItems: 'center',
@@ -22,8 +22,8 @@ const PostLinkButton = ({func}) => {
   const textStyle = {
     fontWeight: 'bold',
     color: 'black', // 黒色に設定
-    userSelect: 'none', // 選択不可に設定
-    whiteSpace:'nowrap',
+    userSelect: 'none' as const, // 選択不可に設定
+    whiteSpace:'nowrap' as const,
 
   };
 

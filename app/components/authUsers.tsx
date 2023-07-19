@@ -1,16 +1,17 @@
 import { GetServerSidePropsContext } from "next";
+import Cookies from "js-cookie";
 
 export const authUser = async (url: string, context: GetServerSidePropsContext) => {
   const { req } = context;
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("uid", Cookies.get("uid") || "");
+  headers.append("client", Cookies.get("client") || "");
+  headers.append("access-token", Cookies.get("access-token") || "");
 
   try {
     const response = await fetch(`http://api:3000/${url}`, {
-      headers: {
-        "Content-Type": "application/json",
-        uid: req.cookies["uid"],
-        client: req.cookies["client"],
-        "access-token": req.cookies["access-token"],
-      },
+      headers: headers,
     });
 
     if (!response.ok) {

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Card from '../../components/Card'
 import Sidebar from '@/components/Sidebar';
 import Layout from '@/components/Layout';
-import { withAuthServerSideProps } from "@/components/auth";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { authUser } from '@/components/authUsers';
 import { useRouter } from 'next/router';
 import {useEffect} from 'react'
@@ -42,7 +41,7 @@ function Home({ users, redirectDestination }: HomeProps) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   console.log(`ログ}`)
   const response = await authUser("users", context);
   function isRedirect(response: any): response is { redirect: { destination: string; permanent: boolean } } {

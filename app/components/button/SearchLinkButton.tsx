@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import React from 'react';
 import { useMediaQuery } from '@mui/material';
 
-const SearchLinkButton = ({func}) => {
+const SearchLinkButton = ({func}:any) => {
   const buttonStyle = {
     display: 'flex',
     alignItems: 'center',
@@ -20,9 +20,9 @@ const SearchLinkButton = ({func}) => {
   };
   const textStyle = {
     fontWeight: 'bold',
-    color: 'black', // 黒色に設定
-    userSelect: 'none', // 選択不可に設定
-    whiteSpace:'nowrap',
+    color: 'black',
+    userSelect: 'none' as const,
+    whiteSpace: 'nowrap' as const, // 正しい型に修正
   };
 
   const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));

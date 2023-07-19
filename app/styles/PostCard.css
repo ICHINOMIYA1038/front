@@ -151,8 +151,9 @@
       margin:10px auto;
     }
     .impressionContainer {
-      flex-wrap: wrap;
-      justify-content: center;
+      display:flex;
+      justify-content: space-around	;
+      margin: 15px 15px;
     }
     .embedPDF {
         width: 100%;

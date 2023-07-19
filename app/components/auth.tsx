@@ -1,18 +1,17 @@
 // lib/auth.tsx
-
-import { GetServerSideProps } from "next";
 import Cookies from "js-cookie";
 
 export const auth= async (context: { req: any; res: any; }) =>{
     const { req, res } = context;
 
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("uid", Cookies.get("uid") || "");
+    headers.append("client", Cookies.get("client") || "");
+    headers.append("access-token", Cookies.get("access-token") || "");
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/auth/validate_token`, {
-      headers: {
-        "Content-Type": "application/json",
-        uid: Cookies.get("uid"),
-        client: Cookies.get("client"),
-        "access-token": Cookies.get("access-token"),
-      },
+      headers: headers,
     });
     if (!response.ok && response.status === 401) {
       return new Promise<Boolean>((resolve) => {
