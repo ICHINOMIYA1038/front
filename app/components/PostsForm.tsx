@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
   Alert,
-  Box,
   Button,
-  Container,
-  TextField,
-  Typography,
 } from "@mui/material/";
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -27,6 +23,16 @@ const PostsForm: React.FC = () => {
   const [selectedTag, setSelectedTags] = useState<string[]>([]);
   const [pdfFileSizeLimit] = useState(50 * 1024 * 1024);
   const [imageFileSizeLimit] = useState(10 * 1024 * 1024);
+  const [fee,setFee] = useState("");
+  const [feeText,setFeeText] = useState("");
+  const [credit,setCredit] = useState("");
+  const [creditText,setCreditText] = useState("");
+  const [contact,setContact] = useState("");
+  const [contactText,setContactText] = useState("");
+  const [modification,setModification] = useState("");
+  const [modificationText,setModificationText] = useState("");
+  const [condition,setCondition] = useState("");
+  const [conditionText,setConditionText] = useState("");
 
   useEffect(() => {
     const { error } = router.query;
@@ -40,6 +46,10 @@ const PostsForm: React.FC = () => {
     setTotalParticipants(maleCount + femaleCount);
   }, [maleCount, femaleCount]);
 
+  useEffect(() => {
+
+  }, []);
+
   async function sendPageContent(content: any, router: any): Promise<void> {
     try {
       const URL = `${process.env.NEXT_PUBLIC_RAILS_API}/posts`;
@@ -52,7 +62,7 @@ const PostsForm: React.FC = () => {
         }
       });
       router.push("/");
-    } catch (error) {
+    } catch (error:any) {
       console.error('Error while sending page content:', error);
       setIsError(true);
       setErrorMessage(error.response.data.error);
@@ -117,6 +127,7 @@ const PostsForm: React.FC = () => {
     formData.append('post[number_of_women]', femaleCount.toString());
     formData.append('post[total_number_of_people]', totalParticipants.toString());
     formData.append('post[playtime]', duration);
+    formData.append('post[fee]', duration);
     formData.append('tags', selectedTag.join(','));
 
     sendPageContent(formData, router)
@@ -295,7 +306,151 @@ const PostsForm: React.FC = () => {
 
         <TagSelecter onChildStateChange={handleChildStateChange} />
 
-        <button className="post-form-submit-button" type="submit">Register</button>
+        <label className="post-form-label">
+          上演料:
+          <select
+            className="post-form-input"
+            value={fee}
+            onChange={(e) => setFee(e.target.value)}
+            required
+          >
+            <option value="">選択してください</option>
+            <option value="0">無料</option>
+            <option value="1">有料</option>
+            <option value="2">その他</option>
+          </select>
+        </label>
+
+        <label className="post-form-label">
+      {(fee === "2" || fee === "1") && (
+          <textarea
+            className="post-form-input"
+            placeholder="料金が必要な場合は記入して下さい。"
+            onChange={(e) => setFeeText(e.target.value)}
+            rows={4} // 行数を指定
+            cols={40} // 列数を指定
+            required
+        />
+        )}
+      </label>
+
+      <label className="post-form-label">
+          クレジット:
+          <select
+            className="post-form-input"
+            value={credit}
+            onChange={(e) => setCredit(e.target.value)}
+            required
+          >
+            <option value="">選択してください</option>
+            <option value="0">必要</option>
+            <option value="1">不要</option>
+            <option value="2">その他</option>
+          </select>
+        </label>
+
+        <label className="post-form-label">
+      {(credit === "0" || credit === "2") && (
+          <textarea
+            className="post-form-input"
+            placeholder="クレジットが必要な場合は、クレジットに記載する名前を記述してください。"
+            value = {creditText}
+            onChange={(e) => setCreditText(e.target.value)}
+            rows={4} // 行数を指定
+            cols={40} // 列数を指定
+            required
+        />
+        )}
+      </label>
+
+      <label className="post-form-label">
+          作者への連絡:
+          <select
+            className="post-form-input"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+            required
+          >
+            <option value="">選択してください</option>
+            <option value="0">必要</option>
+            <option value="1">不要</option>
+            <option value="2">その他</option>
+          </select>
+        </label>
+
+        <label className="post-form-label">
+      {(contact === "2" || contact === "0") &&
+          <textarea
+            value = {contactText}
+            className="post-form-input"
+            placeholder="必要の場合は連絡先を必ず記入してください。"
+            onChange={(e) => setContactText(e.target.value)}
+            rows={4} // 行数を指定
+            cols={40} // 列数を指定
+            required
+        />
+      }
+      </label>
+
+      <label className="post-form-label">
+          脚本の改変
+          <select
+            className="post-form-input"
+            value={modification}
+            onChange={(e) => setModification(e.target.value)}
+            required
+          >
+            <option value="">選択してください</option>
+            <option value="0">改変不可</option>
+            <option value="1">改変自由</option>
+            <option value="2">その他</option>
+          </select>
+        </label>
+
+        <label className="post-form-label">
+      {modification==="2" &&
+          <textarea
+            value = {modificationText}
+            className="post-form-input"
+            placeholder="脚本改変のルールについて自由に記述してください。"
+            onChange={(e) => setModificationText(e.target.value)}
+            rows={4} // 行数を指定
+            cols={40} // 列数を指定
+            required
+        />
+      }
+      </label>
+
+
+
+        <label className="post-form-label">
+        そのほか条件:
+        <select
+          className="post-form-input"
+          value={condition}
+          onChange={(e) => setCondition(e.target.value)}
+          required
+        >
+          <option value="">選択してください</option>
+          <option value="0">特になし</option>
+          <option value="1">あり</option>
+        </select>
+      </label>
+
+      <label className="post-form-label">
+      {condition === "2" && (
+          <textarea
+            value = {conditionText}
+            className="post-form-input"
+            placeholder="その他の詳細を入力してください"
+            onChange={(e) => setConditionText(e.target.value)}
+            rows={4} // 行数を指定
+            cols={40} // 列数を指定
+            required
+        />
+        )}
+      </label>
+        <Button color="primary" size="large" variant="contained" type="submit">投稿する</Button>
       </form>
 
       {isError && (
