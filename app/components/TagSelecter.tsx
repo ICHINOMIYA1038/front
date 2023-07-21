@@ -13,10 +13,10 @@ import { useState ,useEffect, JSXElementConstructor, Key, PromiseLikeOfReactNode
 
 //Homeコンポーネント
 export const TagSelecter = ({ onChildStateChange,tags}:any) => {
-    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     
     
-    let tagnames = [];
+    let tagnames:string[] = [];
     if(tags!=undefined){
       tagnames = tags;
     }else{
@@ -28,7 +28,7 @@ export const TagSelecter = ({ onChildStateChange,tags}:any) => {
       onChildStateChange(selectedTags);
     }, [selectedTags]);
 
-    const handleTagClick=(tag:any)=>{
+    const handleTagClick=(tag:string)=>{
         if (selectedTags.includes(tag)) {
             setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
           } else {
@@ -51,9 +51,14 @@ export const TagSelecter = ({ onChildStateChange,tags}:any) => {
   
          <div className="selectedTagContainer" >
         <Autocomplete //importしたコンポーネントを使用
-    multiple //複数選択できるようになる --- ①
+    renderTags={(value: readonly string[], getTagProps:any) =>
+      value.map((option: string, index: number) => (
+        <Chip variant='filled' label={option} color='primary' {...getTagProps({ index })} /> 
+      ))
+    }
+    multiple //複数選択
     freeSolo //任意の入力値を管理できる（デフォルトはオプション選択のみ）
-    filterSelectedOptions //選択されたオプションを非表示にする --- ②
+    filterSelectedOptions //選択されたオプションを非表示にする 
     options={tagnames.map((option: any) => option)} //ドロップダウンメニューの項目：文字列の配列
     value={selectedTags} //入力欄に表示される値：①のときは文字列の配列、指定しないときは文字列 --- ③
     
@@ -62,7 +67,7 @@ export const TagSelecter = ({ onChildStateChange,tags}:any) => {
       width: 600,
       display: 'inline-block',
     }}
-    renderInput={params => (
+    renderInput={(params:any)=> (
       <TextField  //importしたコンポーネント
         {...params}
         variant='standard'
@@ -75,7 +80,7 @@ export const TagSelecter = ({ onChildStateChange,tags}:any) => {
   />
       </div>
       <div className="selectedTagContainer">
-      {tagnames.slice(0, 10).map((tag: boolean | Key | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | PromiseLikeOfReactNode | null | undefined) => (
+      {tagnames.slice(0, 10).map((tag:any) => (
         <Chip
           key={tag}
           label={tag}

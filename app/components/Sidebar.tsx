@@ -9,19 +9,8 @@ function Sidebar() {
   };
 
   return (
-    <div className="sidebar">
-      <ul className="menu">
-        <li onClick={() => handleMenuClick('/')} className={router.pathname === '/' ? 'active' : ''}>
-          Home
-        </li>
-        <li onClick={() => handleMenuClick('/users')} className={router.pathname === '/about' ? 'active' : ''}>
-          users
-        </li>
-        <li onClick={() => handleMenuClick('/users/new')} className={router.pathname === '/products' ? 'active' : ''}>
-          new
-        </li>
-        {/* 追加のメニューアイテムをここに追加 */}
-      </ul>
+    <div className="SideBarContainer">
+
     </div>
   );
 }

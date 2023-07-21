@@ -10,7 +10,7 @@ export const authUser = async (url: string, context: GetServerSidePropsContext) 
   headers.append("access-token", Cookies.get("access-token") || "");
 
   try {
-    const response = await fetch(`http://api:3000/${url}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}:3000/${url}`, {
       headers: headers,
     });
 

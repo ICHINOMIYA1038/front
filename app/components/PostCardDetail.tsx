@@ -133,7 +133,7 @@ function PostCardDetail({ post }:any) {
           <div className="tagsContainer">
       
               {post.tags &&
-                post.tags.slice(0, 3).map((elem: { name: any; }) => (
+                post.tags.slice(0, 3).map((elem: any) => (
                   <Chip
                     key={elem}
                     label={elem.name}

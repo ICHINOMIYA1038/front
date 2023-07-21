@@ -1,12 +1,22 @@
 @media (min-width: 801px) {
 .PostCard{
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     background-color: antiquewhite;
     width:750px;
     height: 300+521px;
     outline: groove 1px black;
     margin:25px auto;
     font-size: 20px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, scale(1);
+    cursor: pointer;
+}
 
+.PostCard:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .PostCardclicked{
@@ -116,8 +126,14 @@
   
 }
 
+
+
 @media (max-width: 800px) {
     .PostCard {
+      padding: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
       display: flex;
       flex-direction: column;
       outline: groove 1px black;
@@ -125,6 +141,24 @@
       font-size: 20px;
       background-color: antiquewhite;
       text-align: center;
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, scale(1);
+      cursor: pointer;
+    }
+
+    .PostCard:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      
+    }
+    
+    .PostCardclicked{
+        background-color: lightblue;
+        width:750px;
+        height: 300+521px;
+        outline: groove 1px black;
+        margin:25px auto;
+        font-size: 20px;
+    
     }
 
     .PostCardclicked{

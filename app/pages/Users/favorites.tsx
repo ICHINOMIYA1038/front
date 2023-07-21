@@ -17,9 +17,9 @@ function Home({ posts, redirectDestination }: any) {
       <h2>お気に入り</h2>
       <div>
         {
-          posts.length===0 && <div style={{textAlign:"center"}}>お気に入りに登録されている記事はありません。</div>
+          !posts&& <div style={{textAlign:"center"}}>お気に入りに登録されている記事はありません。</div>
         }
-      {posts.map((post: { post_id: any; }) => (
+      {posts && posts.map((post: { post_id: any; }) => (
           <PostCard key={post.post_id} post={post} />
         ))}
         <div className="grid-container">

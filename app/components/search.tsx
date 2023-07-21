@@ -13,24 +13,24 @@ import {useEffect} from 'react'
 
 export default function SearchForm() {
   const today = dayjs().format('MM-DD-YYYY')
-  const [keyword, setKeyword] = useState('');
-  const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(today);
-  const [minMaleCount, setMinMaleCount] = useState('');
-  const [maxMaleCount, setMaxMaleCount] = useState('');
-  const [minFemaleCount, setMinFemaleCount] = useState('');
-  const [maxFemaleCount, setMaxFemaleCount] = useState('');
-  const [minTotalCount, setMinTotalCount] = useState('');
-  const [maxTotalCount, setMaxTotalCount] = useState('');
-  const [minPlaytime, setMinPlaytime] = useState(0);
-  const [maxPlaytime, setMaxPlaytime] = useState(4);
-  const [sort_by, setSortIndex] = useState(0); 
-  const [sortDirection, setSortDirection] = useState(0); //デフォルトは昇順
-  const [tags,setSelectedTags] = useState([]);
+  const [keyword, setKeyword] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>(today);
+  const [endDate, setEndDate] = useState<string>(today);
+  const [minMaleCount, setMinMaleCount] = useState<string>('');
+  const [maxMaleCount, setMaxMaleCount] = useState<string>('');
+  const [minFemaleCount, setMinFemaleCount] = useState<string>('');
+  const [maxFemaleCount, setMaxFemaleCount] = useState<string>('');
+  const [minTotalCount, setMinTotalCount] = useState<string>('');
+  const [maxTotalCount, setMaxTotalCount] = useState<string>('');
+  const [minPlaytime, setMinPlaytime] = useState<number>(0);
+  const [maxPlaytime, setMaxPlaytime] = useState<number>(4);
+  const [sort_by, setSortIndex] = useState<number>(0); 
+  const [sortDirection, setSortDirection] = useState<number>(0); //デフォルトは昇順
+  const [tags,setSelectedTags] = useState<string[]>([]);
 
   const router = useRouter();
 
-  const handleChildStateChange = (value: SetStateAction<never[]>) => {
+  const handleChildStateChange = (value: SetStateAction<string[]>) => {
 
     setSelectedTags(value);
   };
@@ -61,13 +61,9 @@ export default function SearchForm() {
       sort_by,
       sortDirection,
       tags,
-      page: page.toString, // pageのクエリパラメータを追加
-      per: per.toString, // perのクエリパラメータを追加
+      page: page.toString(), // pageのクエリパラメータを追加
+      per: per.toString(), // perのクエリパラメータを追加
     };
-    
-   
-    
-
 
     const query = new URLSearchParams(searchParams).toString();
     router.push(`/?${query}`);

@@ -60,19 +60,21 @@ function PostCard({ post }:any) {
 
     const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));
 
-    const handleDownload = () => {
+    const handleDownload = (event:React.MouseEvent<HTMLDivElement>) => {
+      event.stopPropagation()
       // ファイルをダウンロードする処理を記述する
       window.open(post.file_url, '_blank');
     };
 
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("uid", Cookies.get("uid") || "");
+    headers.append("client", Cookies.get("client") || "");
+    headers.append("access-token", Cookies.get("access-token") || "");
+
     async function Favo(){
         const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/posts/${post.post_id}/favorites`, { method: 'POST' ,
-          headers: {
-            "Content-Type": "application/json",
-            uid: Cookies.get("uid"),
-            client: Cookies.get("client"),
-            "access-token": Cookies.get("access-token"),
-          },
+          headers: headers,
         });
         
         if (response.ok) {
@@ -86,12 +88,7 @@ function PostCard({ post }:any) {
 
       async function DeleteFavo(){
         const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/posts/${post.post_id}/favorites`, { method: 'DELETE' ,
-          headers: {
-            "Content-Type": "application/json",
-            uid: Cookies.get("uid"),
-            client: Cookies.get("client"),
-            "access-token": Cookies.get("access-token"),
-          },
+          headers: headers,
         });
         if (response.ok) {
           setIsFavorite(!isFavorite);
@@ -103,12 +100,7 @@ function PostCard({ post }:any) {
 
       async function Favolist(){
         const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/post/${post.post_id}/favo`, { method: 'GET' ,
-          headers: {
-            "Content-Type": "application/json",
-            uid: Cookies.get("uid"),
-            client: Cookies.get("client"),
-            "access-token": Cookies.get("access-token"),
-          },
+          headers:headers,
         });
         if (response.ok) {
             const data = await response.json();
@@ -121,10 +113,14 @@ function PostCard({ post }:any) {
 
       }
 
+      const HandleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        router.push(`/posts/${post.post_id}`)
+      };
+
       
   
     return (
-  <div className={`PostCard ${isClicked ? 'clicked' : ''} PopUpContainer`}>
+  <div className={`PostCard ${isClicked ? 'clicked' : ''} PopUpContainer`} onClick={HandleCardClick}>
     
     <div className="PostCardHeadar">
         <div className="PostCardHeaderLeft">
@@ -144,12 +140,13 @@ function PostCard({ post }:any) {
           <div className="tagsContainer">
       
               {post.tags &&
-                post.tags.slice(0, 3).map((elem: { name: any; }) => (
+                post.tags.slice(0, 3).map((elem: any) => (
                   <Chip
                     key={elem}
-                    label={elem.name}
+                    label={elem.name} 
                     clickable
                     style={{ margin: '0.5rem' }}
+                    color="secondary"
                   />
                 ))
               }
@@ -158,6 +155,7 @@ function PostCard({ post }:any) {
                   key="ellipsis"
                   label="..."
                   clickable
+                  color="secondary"
                   style={{ margin: '0.5rem' }}
                 />
               )}
@@ -186,9 +184,6 @@ function PostCard({ post }:any) {
       src={post.file_url}
     className="embedPDF"
     />
-    <Button  color="primary" size="large" variant="outlined" onClick={() => router.push(`/posts/${post.post_id}`)}>
-      詳細を確認する      
-    </Button>
     </div>
     
     <div className="impressionContainer">
@@ -196,8 +191,8 @@ function PostCard({ post }:any) {
           <DownloadIcon id='interactive-icon' onClick={handleDownload}/>
           {isMediumScreen && <span className='icon_text'>download</span>}
       </div>
-        <div className='FavoriteIcon' onClick={() => {
-            
+        <div className='FavoriteIcon' onClick={(event:React.MouseEvent<HTMLDivElement>) => {
+            event.stopPropagation();
             if(isFavorite){
                 DeleteFavo()
             }else{
@@ -209,7 +204,8 @@ function PostCard({ post }:any) {
             <FavoriteIcon id='interactive-icon' style={{ color: isFavorite ? 'red' : 'black' }} />
             <span className='icon_text'>{favo_num}</span>
         </div>
-        <div className='ShareIcon'onClick={() => {
+        <div className='ShareIcon'onClick={(event:React.MouseEvent<HTMLDivElement>) => {
+            event.stopPropagation();
             if(isShareClicked){
                 setisShareClicked(false)
             }else{
