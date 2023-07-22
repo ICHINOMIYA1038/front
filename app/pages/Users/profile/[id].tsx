@@ -44,34 +44,20 @@ interface User {
     );
   };
 
-  /*
-export async function getServerSideProps(context: { params: any; }) {
-  const id=context.params.id
-  // APIを使用してユーザーのデータを取得する処理
-  const response = await fetch(`http://api:3000/users/${id}`, { method: 'GET' });
-  const data = await response.json();
-  const user = data;
-
-  return {
-    props: {
-      user,
-    },
-  };
-}
-*/
-
 export default UserDetail;
 
 function isRedirect(response: any): response is { redirect: { destination: string; permanent: boolean } } {
   return response && typeof response === "object" && "redirect" in response;
 }
 
-export async function getServerSideProps(context: { params: any; }) {
+export async function getServerSideProps(context: any) {
 
   /*ユーザーのデータの取得*/
   const id = context.params.id
   const response = await authUser(`users/${id}`, context);
-  const user = JSON.parse(response as string) as User;
+  const user = JSON.parse(response as string)
+
+  console.log(response)
 
   if(isRedirect(response)){
 

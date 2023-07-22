@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Card from '../../components/Card'
 import Sidebar from '@/components/Sidebar';
 import Layout from '@/components/Layout';
-import { withAuthServerSideProps } from "@/components/auth";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { authUser } from '@/components/authUsers';
 import { useRouter } from 'next/router';

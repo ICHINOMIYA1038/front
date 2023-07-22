@@ -42,7 +42,6 @@ function Home({ users, redirectDestination }: HomeProps) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  console.log(`ログ}`)
   const response = await authUser("users", context);
   function isRedirect(response: any): response is { redirect: { destination: string; permanent: boolean } } {
     return response && typeof response === "object" && "redirect" in response;

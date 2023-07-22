@@ -37,7 +37,7 @@ const UserEditFrom: React.FC<UserDetailProps> = ({user}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState<Blob>();
 
 
   const router = useRouter();
@@ -54,10 +54,23 @@ const UserEditFrom: React.FC<UserDetailProps> = ({user}) => {
     const formData = new FormData();
     formData.append('user[name]', name);
     formData.append('user[email]', email);
-    formData.append('user[avatar]', avatar);
 
+  const fileInput = document.getElementById('avatar') as HTMLInputElement;
+  if (fileInput && fileInput.files && fileInput.files.length > 0) {
+    const file = fileInput.files[0];
 
-    
+    // FileオブジェクトをBlobに変換
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      if (fileReader.result instanceof ArrayBuffer) {
+        const blob = new Blob([fileReader.result], { type: file.type });
+
+        // FormDataにBlobを追加
+        const formData = new FormData();
+        formData.append('avatar', blob, file.name);
+    }
+  }};
+  
     sendPageContent(formData,router,id)
     
     // フォーム送信後にフォーム  をリセットする
@@ -83,7 +96,18 @@ const UserEditFrom: React.FC<UserDetailProps> = ({user}) => {
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       </label>
       <label htmlFor="avatar">Avatar:</label>
-      <input type="file" id="avatar" onChange={(e) => setAvatar(e.target.files[0])}accept="image/*" />
+      <input type="file" id="avatar" onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+      {
+        if (e.currentTarget.files !== null) {
+          const targetfile = e.currentTarget.files[0];
+          // fileの処理
+          setAvatar(targetfile)
+        }
+      }
+        
+        }accept="image/*" />
+      
+      
 
 
       <button type="submit">Register</button>

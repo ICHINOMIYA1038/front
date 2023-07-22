@@ -34,7 +34,7 @@ export async function getStaticPaths() {
     // データソースからユーザーのIDリストを取得する（例：APIリクエスト、データベースクエリなど）
     const userIds = await fetchUserIds(); // ユーザーIDのリストを取得する関数を仮定
   
-    const paths = userIds.map((id) => ({
+    const paths = userIds.map((id:any) => ({
       params: { id: id.toString() },
     }));
   
@@ -52,7 +52,7 @@ const Home: React.FC<HomeProps> = (props:any) => {
       <h2>{props.user_id}</h2>
       <table>
       <tbody>
-        {props.posts.map((post) => (
+        {props.posts.map((post:any) => (
           <tr key={post.post_id}>
             <td>{post.post_id}</td>
             <td>{post.title}</td>

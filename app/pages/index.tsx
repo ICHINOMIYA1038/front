@@ -57,7 +57,7 @@ const Home: React.FC<HomeProps> = (props:any) => {
 
 export const getServerSideProps = async ({query}:any) => {
   try {
-    const page = query.page || 1; // ページ番号をクエリパラメータから取得、指定がない場合は1
+    const page = query.page || 1;
     const per = query.per || 8;
     const queryString = new URLSearchParams(query).toString();
     const response = await fetch(`http://api:3000/search?${queryString}&paged=${page}&per=${per}`, { method: 'GET' });

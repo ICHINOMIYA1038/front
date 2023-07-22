@@ -25,6 +25,7 @@ interface Post {
 }
 
 interface HomeProps {
+  pagination: any;
   posts: Post[];
 }
 
@@ -36,7 +37,7 @@ const Home: React.FC<HomeProps> = (props) => {
   const [page, setPage] = useState(1)
   const [per, setPer] = useState(1)
 
-  const handlePageChange = (event, newPage) => {
+  const handlePageChange = (event:any, newPage:any) => {
     setPage(newPage);
     router.push(`/posts?page=${newPage}&per=${props.pagination.limit_value}`);
   };
@@ -58,7 +59,7 @@ const Home: React.FC<HomeProps> = (props) => {
   );
 };
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async (context:any) => {
   try {
     const page = context.query.page || 1; // ページ番号をクエリパラメータから取得、指定がない場合は1
     const per = context.query.per || 4;

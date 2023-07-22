@@ -1,3 +1,9 @@
+/*
+
+height: 300+521px;
+*/
+
+
 @media (min-width: 801px) {
 .PostCard{
     padding: 20px;
@@ -5,8 +11,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: antiquewhite;
-    width:750px;
-    height: 300+521px;
+    width:750px; 
     outline: groove 1px black;
     margin:25px auto;
     font-size: 20px;
@@ -22,7 +27,6 @@
 .PostCardclicked{
     background-color: lightblue;
     width:750px;
-    height: 300+521px;
     outline: groove 1px black;
     margin:25px auto;
     font-size: 20px;
@@ -32,7 +36,6 @@
 .PostCardHeadar{
     display: flex;
     width:736px;
-    height: 300px;
 }
 
 .PostCardHeaderLeft{
@@ -60,9 +63,12 @@
 }
 
 .PostCardTitle{
-
-    text-align:  center;
+    max-width: 400px;
+    text-align:  left;
     font-size: 40px;
+    word-wrap: break-word;
+    overflow-wrap: break-word; /* word-wrapの新しい名前 */
+    padding-left:45px;
 }
 
 .PostCardDescription{
@@ -154,7 +160,6 @@
     .PostCardclicked{
         background-color: lightblue;
         width:750px;
-        height: 300+521px;
         outline: groove 1px black;
         margin:25px auto;
         font-size: 20px;
@@ -164,7 +169,6 @@
     .PostCardclicked{
         background-color: lightblue;
         width:750px;
-        height: 300+521px;
         outline: groove 1px black;
         margin:25px auto;
         font-size: 20px;

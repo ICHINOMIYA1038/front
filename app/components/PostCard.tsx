@@ -114,6 +114,7 @@ function PostCard({ post }:any) {
       }
 
       const HandleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        setIsClicked(true)
         router.push(`/posts/${post.post_id}`)
       };
 
@@ -126,7 +127,7 @@ function PostCard({ post }:any) {
         <div className="PostCardHeaderLeft">
             <div className="PostCardUserProfile">
                 <img src={post.user_image_url} alt="Avatar" style={{ width: '80px', height: '80px' }} />
-                <p>{post.name}</p>
+                <p>{post.user.name}</p>
             </div>
             <div className="PostCardTitle">
                 <p>{post.title}</p>
@@ -187,8 +188,10 @@ function PostCard({ post }:any) {
     </div>
     
     <div className="impressionContainer">
-        <div className='DownloadIcon'>
-          <DownloadIcon id='interactive-icon' onClick={handleDownload}/>
+        <div className='DownloadIcon' onClick={handleDownload}>
+          <DownloadIcon 
+          id='interactive-icon' 
+          component="svg"/>
           {isMediumScreen && <span className='icon_text'>download</span>}
       </div>
         <div className='FavoriteIcon' onClick={(event:React.MouseEvent<HTMLDivElement>) => {

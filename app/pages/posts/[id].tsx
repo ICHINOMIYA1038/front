@@ -18,6 +18,7 @@ interface Post {
   
   interface UserDetailProps {
     post: Post;
+    comments :Comment[]
   }
   
   const UserDetail: React.FC<UserDetailProps> = ({ post ,comments }) => {

@@ -31,7 +31,6 @@ export default function SearchForm() {
   const router = useRouter();
 
   const handleChildStateChange = (value: SetStateAction<string[]>) => {
-
     setSelectedTags(value);
   };
 
@@ -48,23 +47,23 @@ export default function SearchForm() {
     const page = 1;
     const per = 8;
 
-    const searchParams = {
-      keyword,
-      minMaleCount,
-      maxMaleCount,
-      minFemaleCount,
-      maxFemaleCount,
-      minTotalCount,
-      maxTotalCount,
-      minPlaytime,
-      maxPlaytime,
-      sort_by,
-      sortDirection,
-      tags,
-      page: page.toString(), // pageのクエリパラメータを追加
-      per: per.toString(), // perのクエリパラメータを追加
+    const searchParams: Record<string, string> = {
+      keyword: keyword,
+      minMaleCount: minMaleCount,
+      maxMaleCount: maxMaleCount,
+      minFemaleCount: minFemaleCount,
+      maxFemaleCount: maxFemaleCount,
+      minTotalCount: minTotalCount,
+      maxTotalCount: maxTotalCount,
+      minPlaytime: minPlaytime.toString(),
+      maxPlaytime: maxPlaytime.toString(),
+      sort_by: sort_by.toString(),
+      sortDirection: sortDirection.toString(),
+      tags: tags.join(','), // tagsをカンマ区切りの文字列に変換
+      page: page.toString(),
+      per: per.toString(),
     };
-
+    
     const query = new URLSearchParams(searchParams).toString();
     router.push(`/?${query}`);
         
@@ -189,7 +188,7 @@ export default function SearchForm() {
       <TextField
         select
         value={minPlaytime}
-        onChange={(e: { target: { value: SetStateAction<number>; }; }) => setMinPlaytime(e.target.value)}
+        onChange={(e:any)  => setMinPlaytime(e.target.value)}
         sx={{ width: '45%' }}
       >
         <MenuItem value={0}>30分未満</MenuItem>
@@ -202,7 +201,7 @@ export default function SearchForm() {
       <TextField
         select
         value={maxPlaytime}
-        onChange={(e: { target: { value: SetStateAction<number>; }; }) => setMaxPlaytime(e.target.value)}
+        onChange={(e:any)  => setMaxPlaytime(e.target.value)}
         sx={{ width: '45%' }}
       >
         <MenuItem value={0}>30分未満</MenuItem>
@@ -228,7 +227,7 @@ export default function SearchForm() {
     <TextField
         select
         value={sort_by}
-        onChange={(e: { target: { value: SetStateAction<number>; }; }) => setSortIndex(e.target.value)}
+        onChange={(e:any)  => setSortIndex(e.target.value)}
       >
         <MenuItem value={0}>お気に入り順</MenuItem>
         <MenuItem value={1}>人数順(男)</MenuItem>
@@ -239,7 +238,7 @@ export default function SearchForm() {
       <TextField
         select
         value={sortDirection}
-        onChange={(e: { target: { value: SetStateAction<number>; }; }) => setSortDirection(e.target.value)}
+        onChange={(e:any) => setSortDirection(e.target.value)}
       >
         <MenuItem value={0}>昇順</MenuItem>
         <MenuItem value={1}>降順</MenuItem>

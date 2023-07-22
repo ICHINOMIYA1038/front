@@ -50,6 +50,8 @@ const PostsForm: React.FC = () => {
 
   }, []);
 
+  
+
   async function sendPageContent(content: any, router: any): Promise<void> {
     try {
       const URL = `${process.env.NEXT_PUBLIC_RAILS_API}/posts`;
@@ -169,14 +171,13 @@ const PostsForm: React.FC = () => {
       <form className="post-form-container" onSubmit={handleSubmit}>
         <h1>脚本登録</h1>
         <label className="post-form-label">
-          タイトル * :
-          <input
+          タイトル
+          <textarea
             className="post-form-input"
-            type="text"
             value={title}
             onChange={(e) => {
               if (e.target.value.length <= 30) {
-                setCatchphrase(e.target.value);
+                setTitle(e.target.value);
               }
             }}
             required

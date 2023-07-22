@@ -10,14 +10,16 @@ export const authUser = async (url: string, context: GetServerSidePropsContext) 
   headers.append("access-token", Cookies.get("access-token") || "");
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}:3000/${url}`, {
+    const response = await fetch(`http://localhost:3000/${url}`, {
       headers: headers,
     });
+
+    console.log(response)
 
     if (!response.ok) {
       // ログインに失敗した場合
       return {
-        redirect: {
+        redirect: { 
           destination: "/Login",
           permanent: false,
         },

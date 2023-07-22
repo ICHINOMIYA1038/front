@@ -4,13 +4,23 @@ import { useState } from 'react';
 import { TextField,Grid, Button,Snackbar, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import axios from 'axios';
 
+interface MyError {
+  name: string;
+  email: string;
+  inquiryType: string;
+  message: string;
+}
+
+
 function Home() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [inquiryType, setInquiryType] = useState('');
   const [message, setMessage] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<MyError>({
+    name:"",email:"",inquiryType:"",message:""
+  });
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(false);
 
@@ -22,7 +32,7 @@ function Home() {
     setEmail(e.target.value);
   };
 
-  const handleInquiryTypeChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const handleInquiryTypeChange = (e:any) => {
     setInquiryType(e.target.value);
   };
 
@@ -31,7 +41,9 @@ function Home() {
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors:MyError = {
+      name:"",email:"",inquiryType:"",message:""
+    };
 
     if (!name.trim()) {
       errors.name = '名前は必須です';

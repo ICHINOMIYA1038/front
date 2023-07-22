@@ -13,7 +13,7 @@ import {
   EmailIcon,
 } from "react-share";
 
-const URL = 'https://localhost:8000/';
+const URL = 'http://localhost:8000/';
 const QUOTE = '共有するときのメッセージ';
 
 const ShareButton = ({onClose}:any) => {
