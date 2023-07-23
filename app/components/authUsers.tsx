@@ -5,16 +5,14 @@ export const authUser = async (url: string, context: GetServerSidePropsContext) 
   const { req } = context;
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
-  headers.append("uid", Cookies.get("uid") || "");
-  headers.append("client", Cookies.get("client") || "");
-  headers.append("access-token", Cookies.get("access-token") || "");
+  headers.append("uid",  req.cookies["uid"] || "");
+  headers.append("client", req.cookies["client"]|| "");
+  headers.append("access-token", req.cookies["access-token"] || "");
 
   try {
-    const response = await fetch(`http://localhost:3000/${url}`, {
+    const response = await fetch(`http://api:3000/${url}`, {
       headers: headers,
     });
-
-    console.log(response)
 
     if (!response.ok) {
       // ログインに失敗した場合

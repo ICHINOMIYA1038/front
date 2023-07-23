@@ -18,7 +18,7 @@ function Home({ posts, redirectDestination }: any) {
         {
           !posts&& <div style={{textAlign:"center"}}>お気に入りに登録されている記事はありません。</div>
         }
-      {posts && posts.map((post: { post_id: any; }) => (
+      {posts && posts.map((post: any) => (
           <PostCard key={post.post_id} post={post} />
         ))}
         <div className="grid-container">
@@ -51,7 +51,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const result = JSON.parse(response as string)
   return {
     props: {
-        posts:result
+        posts:result.posts
     },
   };
 };
