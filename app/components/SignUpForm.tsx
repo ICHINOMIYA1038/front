@@ -112,10 +112,10 @@ const SignUpForm: React.FC = (props:any) => {
         const response = await axiosInstance.post("auth", {
           "email": data.get("email"),
           "password": data.get("password"),
-          "confirm_success_url":"http://localhost:8000/confirmation_success"
+          "confirm_success_url":`${process.env.NEXT_PUBLIC_RAILS_API}/redirect/confirm`
         });
         console.log(response)
-        if(response.statusText=='OK'){
+        if(response.status==200){
           setIsSuccess(true)
           setSuccessMessage("メールアドレスに認証URLをお送りしました")
           setPassword("")

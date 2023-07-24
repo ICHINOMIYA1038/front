@@ -63,7 +63,7 @@ export const getServerSideProps = async (context:any) => {
   try {
     const page = context.query.page || 1; // ページ番号をクエリパラメータから取得、指定がない場合は1
     const per = context.query.per || 4;
-    const response = await fetch(`http://api:3000/posts?paged=${page}&per=${per}`, { method: 'GET' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/posts?paged=${page}&per=${per}`, { method: 'GET' });
     const json = await response.json();
 
     return {

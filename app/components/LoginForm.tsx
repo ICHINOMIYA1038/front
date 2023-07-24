@@ -76,7 +76,7 @@ const LoginForm: React.FC = (props:any) => {
           const resendResponse = await axiosInstance.post("/auth/confirmation", {
             email: data.get("email"),
             password: data.get("password"),
-            redirect_url :"http://localhost:8000/confirmation_success"
+            redirect_url :`${process.env.NEXT_PUBLIC_RAILS_API}/redirect/confirm`
           });
 
           if(resendResponse.statusText="OK"){

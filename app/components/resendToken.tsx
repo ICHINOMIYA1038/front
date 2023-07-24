@@ -49,7 +49,7 @@ const ResendToken: React.FC = (props:any) => {
         const response = await axiosInstance.post("/confirmation", {
           email: data.get("email"),
           password: data.get("password"),
-          redirect_url :"http://localhost:8000/confirmation_success"
+          redirect_url :`${process.env.NEXT_PUBLIC_RAILS_API}/redirect/confirm`
         });
     
         

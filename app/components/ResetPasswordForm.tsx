@@ -36,7 +36,7 @@ const ResetPasswordForm: React.FC = (props:any) => {
       try {
         const response = await axiosInstance.post("/password", {
           email: data.get("email"),
-          redirect_url :"http://localhost:8000/reset"
+          redirect_url :`${process.env.NEXT_PUBLIC_RAILS_API}/redirect/reset`
         });
     
         

@@ -24,6 +24,21 @@ export default function MenuAppBar() {
   const [user_id,setUserId] = React.useState<string|undefined>("")
 
 
+  useEffect(()=>{
+    (async()=>{
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      headers.append("uid", Cookies.get("uid") || "");
+      headers.append("client", Cookies.get("client") || "");
+      headers.append("access-token", Cookies.get("access-token") || "");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/current_user`, { method: 'GET' ,
+        headers: headers,
+      });
+      console.log(response)
+    })
+  },[auth])
+
+
   useEffect(() => {
     if(Cookies.get("user_id")!==undefined){
       setAuth(true)
@@ -49,6 +64,7 @@ export default function MenuAppBar() {
 
   const Logout = () => {
     setAuth(false)
+    Cookies.remove("user_image");
     Cookies.remove("user_id");
     Cookies.remove("uid");
     Cookies.remove("client");

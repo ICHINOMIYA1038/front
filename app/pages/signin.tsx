@@ -59,7 +59,7 @@ const Home: React.FC<HomeProps> = (props) => {
 export const getServerSideProps = async () => {
   try {
     const axiosInstance = axios.create({
-      baseURL: `http://api:3000/api/v1/`,
+      baseURL: `${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/`,
       headers: {
         "content-type": "application/json",
       },
