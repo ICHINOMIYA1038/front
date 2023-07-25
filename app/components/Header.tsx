@@ -24,19 +24,24 @@ export default function MenuAppBar() {
   const [user_id,setUserId] = React.useState<string|undefined>("")
 
   useEffect(() => {
-    if(Cookies.get("user_id")!==undefined){
-      setAuth(true)
-      setUserId(Cookies.get("user_id"))
-    }else{
-      setAuth(false)
-    }
-
-    if(Cookies.get("user_image")!==undefined){
-      const url = Cookies.get("user_image")
-      setImageUrl(url)
-    }
-    // クッキーから必要な値を取得するための処理を記述
+    // Fetch the data from the API
+    fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/current_user`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "Ok" && data.user) {
+          // User data exists, update the state with image_url and user_id
+          setImageUrl(data.user.image_url);
+          setUserId(data.user.id);
+          setAuth(true); // Set auth to true to show the authenticated user components
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, []);
+
+
+
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -118,7 +123,7 @@ return (
                     <MenuItem
                       onClick={() => {
                         handleClose();
-                        router.push(`/users/profile/${Cookies.get('user_id')}`);
+                        router.push(`/users/profile/${user_id}`);
                       }}
                     >
                       プロフィール
