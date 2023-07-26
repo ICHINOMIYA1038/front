@@ -1,12 +1,8 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
 import Layout from '@/components/Layout';
 import SearchForm from '@/components/search';
 import PostCard from '@/components/PostCard';
 import { useRouter } from 'next/router';
-import {useState,useEffect} from 'react'
+import {useState} from 'react'
 import { Pagination } from '@mui/material';
 
 interface Post {
@@ -65,9 +61,7 @@ export const getServerSideProps = async ({query}:any) => {
     
     return {
       props: {
-        posts: json.posts,
-        pagination: json.pagination,
-        query:query
+        posts: [],
       },
     };
   } catch (error) {
