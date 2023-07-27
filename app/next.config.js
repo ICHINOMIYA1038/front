@@ -13,4 +13,4 @@ const hotReload = {
   },
 }
 
-module.exports = hotReload
+//module.exports = hotReload

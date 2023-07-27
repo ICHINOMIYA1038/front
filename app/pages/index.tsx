@@ -40,6 +40,7 @@ const Home: React.FC<HomeProps> = (props:any) => {
     ))}
 
   <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      
       <Pagination 
         count={props.pagination.total_pages}          //総ページ数
         color="primary"     //ページネーションの色
@@ -56,10 +57,14 @@ export const getServerSideProps = async ({query}:any) => {
     const page = query.page || 1;
     const per = query.per || 8;
     const queryString = new URLSearchParams(query).toString();
+    const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/search?${queryString}&paged=${page}&per=${per}`, { method: 'GET' });
+    const json = await response.json();
     
     return {
       props: {
-        posts: [],
+        posts: json.posts,
+        pagination: json.pagination,
+        query:query
       },
     };
   } catch (error) {
