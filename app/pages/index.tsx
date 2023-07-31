@@ -68,7 +68,7 @@ export const getServerSideProps = async ({ query }: any) => {
 
     // APIリクエストのタイムアウト設定
     const fetchTimeout = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Request timed out')), 10000)
+      setTimeout(() => reject(new Error('Request timed out')), 4000)
     );
 
     // 実際のAPIリクエスト
