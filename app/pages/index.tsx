@@ -36,28 +36,6 @@ const Home: React.FC<HomeProps> = (props: any) => {
     router.push(`/?${queryString}`);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_RAILS_API}/search?paged=${page}&per=${per}`,
-          { method: 'GET' }
-        );
-        const json = await response.json();
-
-        setPosts(json.posts);
-        setPagination(json.pagination);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-        setPosts([]);
-      }
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [page, per]);
-
   return (
     <Layout>
       <SearchForm />
