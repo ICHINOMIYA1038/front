@@ -65,21 +65,35 @@ export const getServerSideProps = async ({ query }: any) => {
     const page = query.page || 1;
     const per = query.per || 8;
     const queryString = new URLSearchParams(query).toString();
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_RAILS_API}/search`,
-      { method: 'GET' }
+
+    // APIリクエストのタイムアウト設定
+    const fetchTimeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Request timed out')), 10000)
     );
-    const json = await response.json();
+
+    // 実際のAPIリクエスト
+    const apiRequest = fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/search`, { method: 'GET' })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error('Error fetching posts:', error);
+        return {
+          posts: [],
+          pagination: { total_pages: 0, current_page: 0, limit_value: 0 },
+        };
+      });
+
+    // タイムアウトとAPIリクエストの両方の結果を競争させる
+    const response = await Promise.race([fetchTimeout, apiRequest]);
 
     return {
       props: {
-        posts: json.posts,
-        pagination: json.pagination,
+        posts: response.posts,
+        pagination: response.pagination,
         query: query,
       },
     };
   } catch (error) {
-    console.error('Error fetching posts:', error);
+    console.error('Error handling server-side props:', error);
     return {
       props: {
         posts: [],
