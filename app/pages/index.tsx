@@ -2,8 +2,8 @@ import Layout from '@/components/Layout';
 import SearchForm from '@/components/search';
 import PostCard from '@/components/PostCard';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
-import { Pagination, CircularProgress } from '@mui/material';
+import {useState} from 'react'
+import { Pagination } from '@mui/material';
 
 interface Post {
   id: number;
@@ -12,53 +12,69 @@ interface Post {
 
 interface HomeProps {
   posts: Post[];
-  pagination: {
-    total_pages: number;
-    current_page: number;
-    limit_value: number;
-  };
 }
 
-const Home: React.FC<HomeProps> = (props: any) => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
 
-  const handlePageChange = (event: any, newPage: number) => {
-    const searchParams = { ...props.query };
-    searchParams.page = newPage;
-    searchParams.per = props.pagination.limit_value;
+//Homeコンポーネント
+const Home: React.FC<HomeProps> = (props:any) => {
+  const router = useRouter();
+  const [page, setPage] = useState(1)
+  const [per, setPer] = useState(1)
+
+  const handlePageChange = (event:any, newPage:any) => {
+    setPage(newPage);
+    const searchParams = props.query ; // 既存のクエリパラメータをコピー
+  
+    searchParams.page = newPage; // ページを更新
+    searchParams.per = props.pagination.limit_value; // 1ページあたりの件数を維持（もしくは新しい値に更新）
+  
     const queryString = new URLSearchParams(searchParams).toString();
     router.push(`/?${queryString}`);
   };
 
-  useEffect(() => {
-    setLoading(false); // 仮に、この例では即座にデータが取得されたものとする
-  }, []);
-
   return (
     <Layout>
-      <SearchForm />
-      {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-          <CircularProgress />
-        </div>
-      ) : (
-        <>
-          {props.posts.map((post: Post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-            <Pagination
-              count={props.pagination.total_pages} // 総ページ数
-              color="primary" // ページネーションの色
-              onChange={handlePageChange}
-              page={props.pagination.current_page} // 現在のページ番号
-            />
-          </div>
-        </>
-      )}
+      <SearchForm/>
+      {props.posts.map((post: { post_id: any; }) => (
+   < PostCard key={post.post_id} post={post} />
+    ))}
+
+  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      
+      <Pagination 
+        count={props.pagination.total_pages}          //総ページ数
+        color="primary"     //ページネーションの色
+        onChange={handlePageChange}
+        page={props.pagination.current_page}         //現在のページ番号
+        />
+    </div>
     </Layout>
   );
+};
+
+export const getServerSideProps = async ({query}:any) => {
+  try {
+    const page = query.page || 1;
+    const per = query.per || 8;
+    const queryString = new URLSearchParams(query).toString();
+    const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/search?${queryString}&paged=${page}&per=${per}`, { method: 'GET' });
+    const json = await response.json();
+    
+    return {
+      props: {
+        posts: json.posts,
+        pagination: json.pagination,
+        query:query
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return {
+      props: {
+        posts: [],
+      },
+    };
+  }
 };
 
 export default Home;
