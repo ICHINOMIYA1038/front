@@ -66,7 +66,7 @@ export const getServerSideProps = async ({ query }: any) => {
     const per = query.per || 8;
     const queryString = new URLSearchParams(query).toString();
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_RAILS_API}/search?${queryString}&paged=${page}&per=${per}`,
+      `${process.env.NEXT_PUBLIC_RAILS_API}/search`,
       { method: 'GET' }
     );
     const json = await response.json();
