@@ -60,7 +60,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
   );
 };
 
-export const getServerSideProps = async ({ query }: any) => {
+export const getStaticProps = async ({ query }: any) => {
   try {
     const page = query.page || 1;
     const per = query.per || 8;
