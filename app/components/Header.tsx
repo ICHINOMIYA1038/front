@@ -23,15 +23,31 @@ export default function MenuAppBar() {
   const [image_url,setImageUrl] = React.useState<string|undefined>("")
   const [user_id,setUserId] = React.useState<string|undefined>("")
 
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+  };
+  
+  if (Cookies.get("uid")) {
+    headers["uid"] = Cookies.get("uid")|| "";
+  }
+  
+  if (Cookies.get("client")) {
+    headers["client"] = Cookies.get("client")|| "";
+  }
+  
+  if (Cookies.get("access-token")) {
+    headers["access-token"] = Cookies.get("access-token")|| "";
+  }
   useEffect(() => {
     // Fetch the data from the API
-    fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/current_user`)
+    fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/current_user`,{
+      headers})
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "Ok" && data.user) {
           // User data exists, update the state with image_url and user_id
           setImageUrl(data.user.image_url);
-          setUserId(data.user.id);
+          setUserId(data.user.user_id);
           setAuth(true); // Set auth to true to show the authenticated user components
         }
       })
