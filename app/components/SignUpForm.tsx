@@ -26,7 +26,6 @@ const SignUpForm: React.FC = (props:any) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [user_id, setUserId] = useState('');
   useEffect(() => {
     
     const { error } = router.query; // クエリパラメータからエラーメッセージを取得
@@ -123,6 +122,7 @@ const SignUpForm: React.FC = (props:any) => {
           setConfirmPassword("")
         }
       } catch (error:any) {
+        console.log(error)
         setIsError(true);
         if (error.response.data.errors.full_messages[0]=="Email has already been taken") {
           setErrorMessage("このメールアドレスは既に利用されています。");

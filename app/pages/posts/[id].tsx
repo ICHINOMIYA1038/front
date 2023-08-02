@@ -109,11 +109,11 @@ interface Post {
 export async function getServerSideProps(context: { params: any; }) {
     const id=context.params.id
   // APIを使用してユーザーのデータを取得する処理
-  const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/posts/${id}`, { method: 'GET' });
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/posts/${id}`, { method: 'GET' });
   const data = await response.json();
   const post = data;
 
-  const commentResponse = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/posts/${id}/comments/parent`, { method: 'GET' });
+  const commentResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/posts/${id}/comments/parent`, { method: 'GET' });
   const commentData = await commentResponse.json();
   const comments = commentData;
 

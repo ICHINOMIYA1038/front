@@ -1,4 +1,4 @@
-import React ,{useState} from 'react';
+import React ,{useEffect, useState} from 'react';
 import Layout from '@/components/Layout';
 import { useRouter } from "next/router";
 import {
@@ -30,6 +30,44 @@ function Home() {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [submitError, setSubmitError] = useState(false);
+
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+    };
+    
+    if (Cookies.get("uid")) {
+      headers["uid"] = Cookies.get("uid")|| "";
+    }
+    
+    if (Cookies.get("client")) {
+      headers["client"] = Cookies.get("client")|| "";
+    }
+    
+    if (Cookies.get("access-token")) {
+      headers["access-token"] = Cookies.get("access-token")|| "";
+    }
+
+    useEffect(() => {
+      fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/current_user`,{
+        headers})
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.status==="ng")
+          {
+            //Loginにリダイレクト
+            router.push('/Login');
+          }else{
+            setName(data.user.name)
+            setGroup(data.user.group)
+            setWebsite(data.user.website)
+            setLocation(data.user.location)
+            setBio(data.user.bio)
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }, []);
   
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setName(e.target.value);

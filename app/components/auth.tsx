@@ -10,7 +10,7 @@ export const auth= async (context: { req: any; res: any; }) =>{
     headers.append("client", Cookies.get("client") || "");
     headers.append("access-token", Cookies.get("access-token") || "");
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_RAILS_API}/api/v1/auth/validate_token`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/api/v1/auth/validate_token`, {
       headers: headers,
     });
     if (!response.ok && response.status === 401) {

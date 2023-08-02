@@ -44,11 +44,10 @@ export default function MenuAppBar() {
       headers})
       .then((response) => response.json())
       .then((data) => {
-        if (data.status === "Ok" && data.user) {
-          // User data exists, update the state with image_url and user_id
+        if (data.status === "ok" && data.user) {
           setImageUrl(data.user.image_url);
           setUserId(data.user.user_id);
-          setAuth(true); // Set auth to true to show the authenticated user components
+          setAuth(true); 
         }
       })
       .catch((error) => {
