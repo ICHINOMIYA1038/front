@@ -81,6 +81,9 @@ export default function SearchForm() {
         <Grid item xs={12} sm={12} md={10}>
         <div className="keyword-field-radius">
         <TextField
+        sx={{
+          width: "100%"
+      }}
           className="keywordInput"
           label="キーワード"
           variant="outlined"
@@ -219,8 +222,11 @@ export default function SearchForm() {
         <TagSelecter  onChildStateChange={handleChildStateChange} tags={undefined}/>
       </div>
     </Grid>
-    <Grid item xs={12} style={{textAlign:"center"}}>
-      <Button size="large"  color="primary" variant="contained" style={{width:"80%"}} onClick={handleSubmit}>検索</Button>
+    <Grid item xs={12} style={{textAlign:"center" ,padding: '20px 0px'}}>
+      <Button
+        sx={{ width: '50%'}} 
+        size="small"  
+        color="primary" variant="contained" style={{width:"80%"}} onClick={handleSubmit}>検索</Button>
     </Grid>
     </Grid>
     <div className='sortContainer'>

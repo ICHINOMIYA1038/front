@@ -26,7 +26,7 @@ const SigninButton = ({ func }:any) => {
     whiteSpace:'nowrap' as const,
   };
 
-  const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));
+  const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('md'));
 
   return (
     <div style={buttonStyle} onClick={func}>

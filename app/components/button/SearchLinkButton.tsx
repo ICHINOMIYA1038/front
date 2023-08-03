@@ -26,11 +26,11 @@ const SearchLinkButton = ({func}:any) => {
   };
 
   const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));
-
   return (
     <div style={buttonStyle} onClick={func}>
       <SearchIcon style={iconStyle} />
       {isMediumScreen && <Typography style={textStyle}>脚本を探す</Typography>}
+      
     </div>
   );
 };

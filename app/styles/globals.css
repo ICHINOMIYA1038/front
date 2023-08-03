@@ -342,7 +342,7 @@ hr {
   width:100%;
   display: flex;
   flex-direction: column;
-  padding:30px
+  padding:10px;
 }
 
 .selectedTagContainer{
@@ -357,8 +357,7 @@ hr {
 @media (min-width: 500px) {
 
   .tagContainer{
-    width: 350px;
-    padding:30px
+    width: 100%;
   }
   
 }
@@ -367,8 +366,7 @@ hr {
 
   .tagContainer{
     
-    width: 500px;
-    padding:30px
+    width: 100%;
 
   }
   

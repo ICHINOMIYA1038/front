@@ -12,14 +12,13 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 45px 102px 45px 70px;
 }
 
 .queryContainer{
  
   background: rgba(255, 255, 255, 0.00);
   align-items: center;
-  padding: 30px 49px 40px 20px 
+  padding-top:20px;
 }
 
 /*

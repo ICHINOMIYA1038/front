@@ -14,7 +14,7 @@ import SearchLinkButton from './button/SearchLinkButton';
 import PostLinkButton from './button/PostLinkButton';
 import { createTheme, ThemeProvider } from "@mui/material";
 import SigninButton from './button/SignInButton';
-
+import { useMediaQuery } from '@mui/material';
 //primaryとsecondaryで、色を指定します
 
 export default function MenuAppBar() {
@@ -75,6 +75,8 @@ export default function MenuAppBar() {
     Cookies.remove("access-token");
   };
 
+  const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));
+
 
 return (
 
@@ -97,7 +99,7 @@ return (
                 }}
               />
             </div>
-            <div style={{ display: 'flex' }}>
+            {isMediumScreen && <div style={{ display: 'flex' }}>
               <PostLinkButton  func={() => {
                   router.push(`/posts/new`);
                 }}/>
@@ -176,7 +178,7 @@ return (
                   router.push(`/Login`);
                 }}/>
               )}
-            </div>
+            </div>}
           </Toolbar>
         </AppBar>
     </Box>
