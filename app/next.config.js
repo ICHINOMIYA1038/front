@@ -1,16 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-}
+};
 
 const hotReload = {
-  webpackDevMiddleware: config => {
+  webpackDevMiddleware: (config) => {
     config.watchOptions = {
       poll: 5000,
       aggregateTimeout: 300,
-    }
-    return config
+    };
+    return config;
   },
-}
+};
 
-//module.exports = hotReload
+module.exports = hotReload;
