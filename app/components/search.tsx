@@ -3,7 +3,6 @@ import { TextField, Button, Grid, MenuItem } from "@mui/material";
 import { useRouter } from "next/router";
 import Typography from "@mui/material/Typography";
 import TagSelecter from "@/components/TagSelecter";
-import { useEffect } from "react";
 
 export default function SearchForm() {
   const [keyword, setKeyword] = useState<string>("");

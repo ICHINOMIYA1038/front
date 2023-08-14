@@ -1,9 +1,5 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import Layout from "@/components/Layout";
-import PostCard from "@/components/PostCard";
+import Layout from "@/components/Layout/Layout";
+import PostCard from "@/components/Post/PostCard";
 import { Pagination } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
