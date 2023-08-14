@@ -1,7 +1,5 @@
-import UsersForm from "@/components/UsersForm";
-import Layout from "@/components/Layout";
-import LoginForm from "@/components/LoginForm";
-import { useEffect, useState } from "react";
+import Layout from "@/components/Layout/Layout";
+import LoginForm from "@/components/Form/LoginForm";
 import { useRouter } from "next/router";
 
 function Home() {

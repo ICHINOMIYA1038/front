@@ -1,8 +1,4 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
-import Layout from '@/components/Layout';
+import Layout from "@/components/Layout/Layout";
 import axios from "axios";
 
 interface Post {
@@ -13,7 +9,6 @@ interface Post {
 interface HomeProps {
   posts: Post[];
 }
-
 
 //Homeコンポーネント
 const Home: React.FC<HomeProps> = (props) => {
@@ -26,21 +21,20 @@ const Home: React.FC<HomeProps> = (props) => {
           "content-type": "application/json",
         },
       });
-      const response = await axiosInstance
-      .post("auth/sign_in", {
+      const response = await axiosInstance.post("auth/sign_in", {
         email: "test@example.com",
         password: "password",
-      })
-  
-      console.log(response)
-  
+      });
+
+      console.log(response);
+
       return {
         props: {
           posts: [],
         },
       };
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error("Error fetching posts:", error);
       return {
         props: {
           posts: [],
@@ -64,13 +58,12 @@ export const getServerSideProps = async () => {
         "content-type": "application/json",
       },
     });
-    const response = await axiosInstance
-    .post("auth/sign_in", {
+    const response = await axiosInstance.post("auth/sign_in", {
       email: "test@example.com",
       password: "password",
-    })
+    });
 
-    console.log(response)
+    console.log(response);
 
     return {
       props: {
@@ -78,7 +71,7 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (error) {
-    console.error('Error fetching posts:', error);
+    console.error("Error fetching posts:", error);
     return {
       props: {
         posts: [],

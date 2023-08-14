@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function ErrorMessagePopup({ message, onClose }:any) {
+function ErrorMessagePopup({ message, onClose }: any) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       onClose();
@@ -23,12 +23,10 @@ export function MyComponent() {
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
 
- function handleAsyncAction(){
-
-      setErrorMessage("エラーですｙ");
-      setShowError(true);
-    
-  };
+  function handleAsyncAction() {
+    setErrorMessage("エラーですｙ");
+    setShowError(true);
+  }
 
   const closeErrorPopup = () => {
     setShowError(false);
