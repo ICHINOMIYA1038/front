@@ -1,80 +1,83 @@
-import Layout from '@/components/Layout';
-import {useState} from 'react';
-import { useRouter } from 'next/router';
-import React from 'react';
-import Pdf from '@/components/Pdf';
-import PostCard from '@/components/PostCard';
-import PostCardDetail from '@/components/PostCardDetail';
-import CommentCard from '@/components/CommentCard';
-import { Button,Chip,TextField,Alert } from '@mui/material';
-import axios from 'axios';
+import Layout from "@/components/Layout/Layout";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import React from "react";
+import PostCardDetail from "@/components/Post/PostCardDetail";
+import CommentCard from "@/components/Comment/CommentCard";
+import { Button, Chip, TextField, Alert } from "@mui/material";
+import axios from "axios";
 import Cookies from "js-cookie";
 
 interface Post {
-    post_id: string;
-    user_id: string;
-    content: string;
-  }
-  
-  interface UserDetailProps {
-    post: Post;
-    comments :Comment[]
-  }
-  
-  const UserDetail: React.FC<UserDetailProps> = ({ post ,comments }) => {
-    const router = useRouter()
-    const [commentInput, setCommentInput] = useState('');
-    const [errorMessage, setErrorMessage] = useState<string>("");
-    const [isError, setIsError] = useState<boolean>(false);
+  post_id: string;
+  user_id: string;
+  content: string;
+}
 
-    const handleCommentChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-      setCommentInput(e.target.value);
+interface UserDetailProps {
+  post: Post;
+  comments: Comment[];
+}
+
+const UserDetail: React.FC<UserDetailProps> = ({ post, comments }) => {
+  const router = useRouter();
+  const [commentInput, setCommentInput] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const handleCommentChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setCommentInput(e.target.value);
+  };
+
+  const handleCommentSubmit = () => {
+    if (commentInput == "") {
+      setIsError(true);
+      setErrorMessage("コメントを入力してください");
+      return;
+    }
+
+    const payload = {
+      post_id: post.post_id,
+      body: commentInput,
     };
-  
-    const handleCommentSubmit = () => {
-      if(commentInput==""){
-        setIsError(true);
-        setErrorMessage("コメントを入力してください")
-        return
-      }
 
-      const payload = {
-        post_id: post.post_id,
-        body: commentInput,
-      };
+    const headers = {
+      "Content-Type": "application/json",
+      uid: Cookies.get("uid"),
+      client: Cookies.get("client"),
+      "access-token": Cookies.get("access-token"),
+    };
+    console.log(headers);
 
-      const headers= {
-          "Content-Type": "application/json",
-          uid: Cookies.get("uid"),
-          client: Cookies.get("client"),
-          "access-token": Cookies.get("access-token"),
-      }
-      console.log(headers)
-
-      axios.post(`${process.env.NEXT_PUBLIC_RAILS_API}/comments`, payload,  { headers })
-      .then((response:any) => {
+    axios
+      .post(`${process.env.NEXT_PUBLIC_RAILS_API}/comments`, payload, {
+        headers,
+      })
+      .then((response: any) => {
         // 送信成功時の処理
-        setCommentInput('');
+        setCommentInput("");
         router.reload();
       })
-      .catch((error:any) => {
-        console.log(error)
+      .catch((error: any) => {
+        console.log(error);
         // 送信失敗時の処理
         setIsError(true);
         setErrorMessage("不明なエラー");
       });
   };
 
-    if (!post) {
-        return <p>該当はありません</p>;
-      }
-    return (
-      <Layout>
-        <PostCardDetail post={post}/>
-        <div className="CommentInputHeaderTitile">
-          {comments.length}件のコメント
-        </div>
-        <div className="CommentInputContainer">
+  if (!post) {
+    return <p>該当はありません</p>;
+  }
+  return (
+    <Layout>
+      <PostCardDetail post={post} />
+      <div className="CommentInputHeaderTitile">
+        {comments.length}件のコメント
+      </div>
+      <div className="CommentInputContainer">
         <TextField
           value={commentInput}
           onChange={handleCommentChange}
@@ -84,36 +87,43 @@ interface Post {
           multiline
           rows={4}
         />
-        <Button variant="contained" onClick={handleCommentSubmit}>送信</Button>
+        <Button variant="contained" onClick={handleCommentSubmit}>
+          送信
+        </Button>
         {isError && (
-            <Alert
-              style={{width:"70%",display:"box",margin:"10px auto"}}
-              onClose={() => {
-                setIsError(false);
-                setErrorMessage("");
-              }}
-              severity="error"
-            >
-              {errorMessage}
-            </Alert>
-          )}
+          <Alert
+            style={{ width: "70%", display: "box", margin: "10px auto" }}
+            onClose={() => {
+              setIsError(false);
+              setErrorMessage("");
+            }}
+            severity="error"
+          >
+            {errorMessage}
+          </Alert>
+        )}
       </div>
-        {comments && comments.map((comment: any) => (
+      {comments &&
+        comments.map((comment: any) => (
           <CommentCard key={post.post_id} comment={comment} />
         ))}
-        
-      </Layout>  
-      
-    );
-  };
-export async function getServerSideProps(context: { params: any; }) {
-    const id=context.params.id
+    </Layout>
+  );
+};
+export async function getServerSideProps(context: { params: any }) {
+  const id = context.params.id;
   // APIを使用してユーザーのデータを取得する処理
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/posts/${id}`, { method: 'GET' });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/posts/${id}`,
+    { method: "GET" }
+  );
   const data = await response.json();
   const post = data;
 
-  const commentResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/posts/${id}/comments/parent`, { method: 'GET' });
+  const commentResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/posts/${id}/comments/parent`,
+    { method: "GET" }
+  );
   const commentData = await commentResponse.json();
   const comments = commentData;
 

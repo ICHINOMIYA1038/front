@@ -1,22 +1,17 @@
-import UsersForm from "@/components/UsersForm";
-import Layout from '@/components/Layout'
-import LoginForm from '@/components/LoginForm'
-import {useEffect, useState} from 'react';
+import Layout from "@/components/Layout/Layout";
 import { useRouter } from "next/router";
 import ResendToken from "@/components/resendToken";
 
-
 function Home() {
   const router = useRouter();
-  
-    return (
-      <Layout>
+
+  return (
+    <Layout>
       <div>
         <ResendToken />
       </div>
-      </Layout>
-    );
-  }
-
+    </Layout>
+  );
+}
 
 export default Home;

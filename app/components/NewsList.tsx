@@ -4,14 +4,15 @@ interface NewsItemProps {
   date: string;
   category: string;
   title: string;
+  url: string;
 }
 
-const NewsItem: React.FC<NewsItemProps> = ({ date, category, title }) => {
+const NewsItem: React.FC<NewsItemProps> = ({ date, category, title, url }) => {
   const categoryClassName = getCategoryClassName(category);
 
   return (
     <li className="item">
-      <a href="#">
+      <a href={url}>
         <p className="date">{date}</p>
         <p className={`category ${categoryClassName}`}>
           <span>{category}</span>
@@ -22,31 +23,21 @@ const NewsItem: React.FC<NewsItemProps> = ({ date, category, title }) => {
   );
 };
 
-const NewsList: React.FC = () => (
-  <ul className="news-list">
-    <NewsItem
-      date="2020/4/15"
-      category="お知らせ"
-      title="ここにお知らせが入りますここにお知らせが入りますここにお知らせが入ります"
-    />
-    <NewsItem
-      date="2020/4/15"
-      category="公演情報"
-      title="ここにお知らせが入りますここにお知らせが入りますここにお知らせが入ります"
-    />
-    <NewsItem
-      date="2020/4/15"
-      category="新着脚本"
-      title="ここにお知らせが入りますここにお知らせが入りますここにお知らせが入ります"
-    />
-    <NewsItem
-      date="2020/4/15"
-      category="重要"
-      title="ここにお知らせが入りますここにお知らせが入りますここにお知らせが入ります"
-    />
-    {/* 他のニュースアイテムも同様に追加 */}
-  </ul>
-);
+const NewsList: React.FC<{ news: NewsItemProps[] }> = ({ news }) => {
+  return (
+    <ul className="news-list">
+      {news.slice(0, 5).map((item: any) => (
+        <NewsItem
+          key={item.id}
+          date={item.date}
+          category={item.category}
+          title={item.title}
+          url={item.url}
+        />
+      ))}
+    </ul>
+  );
+};
 
 function getCategoryClassName(category: string): string {
   switch (category) {
