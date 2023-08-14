@@ -2,7 +2,6 @@ import Layout from "@/components/Layout";
 import SearchForm from "@/components/search";
 import PostCard from "@/components/PostCard";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { Pagination } from "@mui/material";
 
 interface Post {
@@ -17,11 +16,8 @@ interface HomeProps {
 //Homeコンポーネント
 const Home: React.FC<HomeProps> = (props: any) => {
   const router = useRouter();
-  const [page, setPage] = useState(1);
-  const [per, setPer] = useState(1);
 
   const handlePageChange = (event: any, newPage: any) => {
-    setPage(newPage);
     const searchParams = props.query; // 既存のクエリパラメータをコピー
 
     searchParams.page = newPage; // ページを更新
@@ -55,7 +51,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
 export const getServerSideProps = async ({ query }: any) => {
   try {
     const page = query.page || 1;
-    const per = query.per || 2;
+    const per = query.per || 8;
     const queryString = new URLSearchParams(query).toString();
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/search?${queryString}&paged=${page}&per=${per}`,
