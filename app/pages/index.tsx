@@ -3,6 +3,7 @@ import SearchForm from "@/components/search";
 import PostCard from "@/components/PostCard";
 import { useRouter } from "next/router";
 import { Pagination } from "@mui/material";
+import NewsList from "@/components/NewsList";
 
 interface Post {
   id: number;
@@ -44,6 +45,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
           page={props.pagination.current_page} //現在のページ番号
         />
       </div>
+      <NewsList />
     </Layout>
   );
 };
