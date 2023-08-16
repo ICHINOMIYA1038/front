@@ -4,6 +4,7 @@ import PostCard from "@/components/Post/PostCard";
 import { useRouter } from "next/router";
 import { Pagination } from "@mui/material";
 import NewsList from "@/components/NewsList";
+import TopImage from "@/components/Layout/TopImage";
 
 interface Post {
   id: number;
@@ -36,6 +37,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
 
   return (
     <Layout>
+      <TopImage />
       <NewsList news={props.news} />
       <SearchForm />
       {props.posts.map((post: { post_id: any }) => (
