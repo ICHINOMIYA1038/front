@@ -86,7 +86,7 @@ function PostCardDetail({ post }: any) {
 
   async function DeleteFavo() {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_RAILS_API}/${post.post_id}/favorites`,
+      `${process.env.NEXT_PUBLIC_RAILS_API}/posts/${post.post_id}/favorites`,
       { method: "DELETE", headers: headers }
     );
     if (response.ok) {
