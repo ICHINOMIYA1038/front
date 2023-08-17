@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Pagination } from "@mui/material";
 import NewsList from "@/components/NewsList";
 import TopImage from "@/components/Layout/TopImage";
+import Guide from "@/components/Guide";
 
 interface Post {
   id: number;
@@ -45,7 +46,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
       ))}
 
       <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+        style={{ display: "flex", justifyContent: "center", margin: "20px" }}
       >
         <Pagination
           count={props.pagination.total_pages} //総ページ数

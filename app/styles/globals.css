@@ -559,3 +559,73 @@ body {
     margin: 0 auto;
   }
 }
+
+.guide-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2ecc71;
+  padding: 40px;
+}
+
+.guide-detail-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.explain-container {
+  width: 480px;
+}
+
+.guide-image-container {
+  margin-left: 64px;
+  width: 480px;
+}
+
+.guide-image-container img {
+  max-width: 100%;
+}
+
+.block-image {
+  width: 150px;
+  height: 150px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.left-image {
+  background-image: url("");
+  /* 他のスタイル */
+}
+
+.right-image {
+  background-image: url("");
+  /* 他のスタイル */
+}
+
+.block-text {
+  /* 他のスタイル */
+}
+
+.arrow {
+  font-size: 24px;
+  margin: 0 10px;
+}
+
+.user-action {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.lead-text {
+  /* 他のスタイル */
+}
+
+.action-button {
+  /* 他のスタイル */
+}
