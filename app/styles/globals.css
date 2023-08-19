@@ -533,6 +533,36 @@ body {
   cursor: pointer;
 }
 
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: scroll;
+  max-height: 400px;
+}
+
+/* メッセージボックス */
+.message-box {
+  display: inline-block;
+  padding: 8px 12px;
+  margin: 4px;
+  border-radius: 8px;
+}
+
+/* 自分の発言 */
+.my-message {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* 他のユーザーの発言 */
+.other-message {
+  align-self: flex-start;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
 @media screen and (max-width: 767px) {
   .top-image-container {
     width: auto;
