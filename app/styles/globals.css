@@ -589,3 +589,25 @@ body {
     margin: 0 auto;
   }
 }
+
+.chatroom-list-container {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.chatroom-elem-container {
+  height: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  background-color: antiquewhite;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, scale(1);
+}
+
+.chatroom-elem-container:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
