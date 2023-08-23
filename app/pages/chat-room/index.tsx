@@ -51,7 +51,7 @@ function ChatRoomPage() {
 
   return (
     <Layout>
-      <h1>ダイレクトメール</h1>
+      <h1 className="text-2xl">ダイレクトメール</h1>
       <div
         className="chatroom-main-container"
         style={{ width: "500px", margin: "0 auto" }}

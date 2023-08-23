@@ -1,10 +1,9 @@
-import { SetStateAction, useState } from "react";
-import { TextField, Button, Grid, MenuItem } from "@mui/material";
+import { SetStateAction, useEffect, useState } from "react";
+import { TextField, Button, MenuItem } from "@mui/material";
 import { useRouter } from "next/router";
-import Typography from "@mui/material/Typography";
 import TagSelecter from "@/components/TagSelecter";
 
-export default function SearchForm() {
+export default function SearchForm({ sort_by, sortDirection }: any) {
   const [keyword, setKeyword] = useState<string>("");
   const [minMaleCount, setMinMaleCount] = useState<string>("");
   const [maxMaleCount, setMaxMaleCount] = useState<string>("");
@@ -14,11 +13,13 @@ export default function SearchForm() {
   const [maxTotalCount, setMaxTotalCount] = useState<string>("");
   const [minPlaytime, setMinPlaytime] = useState<number>(0);
   const [maxPlaytime, setMaxPlaytime] = useState<number>(4);
-  const [sort_by, setSortIndex] = useState<number>(0);
-  const [sortDirection, setSortDirection] = useState<number>(0);
   const [tags, setSelectedTags] = useState<string[]>([]);
 
   const router = useRouter();
+
+  useEffect(() => {
+    handleSubmit();
+  }, [sort_by, sortDirection]);
 
   const handleChildStateChange = (value: SetStateAction<string[]>) => {
     setSelectedTags(value);
@@ -51,205 +52,133 @@ export default function SearchForm() {
 
   return (
     <>
-      <Grid container alignItems="center">
-        <Grid item xs={12} className="griditem-border">
-          <div className="keywordContainer">
-            <Grid container spacing={1} alignItems="center">
-              <Grid item xs={12} sm={12} md={2}>
-                <Typography variant="subtitle1">キーワード</Typography>
-              </Grid>
-              <Grid item xs={12} sm={12} md={10}>
-                <div className="keyword-field-radius">
-                  <TextField
-                    sx={{
-                      width: "100%",
-                    }}
-                    className="keywordInput"
-                    label="キーワード"
-                    variant="outlined"
-                    onChange={(e: {
-                      target: { value: SetStateAction<string> };
-                    }) => setKeyword(e.target.value)}
-                  />
-                </div>
-              </Grid>
-            </Grid>
+      <div className="my-4 mx-auto max-w-3xl border-solid border-2 border-gray-800 p-5 rounded-3xl">
+        <div>
+          <p className="font-bold text-[18px]">キーワード</p>
+          <div className="mt-1 mb-4 flex">
+            <TextField
+              className="w-80"
+              label="キーワード"
+              variant="outlined"
+              onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                setKeyword(e.target.value)
+              }
+            />
           </div>
-        </Grid>
-        <Grid item xs={12} md={6} className="griditem-border">
-          <div className="queryContainer">
-            <Grid container spacing={1} alignItems="center">
-              <Grid item xs={12} sm={3}>
-                <Typography variant="subtitle1">男性人数</Typography>
-              </Grid>
-              <Grid item xs={12} sm={9}>
-                <TextField
-                  sx={{
-                    width: "45%",
-                  }}
-                  label="男(最小)"
-                  type="number"
-                  size="small"
-                  value={minMaleCount}
-                  onChange={(e: {
-                    target: { value: SetStateAction<string> };
-                  }) => setMinMaleCount(e.target.value)}
-                />
-                <span>〜</span>
-                <TextField
-                  sx={{
-                    width: "45%",
-                  }}
-                  label="男(最大)"
-                  type="number"
-                  value={maxMaleCount}
-                  size="small"
-                  onChange={(e: {
-                    target: { value: SetStateAction<string> };
-                  }) => setMaxMaleCount(e.target.value)}
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={3}>
-                <Typography variant="subtitle1">女性人数</Typography>
-              </Grid>
-              <Grid item xs={12} sm={9}>
-                <TextField
-                  sx={{
-                    width: "45%",
-                  }}
-                  label="女(最小)"
-                  type="number"
-                  size="small"
-                  value={minFemaleCount}
-                  onChange={(e: {
-                    target: { value: SetStateAction<string> };
-                  }) => setMinFemaleCount(e.target.value)}
-                />
-                <span>〜</span>
-                <TextField
-                  sx={{
-                    width: "45%",
-                  }}
-                  label="女(最大)"
-                  type="number"
-                  value={maxFemaleCount}
-                  size="small"
-                  onChange={(e: {
-                    target: { value: SetStateAction<string> };
-                  }) => setMaxFemaleCount(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={3}>
-                <Typography variant="subtitle1">総人数</Typography>
-              </Grid>
-              <Grid item xs={12} sm={9}>
-                <TextField
-                  sx={{
-                    width: "45%",
-                  }}
-                  label="総人数(最小)"
-                  type="number"
-                  size="small"
-                  value={minTotalCount}
-                  onChange={(e: {
-                    target: { value: SetStateAction<string> };
-                  }) => setMinTotalCount(e.target.value)}
-                />
-                <span>〜</span>
-                <TextField
-                  sx={{
-                    width: "45%",
-                  }}
-                  label="総人数(最大)"
-                  type="number"
-                  value={maxTotalCount}
-                  size="small"
-                  onChange={(e: {
-                    target: { value: SetStateAction<string> };
-                  }) => setMaxTotalCount(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={3}>
-                <Typography variant="subtitle1">上演時間</Typography>
-              </Grid>
-              <Grid item xs={12} sm={9}>
-                <TextField
-                  select
-                  value={minPlaytime}
-                  onChange={(e: any) => setMinPlaytime(e.target.value)}
-                  sx={{ width: "45%" }}
-                >
-                  <MenuItem value={0}>30分未満</MenuItem>
-                  <MenuItem value={1}>30分以上〜60分未満</MenuItem>
-                  <MenuItem value={2}>60分以上〜90分未満</MenuItem>
-                  <MenuItem value={3}>90分以上〜120分未満</MenuItem>
-                  <MenuItem value={4}>120分以上</MenuItem>
-                </TextField>
-                <span>〜</span>
-                <TextField
-                  select
-                  value={maxPlaytime}
-                  onChange={(e: any) => setMaxPlaytime(e.target.value)}
-                  sx={{ width: "45%" }}
-                >
-                  <MenuItem value={0}>30分未満</MenuItem>
-                  <MenuItem value={1}>30分以上〜60分未満</MenuItem>
-                  <MenuItem value={2}>60分以上〜90分未満</MenuItem>
-                  <MenuItem value={3}>90分以上〜120分未満</MenuItem>
-                  <MenuItem value={4}>120分以上</MenuItem>
-                </TextField>
-              </Grid>
-            </Grid>
+        </div>
+        <div className="lg:flex">
+          <div>
+            <p className="font-bold text-[18px]">男性人数</p>
+            <div className="mt-1 mb-4 flex">
+              <TextField
+                className="w-16"
+                type="number"
+                size="small"
+                value={minMaleCount}
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setMinMaleCount(e.target.value)
+                }
+              />
+              <p className="mx-1 my-2">〜</p>
+              <TextField
+                className="w-16"
+                type="number"
+                value={maxMaleCount}
+                size="small"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setMaxMaleCount(e.target.value)
+                }
+              />
+            </div>
+            <p className="font-bold text-[18px]">女性人数</p>
+            <div className="mt-1 mb-4 flex">
+              <TextField
+                className="w-16"
+                type="number"
+                size="small"
+                value={minFemaleCount}
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setMinFemaleCount(e.target.value)
+                }
+              />
+              <p className="mx-1 my-2">〜</p>
+              <TextField
+                className="w-16"
+                type="number"
+                value={maxFemaleCount}
+                size="small"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setMaxFemaleCount(e.target.value)
+                }
+              />
+            </div>
+            <p className="font-bold text-[18px]">総人数</p>
+            <div className="mt-1 mb-4 flex">
+              <TextField
+                className="w-16"
+                type="number"
+                size="small"
+                value={minTotalCount}
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setMinTotalCount(e.target.value)
+                }
+              />
+              <p className="mx-1 my-2">〜</p>
+              <TextField
+                className="w-16"
+                type="number"
+                value={maxTotalCount}
+                size="small"
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setMaxTotalCount(e.target.value)
+                }
+              />
+            </div>
+            <p className="font-bold text-[18px]">上演時間</p>
+            <div className="mt-1 mb-4 flex">
+              <TextField
+                select
+                value={minPlaytime}
+                onChange={(e: any) => setMinPlaytime(e.target.value)}
+              >
+                <MenuItem value={0}>30分未満</MenuItem>
+                <MenuItem value={1}>30分以上〜60分未満</MenuItem>
+                <MenuItem value={2}>60分以上〜90分未満</MenuItem>
+                <MenuItem value={3}>90分以上〜120分未満</MenuItem>
+                <MenuItem value={4}>120分以上</MenuItem>
+              </TextField>
+              <p className="mx-1 my-2">〜</p>
+              <TextField
+                select
+                value={maxPlaytime}
+                onChange={(e: any) => setMaxPlaytime(e.target.value)}
+              >
+                <MenuItem value={0}>30分未満</MenuItem>
+                <MenuItem value={1}>30分以上〜60分未満</MenuItem>
+                <MenuItem value={2}>60分以上〜90分未満</MenuItem>
+                <MenuItem value={3}>90分以上〜120分未満</MenuItem>
+                <MenuItem value={4}>120分以上</MenuItem>
+              </TextField>
+            </div>
           </div>
-        </Grid>
-        <Grid item xs={12} md={6} className="griditem-border">
-          <div className="tagContainer">
+          <div className="lg:p-5">
+            <p className="font-bold text-[18px]">タグ</p>
             <TagSelecter
               onChildStateChange={handleChildStateChange}
               tags={undefined}
             />
           </div>
-        </Grid>
-        <Grid item xs={12} style={{ textAlign: "center", padding: "20px 0px" }}>
+        </div>
+        <div className="w-96 mx-auto">
           <Button
-            sx={{ width: "50%" }}
-            size="small"
+            className="w-96 text-center"
             color="primary"
             variant="contained"
-            style={{ width: "80%" }}
             onClick={handleSubmit}
           >
             検索
           </Button>
-        </Grid>
-      </Grid>
-      <div className="sortContainer">
-        <TextField
-          select
-          value={sort_by}
-          onChange={(e: any) => {
-            setSortIndex(e.target.value);
-            handleSubmit();
-          }}
-        >
-          <MenuItem value={0}>お気に入り順</MenuItem>
-          <MenuItem value={1}>人数順(男)</MenuItem>
-          <MenuItem value={2}>人数順(女)</MenuItem>
-          <MenuItem value={3}>総人数</MenuItem>
-          <MenuItem value={4}>作成日</MenuItem>
-        </TextField>
-        <TextField
-          select
-          value={sortDirection}
-          onChange={(e: any) => {
-            setSortDirection(e.target.value);
-            handleSubmit();
-          }}
-        >
-          <MenuItem value={0}>昇順</MenuItem>
-          <MenuItem value={1}>降順</MenuItem>
-        </TextField>
+        </div>
       </div>
     </>
   );

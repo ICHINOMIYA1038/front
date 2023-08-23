@@ -57,8 +57,8 @@ export const TagSelecter = ({ onChildStateChange, tags }: any) => {
   };
 
   return (
-    <div className="tagContainer">
-      <div className="selectedTagContainer">
+    <div className="max-w-md">
+      <div>
         <Autocomplete //importしたコンポーネントを使用
           renderTags={(value: readonly string[], getTagProps: any) =>
             value.map((option: string, index: number) => (
@@ -76,10 +76,6 @@ export const TagSelecter = ({ onChildStateChange, tags }: any) => {
           options={tagnames.map((option: any) => option)} //ドロップダウンメニューの項目：文字列の配列
           value={selectedTags} //入力欄に表示される値：①のときは文字列の配列、指定しないときは文字列 --- ③
           onChange={handleInputChange} //コールバック関数（オプションを選択か「Enter」を押すとイベントが起きる）： function --- ④
-          sx={{
-            width: 600,
-            display: "inline-block",
-          }}
           renderInput={(params: any) => (
             <TextField //importしたコンポーネント
               {...params}
@@ -92,7 +88,7 @@ export const TagSelecter = ({ onChildStateChange, tags }: any) => {
           )}
         />
       </div>
-      <div className="selectedTagContainer">
+      <div>
         {tagnames.slice(0, 10).map((tag: any) => (
           <Chip
             key={tag}
