@@ -1,9 +1,9 @@
 import Layout from "@/components/Layout/Layout";
 import PostsForm from "@/components/Form/PostsForm";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
 import router from "next/router";
-
+import PostCardEdit from "@/components/Post/PostCardEdit";
+import React, { useEffect, useState } from "react";
 function Home() {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -38,8 +38,13 @@ function Home() {
   }, []);
   return (
     <Layout>
-      <div>
-        <PostsForm />
+      <div className="lg:flex">
+        <div>
+          <PostsForm />
+        </div>
+        <div>
+          <PostCardEdit />
+        </div>
       </div>
     </Layout>
   );

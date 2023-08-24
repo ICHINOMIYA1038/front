@@ -53,6 +53,7 @@ export default function SearchForm({ sort_by, sortDirection }: any) {
   return (
     <>
       <div className="my-4 mx-auto max-w-3xl border-solid border-2 border-gray-800 p-5 rounded-3xl">
+        <p className="font-bold text-[18px]">脚本検索</p>
         <div>
           <p className="font-bold text-[18px]">キーワード</p>
           <div className="mt-1 mb-4 flex">

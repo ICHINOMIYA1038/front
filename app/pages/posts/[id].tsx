@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import PostCardDetail from "@/components/Post/PostCardDetail";
 import CommentCard from "@/components/Comment/CommentCard";
-import { Button, Chip, TextField, Alert } from "@mui/material";
+import { Button, TextField, Alert } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -49,7 +49,6 @@ const UserDetail: React.FC<UserDetailProps> = ({ post, comments }) => {
       client: Cookies.get("client"),
       "access-token": Cookies.get("access-token"),
     };
-    console.log(headers);
 
     axios
       .post(`${process.env.NEXT_PUBLIC_RAILS_API}/comments`, payload, {
