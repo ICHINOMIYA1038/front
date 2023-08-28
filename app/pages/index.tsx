@@ -49,8 +49,13 @@ const Home: React.FC<HomeProps> = (props: any) => {
       <TopImage />
       <NewsList news={props.news} />
       <div className="lg:flex">
-        <div className="mx-10 mt-28 ">
+        <div className="mx-10 mt-28 sticky top-24 w-1/2 h-192">
           <SearchForm sort_by={sort_by} sortDirection={sortDirection} />
+          <SortComponent
+            sort_by={sort_by}
+            sortDirection={sortDirection}
+            onSortChange={handleSortChange}
+          />
         </div>
         <div className="mx-10 mt-5">
           <SortComponent

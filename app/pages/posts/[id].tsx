@@ -7,6 +7,7 @@ import CommentCard from "@/components/Comment/CommentCard";
 import { Button, TextField, Alert } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
+import CreateChatRoomButton from "@/components/button/CreateChatRoomButton";
 
 interface Post {
   post_id: string;
@@ -106,6 +107,7 @@ const UserDetail: React.FC<UserDetailProps> = ({ post, comments }) => {
         comments.map((comment: any) => (
           <CommentCard key={post.post_id} comment={comment} />
         ))}
+      <CreateChatRoomButton user_ids={[post.user_id]} />
     </Layout>
   );
 };

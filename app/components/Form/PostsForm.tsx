@@ -1,37 +1,28 @@
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Alert, Button } from "@mui/material/";
 import axios from "axios";
 import Cookies from "js-cookie";
 import TagSelecter from "@/components/TagSelecter";
+import React, {
+  useEffect,
+  useState,
+  FC,
+  Dispatch,
+  SetStateAction,
+} from "react";
+import { FormData } from "@/components/types/type";
 
-const PostsForm: React.FC = () => {
+type FormProps = {
+  formData: FormData;
+  setFormData: Dispatch<SetStateAction<FormData>>;
+};
+
+const PostsForm: FC<FormProps> = ({ formData, setFormData }) => {
   const router = useRouter();
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [pdfFileSizeLimit] = useState(50 * 1024 * 1024);
   const [imageFileSizeLimit] = useState(10 * 1024 * 1024);
-  const [formData, setFormData] = useState({
-    title: "",
-    catchphrase: "",
-    maleCount: 0,
-    femaleCount: 0,
-    totalParticipants: 0,
-    duration: "",
-    pdfFile: null as null | File,
-    image: null as null | File,
-    selectedTag: [] as string[],
-    fee: "",
-    feeText: "",
-    credit: "",
-    creditText: "",
-    contact: "",
-    contactText: "",
-    modification: "",
-    modificationText: "",
-    condition: "",
-    conditionText: "",
-  });
 
   useEffect(() => {
     const { error } = router.query;
@@ -44,9 +35,9 @@ const PostsForm: React.FC = () => {
   useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
-      totalParticipants: prevData.maleCount + prevData.femaleCount,
+      total_number_of_people: prevData.number_of_men + prevData.number_of_women,
     }));
-  }, [formData.maleCount, formData.femaleCount]);
+  }, [formData.number_of_men, formData.number_of_women]);
 
   async function sendPageContent(content: any, router: any): Promise<void> {
     try {
@@ -84,13 +75,13 @@ const PostsForm: React.FC = () => {
       return;
     }
 
-    if (formData.maleCount < 0 || formData.femaleCount < 0) {
+    if (formData.number_of_men < 0 || formData.number_of_women < 0) {
       setIsError(true);
       setErrorMessage("人数は0以上で入力してください。");
       return;
     }
 
-    if (formData.duration === "") {
+    if (formData.playtime === "") {
       setIsError(true);
       setErrorMessage("上演時間を選択してください。");
       return;
@@ -129,15 +120,18 @@ const PostsForm: React.FC = () => {
       content.append("post[postImage]", formData.image);
     }
     content.append("post[catchphrase]", formData.catchphrase.trim());
-    content.append("post[number_of_men]", formData.maleCount.toString());
-    content.append("post[number_of_women]", formData.femaleCount.toString());
+    content.append("post[number_of_men]", formData.number_of_men.toString());
+    content.append(
+      "post[number_of_women]",
+      formData.number_of_women.toString()
+    );
     content.append(
       "post[total_number_of_people]",
-      formData.totalParticipants.toString()
+      formData.total_number_of_people.toString()
     );
-    content.append("post[playtime]", formData.duration);
+    content.append("post[playtime]", formData.playtime);
     content.append("post[fee]", formData.fee);
-    content.append("tags", formData.selectedTag.join(","));
+    content.append("tags", formData.tags.join(","));
 
     sendPageContent(content, router)
       .then(() => {
@@ -153,10 +147,10 @@ const PostsForm: React.FC = () => {
       ...prevData,
       title: "",
       catchphrase: "",
-      maleCount: 0,
-      femaleCount: 0,
-      totalParticipants: 0,
-      duration: "",
+      number_of_men: 0,
+      number_of_women: 0,
+      total_number_of_people: 0,
+      playtime: "",
       pdfFile: null,
       image: null,
     }));
@@ -165,7 +159,7 @@ const PostsForm: React.FC = () => {
   const handleChildStateChange = (value: string[]) => {
     setFormData((prevData) => ({
       ...prevData,
-      selectedTag: value,
+      tags: value,
     }));
   };
 
@@ -233,13 +227,13 @@ const PostsForm: React.FC = () => {
               男:
               <input
                 type="number"
-                value={formData.maleCount}
+                value={formData.number_of_men}
                 min={0}
                 max={21}
                 onChange={(e) =>
                   setFormData((prevData) => ({
                     ...prevData,
-                    maleCount: Number(e.target.value),
+                    number_of_men: Number(e.target.value),
                   }))
                 }
                 required
@@ -250,13 +244,13 @@ const PostsForm: React.FC = () => {
               女:
               <input
                 type="number"
-                value={formData.femaleCount}
+                value={formData.number_of_women}
                 min={0}
                 max={21}
                 onChange={(e) =>
                   setFormData((prevData) => ({
                     ...prevData,
-                    femaleCount: Number(e.target.value),
+                    number_of_women: Number(e.target.value),
                   }))
                 }
                 required
@@ -267,11 +261,11 @@ const PostsForm: React.FC = () => {
               総人数:
               <input
                 type="number"
-                value={formData.totalParticipants}
+                value={formData.total_number_of_people}
                 onChange={(e) =>
                   setFormData((prevData) => ({
                     ...prevData,
-                    totalParticipants: Number(e.target.value),
+                    total_number_of_people: Number(e.target.value),
                   }))
                 }
                 required
@@ -282,11 +276,11 @@ const PostsForm: React.FC = () => {
           <label className="post-form-label">
             上演時間:
             <select
-              value={formData.duration}
+              value={formData.playtime}
               onChange={(e) =>
                 setFormData((prevData) => ({
                   ...prevData,
-                  duration: e.target.value,
+                  playtime: e.target.value,
                 }))
               }
               required
@@ -334,9 +328,12 @@ const PostsForm: React.FC = () => {
           </label>
 
           <label className="post-form-label">
-            イメージ画像:
+            <label htmlFor="imageInput" style={{ cursor: "pointer" }}>
+              クリックして画像を選択
+            </label>
             <input
               className="post-form-input"
+              style={{ display: "none" }}
               type="file"
               accept="image/*"
               onChange={(e) => {
@@ -365,30 +362,55 @@ const PostsForm: React.FC = () => {
 
         <TagSelecter onChildStateChange={handleChildStateChange} />
 
-        <label className="post-form-label">
-          上演料:
-          <select
-            className="post-form-input"
-            value={formData.fee}
-            onChange={(e) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                fee: e.target.value,
-              }))
-            }
-            required
-          >
-            <option value="">選択してください</option>
-            <option value="0">無料</option>
-            <option value="1">有料</option>
-            <option value="2">その他</option>
-          </select>
-        </label>
-
-        <label className="post-form-label">
-          {(formData.fee === "2" || formData.fee === "1") && (
+        <div className="p-5">
+          <p className="text-2xl">上演料</p>
+          <div className="flex items-center space-x-4 mt-4">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.fee === "0"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    fee: e.target.checked ? "0" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">無料</span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.fee === "1"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    fee: e.target.checked ? "1" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">有料</span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.fee === "2"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    fee: e.target.checked ? "2" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">その他</span>
+            </label>
+          </div>
+          {(formData.fee === "1" || formData.fee === "2") && (
             <textarea
-              className="post-form-input"
+              className="resize-none post-form-input mt-4 p-2 border rounded-md w-full"
               placeholder="料金が必要な場合は記入して下さい。"
               value={formData.feeText}
               onChange={(e) =>
@@ -398,36 +420,60 @@ const PostsForm: React.FC = () => {
                 }))
               }
               rows={4}
-              cols={40}
-              required
             />
           )}
-        </label>
+        </div>
 
-        <label className="post-form-label">
-          クレジット:
-          <select
-            className="post-form-input"
-            value={formData.credit}
-            onChange={(e) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                credit: e.target.value,
-              }))
-            }
-            required
-          >
-            <option value="">選択してください</option>
-            <option value="0">必要</option>
-            <option value="1">不要</option>
-            <option value="2">その他</option>
-          </select>
-        </label>
-
-        <label className="post-form-label">
+        {/* クレジット */}
+        <div className="p-5">
+          <p className="text-2xl">クレジット</p>
+          <div className="flex items-center space-x-4 mt-4">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.credit === "0"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    credit: e.target.checked ? "0" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">必要</span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.credit === "1"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    credit: e.target.checked ? "1" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">不要</span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.credit === "2"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    credit: e.target.checked ? "2" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">その他</span>
+            </label>
+          </div>
           {(formData.credit === "0" || formData.credit === "2") && (
             <textarea
-              className="post-form-input"
+              className=" resize-none post-form-input mt-4 p-2 border rounded-md w-full"
               placeholder="クレジットが必要な場合は、クレジットに記載する名前を記述してください。"
               value={formData.creditText}
               onChange={(e) =>
@@ -437,36 +483,59 @@ const PostsForm: React.FC = () => {
                 }))
               }
               rows={4}
-              cols={40}
-              required
             />
           )}
-        </label>
-
-        <label className="post-form-label">
-          作者への連絡:
-          <select
-            className="post-form-input"
-            value={formData.contact}
-            onChange={(e) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                contact: e.target.value,
-              }))
-            }
-            required
-          >
-            <option value="">選択してください</option>
-            <option value="0">必要</option>
-            <option value="1">不要</option>
-            <option value="2">その他</option>
-          </select>
-        </label>
-
-        <label className="post-form-label">
-          {(formData.contact === "2" || formData.contact === "0") && (
+        </div>
+        {/* 作者への連絡 */}
+        <div className="p-5">
+          <p className="text-2xl">作者への連絡</p>
+          <div className="flex items-center space-x-4 mt-4">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.contact === "0"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    contact: e.target.checked ? "0" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">必要</span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.contact === "1"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    contact: e.target.checked ? "1" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">不要</span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.contact === "2"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    contact: e.target.checked ? "2" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">その他</span>
+            </label>
+          </div>
+          {(formData.contact === "0" || formData.contact === "2") && (
             <textarea
-              className="post-form-input"
+              className=" resize-none post-form-input mt-4 p-2 border rounded-md w-full"
               placeholder="必要の場合は連絡先を必ず記入してください。"
               value={formData.contactText}
               onChange={(e) =>
@@ -476,36 +545,60 @@ const PostsForm: React.FC = () => {
                 }))
               }
               rows={4}
-              cols={40}
-              required
             />
           )}
-        </label>
+        </div>
 
-        <label className="post-form-label">
-          脚本の改変
-          <select
-            className="post-form-input"
-            value={formData.modification}
-            onChange={(e) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                modification: e.target.value,
-              }))
-            }
-            required
-          >
-            <option value="">選択してください</option>
-            <option value="0">改変不可</option>
-            <option value="1">改変自由</option>
-            <option value="2">その他</option>
-          </select>
-        </label>
-
-        <label className="post-form-label">
+        {/* 脚本の改変 */}
+        <div className="p-5">
+          <p className="text-2xl">脚本の改変</p>
+          <div className="flex items-center space-x-4 mt-4">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.modification === "0"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    modification: e.target.checked ? "0" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">改変不可</span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.modification === "1"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    modification: e.target.checked ? "1" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">改変自由</span>
+            </label>
+            <label className=" flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.modification === "2"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    modification: e.target.checked ? "2" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">その他</span>
+            </label>
+          </div>
           {formData.modification === "2" && (
             <textarea
-              className="post-form-input"
+              className=" resize-none post-form-input mt-4 p-2 border rounded-md w-full"
               placeholder="脚本改変のルールについて自由に記述してください。"
               value={formData.modificationText}
               onChange={(e) =>
@@ -515,49 +608,60 @@ const PostsForm: React.FC = () => {
                 }))
               }
               rows={4}
-              cols={40}
-              required
             />
           )}
-        </label>
+        </div>
 
-        <label className="post-form-label">
-          そのほか条件:
-          <select
-            className="post-form-input"
-            value={formData.condition}
-            onChange={(e) =>
-              setFormData((prevData) => ({
-                ...prevData,
-                condition: e.target.value,
-              }))
-            }
-            required
-          >
-            <option value="">選択してください</option>
-            <option value="0">特になし</option>
-            <option value="1">あり</option>
-          </select>
-        </label>
-
-        <label className="post-form-label">
-          {formData.condition === "2" && (
-            <textarea
-              className="post-form-input"
-              placeholder="その他の詳細を入力してください"
-              value={formData.conditionText}
-              onChange={(e) =>
-                setFormData((prevData) => ({
-                  ...prevData,
-                  conditionText: e.target.value,
-                }))
-              }
-              rows={4}
-              cols={40}
-              required
-            />
+        <div className="p-5">
+          <p className="text-2xl">そのほか条件</p>
+          <div className="flex items-center space-x-4 mt-4">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="post-form-input h-6 w-6"
+                checked={formData.condition === "0"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    condition: e.target.checked ? "0" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">特になし</span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                className="h-6 w-6"
+                checked={formData.condition === "1"}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    condition: e.target.checked ? "1" : "",
+                  }))
+                }
+              />
+              <span className="ml-2">あり</span>
+            </label>
+          </div>
+          {formData.condition === "1" && (
+            <div className="mt-4">
+              <p>その他の詳細</p>
+              <textarea
+                className=" resize-none mt-2 p-2 border rounded-md w-full"
+                placeholder="その他の詳細を入力してください"
+                value={formData.conditionText}
+                onChange={(e) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    conditionText: e.target.value,
+                  }))
+                }
+                rows={4}
+              />
+            </div>
           )}
-        </label>
+        </div>
 
         <Button color="primary" size="large" variant="contained" type="submit">
           投稿する
