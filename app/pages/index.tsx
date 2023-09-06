@@ -45,9 +45,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
   };
 
   return (
-    <Layout>
-      <TopImage />
-      <NewsList news={props.news} />
+    <>
       <div className="lg:flex">
         <div className="mx-10 mt-28 sticky top-24 w-1/2 h-192">
           <SearchForm sort_by={sort_by} sortDirection={sortDirection} />
@@ -77,7 +75,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
           page={props.pagination.current_page} //現在のページ番号
         />
       </div>
-    </Layout>
+    </>
   );
 };
 

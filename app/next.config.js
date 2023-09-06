@@ -13,4 +13,15 @@ const hotReload = {
   },
 };
 
-module.exports = hotReload;
+module.exports = {
+  hotReload,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        pathname: "/**",
+      },
+    ],
+  },
+};
