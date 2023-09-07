@@ -9,7 +9,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import Cookies from "js-cookie";
 import LoginPopup from "@/components/LoginPopup";
 import ShareButton from "@/components/Share";
-import { useMediaQuery } from "@mui/material";
+import Image from "next/image"
 
 interface Post {
   post_id: number;
@@ -44,20 +44,14 @@ function ChangeNameforPlaytime(option: Number) {
 
 function PostCard({ post }: any) {
   const router = useRouter();
-  const [isClicked, setIsClicked] = useState(false);
   const [isShareClicked, setisShareClicked] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [favo_num, setFavoNum] = useState(0);
   useEffect(() => {
-    Favolist();
+    checkFavo();
     setFavoNum(post.favo_num);
   }, []);
-
-  const isMediumScreen = useMediaQuery(
-    (theme: { breakpoints: { up: (arg0: string) => any } }) =>
-      theme.breakpoints.up("sm")
-  );
 
   const handleDownload = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -99,7 +93,7 @@ function PostCard({ post }: any) {
     }
   }
 
-  async function Favolist() {
+  async function checkFavo() {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_RAILS_API}/post/${post.post_id}/favo`,
       { method: "GET", headers: headers }
@@ -115,23 +109,32 @@ function PostCard({ post }: any) {
   }
 
   const HandleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    setIsClicked(true);
     router.push(`/posts/${post.post_id}`);
   };
 
   return (
     <div
-      className={`PostCard ${isClicked ? "clicked" : ""} PopUpContainer`}
+      className={`PostCard relative`}
       onClick={HandleCardClick}
     >
       <div className="PostCardHeadar">
         <div className="PostCardHeaderLeft">
-          <div className="PostCardUserProfile">
+          <div className="flex px-15">
+            {post.user_image_url &&
             <img
               src={post.user_image_url}
               alt="Avatar"
               style={{ width: "80px", height: "80px" }}
             />
+            }
+            {!post.user_image_url &&
+            <Image
+              src="/default_avatar.png"
+              alt="Avatar"
+              width={100}
+              height={100}
+            />
+            }
             <p>{post.user.name}</p>
           </div>
           <div className="PostCardTitle">
@@ -186,11 +189,21 @@ function PostCard({ post }: any) {
               </p>
             </div>
           </div>
+          {post.image_url && 
           <img
             src={post.image_url}
             alt="Avatar"
             style={{ width: "120px", height: "120px" }}
           />
+          }
+          {!post.image_url && 
+          <Image
+            src="/NoImage.jpg"
+            alt="Avatar"
+            width={120}
+            height={120}
+          />
+          }
         </div>
       </div>
       <div className="PostCardFooter">
@@ -200,7 +213,7 @@ function PostCard({ post }: any) {
       <div className="impressionContainer">
         <div className="DownloadIcon" onClick={handleDownload}>
           <DownloadIcon id="interactive-icon" component="svg" />
-          {isMediumScreen && <span className="icon_text">download</span>}
+           <span className="invisible md:visible icon_text">download</span>
         </div>
         <div
           className="FavoriteIcon"
@@ -217,7 +230,7 @@ function PostCard({ post }: any) {
             id="interactive-icon"
             style={{ color: isFavorite ? "red" : "black" }}
           />
-          <span className="icon_text">{favo_num}</span>
+          <span className="invisible md:visible icon_text">{favo_num}</span>
         </div>
         <div
           className="ShareIcon"
@@ -231,16 +244,11 @@ function PostCard({ post }: any) {
           }}
         >
           <ShareIcon id="interactive-icon" />
-          {isMediumScreen && <span className="icon_text">share</span>}
+          <span className="invisible md:visible icon_text">share</span>
         </div>
         <div className="VisibilityIcon">
           <VisibilityIcon id="interactive-icon" />
-          {isMediumScreen && (
-            <span className="icon_text">{post.access_num} view</span>
-          )}
-          {!isMediumScreen && (
-            <span className="icon_text">{post.access_num}</span>
-          )}
+            <span className="icon_text">{post.access_num} <span className="invisible md:visible">view</span></span>
         </div>
       </div>
       <div>

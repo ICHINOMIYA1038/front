@@ -1,7 +1,6 @@
 import Typography from '@mui/material/Typography';
 import CreateIcon from '@mui/icons-material/Create';
 import React from 'react';
-import { useMediaQuery } from '@mui/material';
 
 
 const PostLinkButton = ({func}:any) => {
@@ -27,12 +26,10 @@ const PostLinkButton = ({func}:any) => {
 
   };
 
-  const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));
-
   return (
     <div style={buttonStyle}  onClick={func}>
       <CreateIcon style={iconStyle} />
-      {isMediumScreen && <Typography style={textStyle}>脚本を投稿する</Typography>}
+      <Typography className="hidden lg:block" style={textStyle}>脚本を投稿する</Typography>
     </div>
   );
 };

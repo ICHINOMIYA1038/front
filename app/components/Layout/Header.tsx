@@ -13,8 +13,6 @@ import router from "next/router";
 import SearchLinkButton from "@/components/button/SearchLinkButton";
 import PostLinkButton from "@/components/button/PostLinkButton";
 import SigninButton from "@/components/button/SignInButton";
-import { useMediaQuery } from "@mui/material";
-//primaryとsecondaryで、色を指定します
 
 export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(false);
@@ -72,11 +70,6 @@ export default function MenuAppBar() {
     Cookies.remove("access-token");
   };
 
-  const isMediumScreen = useMediaQuery(
-    (theme: { breakpoints: { up: (arg0: string) => any } }) =>
-      theme.breakpoints.up("sm")
-  );
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -96,8 +89,8 @@ export default function MenuAppBar() {
               }}
             />
           </div>
-          {isMediumScreen && (
-            <div style={{ display: "flex" }}>
+          <div className="hidden md:block">
+            <div className="flex">
               <PostLinkButton
                 func={() => {
                   router.push(`/posts/new`);
@@ -195,7 +188,7 @@ export default function MenuAppBar() {
                 />
               )}
             </div>
-          )}
+            </div>
         </Toolbar>
       </AppBar>
     </Box>

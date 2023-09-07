@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Pagination } from "@mui/material";
 import NewsList from "@/components/NewsList";
 import TopImage from "@/components/Layout/TopImage";
+import Guide from "@/components/Guide";
 import { useState } from "react";
 import SortComponent from "@/components/SortComponent";
 
@@ -49,7 +50,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
       <TopImage />
       <NewsList news={props.news} />
       <div className="lg:flex">
-        <div className="mx-10 mt-28 sticky top-24 w-1/2 h-192">
+        <div className="mx-10 mt-28 lg:sticky lg:top-24 lg:w-1/2 lg:h-192">
           <SearchForm sort_by={sort_by} sortDirection={sortDirection} />
           <SortComponent
             sort_by={sort_by}
@@ -58,16 +59,19 @@ const Home: React.FC<HomeProps> = (props: any) => {
           />
         </div>
         <div className="mx-10 mt-5">
+          <div className="hidden lg:block">
           <SortComponent
             sort_by={sort_by}
             sortDirection={sortDirection}
             onSortChange={handleSortChange}
           />
+          </div>
           {props.posts.map((post: { post_id: any }) => (
             <PostCard key={post.post_id} post={post} />
           ))}
         </div>
       </div>
+
 
       <div className="justify-center my-10 flex">
         <Pagination
