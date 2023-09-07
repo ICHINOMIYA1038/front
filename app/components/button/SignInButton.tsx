@@ -1,7 +1,6 @@
 import Typography from "@mui/material/Typography";
 import LoginIcon from "@mui/icons-material/Login";
 import React from "react";
-import { useMediaQuery } from "@mui/material";
 
 const SigninButton = ({ func }: any) => {
   const buttonStyle = {
@@ -25,15 +24,10 @@ const SigninButton = ({ func }: any) => {
     whiteSpace: "nowrap" as const,
   };
 
-  const isMediumScreen = useMediaQuery(
-    (theme: { breakpoints: { up: (arg0: string) => any } }) =>
-      theme.breakpoints.up("md")
-  );
-
   return (
     <div style={buttonStyle} onClick={func}>
       <LoginIcon style={iconStyle} />
-      {isMediumScreen && <Typography style={textStyle}>サインイン</Typography>}
+      <Typography className="hidden lg:block" style={textStyle}>サインイン</Typography>
     </div>
   );
 };

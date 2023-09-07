@@ -1,7 +1,6 @@
 import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
 import React from 'react';
-import { useMediaQuery } from '@mui/material';
 
 const SearchLinkButton = ({func}:any) => {
   const buttonStyle = {
@@ -25,11 +24,10 @@ const SearchLinkButton = ({func}:any) => {
     whiteSpace: 'nowrap' as const, // 正しい型に修正
   };
 
-  const isMediumScreen = useMediaQuery((theme: { breakpoints: { up: (arg0: string) => any; }; }) => theme.breakpoints.up('sm'));
   return (
     <div style={buttonStyle} onClick={func}>
       <SearchIcon style={iconStyle} />
-      {isMediumScreen && <Typography style={textStyle}>脚本を探す</Typography>}
+      <Typography className="hidden lg:block" style={textStyle}>脚本を探す</Typography>
       
     </div>
   );

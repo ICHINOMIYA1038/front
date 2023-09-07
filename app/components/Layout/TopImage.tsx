@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 function TopImage({}: any) {
   const router = useRouter();
 
+
   function onclickbutton() {
     router.push("/SignUp");
   }
@@ -20,7 +21,16 @@ function TopImage({}: any) {
             <div className="top-sub-lead-message">
               <p>脚本を探す/脚本を投稿する/脚本を評価する</p>
             </div>
+
             <button className="top-lead-button" onClick={onclickbutton}>
+
+            <button
+              className="top-lead-button"
+              onClick={() => {
+                router.push("/SignUp");
+              }}
+            >
+
               無料で新規登録
             </button>
           </div>
