@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { Pagination } from "@mui/material";
 import NewsList from "@/components/NewsList";
 import TopImage from "@/components/Layout/TopImage";
-import Guide from "@/components/Guide";
 import { useState } from "react";
 import SortComponent from "@/components/SortComponent";
 

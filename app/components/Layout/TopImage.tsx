@@ -23,14 +23,6 @@ function TopImage({}: any) {
             </div>
 
             <button className="top-lead-button" onClick={onclickbutton}>
-
-            <button
-              className="top-lead-button"
-              onClick={() => {
-                router.push("/SignUp");
-              }}
-            >
-
               無料で新規登録
             </button>
           </div>
