@@ -99,10 +99,10 @@ export const getServerSideProps = async ({ query }: any) => {
 
     return {
       props: {
-        posts: json.posts,
-        pagination: json.pagination,
-        query: query,
-        news: news as NewsItemProps[],
+        posts: json.posts || [],
+        pagination: json.pagination || [],
+        query: query || [],
+        news: news as NewsItemProps[] || [],
       },
     };
   } catch (error) {
