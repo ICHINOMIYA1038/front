@@ -170,6 +170,14 @@ export default function MenuAppBar() {
                     <MenuItem
                       onClick={() => {
                         handleClose();
+                        router.push(`/chat-room`);
+                      }}
+                    >
+                      メッセージ
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
                         router.push(`/users/setting`);
                       }}
                     >

@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { Pagination } from "@mui/material";
 import NewsList from "@/components/NewsList";
 import TopImage from "@/components/Layout/TopImage";
+import { useState } from "react";
+import SortComponent from "@/components/SortComponent";
 
 interface Post {
   id: number;
@@ -24,6 +26,8 @@ interface NewsItemProps {
 //Homeコンポーネント
 const Home: React.FC<HomeProps> = (props: any) => {
   const router = useRouter();
+  const [sort_by, setSortBy] = useState(0);
+  const [sortDirection, setSortDirection] = useState(0);
 
   const handlePageChange = (event: any, newPage: any) => {
     const searchParams = props.query; // 既存のクエリパラメータをコピー
@@ -35,18 +39,37 @@ const Home: React.FC<HomeProps> = (props: any) => {
     router.push(`/?${queryString}`);
   };
 
+  const handleSortChange = (sortByValue: any, sortDirectionValue: any) => {
+    setSortBy(sortByValue);
+    setSortDirection(sortDirectionValue);
+  };
+
   return (
     <Layout>
       <TopImage />
       <NewsList news={props.news} />
-      <SearchForm />
-      {props.posts.map((post: { post_id: any }) => (
-        <PostCard key={post.post_id} post={post} />
-      ))}
+      <div className="lg:flex">
+        <div className="mx-10 mt-28 sticky top-24 w-1/2 h-192">
+          <SearchForm sort_by={sort_by} sortDirection={sortDirection} />
+          <SortComponent
+            sort_by={sort_by}
+            sortDirection={sortDirection}
+            onSortChange={handleSortChange}
+          />
+        </div>
+        <div className="mx-10 mt-5">
+          <SortComponent
+            sort_by={sort_by}
+            sortDirection={sortDirection}
+            onSortChange={handleSortChange}
+          />
+          {props.posts.map((post: { post_id: any }) => (
+            <PostCard key={post.post_id} post={post} />
+          ))}
+        </div>
+      </div>
 
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
-      >
+      <div className="justify-center my-10 flex">
         <Pagination
           count={props.pagination.total_pages} //総ページ数
           color="primary" //ページネーションの色
@@ -76,10 +99,10 @@ export const getServerSideProps = async ({ query }: any) => {
 
     return {
       props: {
-        posts: json.posts,
-        pagination: json.pagination,
-        query: query,
-        news: news as NewsItemProps[],
+        posts: json.posts || [],
+        pagination: json.pagination || [],
+        query: query || [],
+        news: news as NewsItemProps[] || [],
       },
     };
   } catch (error) {

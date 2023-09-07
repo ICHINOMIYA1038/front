@@ -23,7 +23,7 @@ function Layout({ children }: any) {
           <Header />
         </div>
         <div className="header-gap"></div>
-        <div style={{ minHeight: "1200px" }}>{children}</div>
+        <div style={{}}>{children}</div>
         <Footer />
       </div>
     </ThemeProvider>

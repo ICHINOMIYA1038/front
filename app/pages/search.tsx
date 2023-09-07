@@ -32,9 +32,6 @@ const Home: React.FC<HomeProps> = (props: any) => {
         <div className="sidebar">
           <SearchForm />
         </div>
-        <div className="content">
-          <NewsList />
-        </div>
       </div>
     </Layout>
   );

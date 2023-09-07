@@ -1,8 +1,6 @@
 import React from "react";
 import FooterBtn from "./FooterBtn";
 
-
-
 const Footer :React.FC = ()=>{
 
 
