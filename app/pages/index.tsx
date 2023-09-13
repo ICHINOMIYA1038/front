@@ -7,6 +7,7 @@ import NewsList from "@/components/NewsList";
 import TopImage from "@/components/Layout/TopImage";
 import { useState } from "react";
 import SortComponent from "@/components/SortComponent";
+import { useQuery } from "@tanstack/react-query";
 
 interface Post {
   id: number;
@@ -23,19 +24,73 @@ interface NewsItemProps {
   title: string;
 }
 
+const getNewsData = async (): Promise<any> => {
+  const newsResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_RAILS_API}/news_items`,
+    { method: "GET" }
+  );
+  return newsResponse.json();
+};
+
+const getPosts = async ({ queryKey }: any): Promise<any> => {
+  if (queryKey === undefined || queryKey === null) {
+    throw new Error("queryKey is undefined or null");
+  }
+
+  console.log(queryKey);
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_RAILS_API}/search?${queryKey}`,
+    { method: "GET" }
+  );
+
+  return response.json();
+};
+
+
+
 //Homeコンポーネント
 const Home: React.FC<HomeProps> = (props: any) => {
+  const queryString = new URLSearchParams(props.query).toString();
+
+  const {
+    data:newsdata,
+    isLoading,
+    // isFetching,
+    error
+  } = useQuery({
+  queryKey: ["news"],
+  queryFn: getNewsData,
+  refetchOnWindowFocus: false,
+  staleTime: 1000 * 60 * 5,
+  cacheTime: Infinity,
+  });
+
+  const {
+    data:postdata,
+    isLoading:isLoadingPost,
+    // isFetching,
+    error:errorPost
+} = useQuery({
+  queryKey: [queryString],
+  queryFn: getPosts,
+  refetchOnWindowFocus: false,
+  staleTime: 100 * 60 * 5,
+  cacheTime: Infinity,
+  });
+
+
   const router = useRouter();
   const [sort_by, setSortBy] = useState(0);
   const [sortDirection, setSortDirection] = useState(0);
 
   const handlePageChange = (event: any, newPage: any) => {
     const searchParams = props.query; // 既存のクエリパラメータをコピー
-
+    
     searchParams.page = newPage; // ページを更新
-    searchParams.per = props.pagination.limit_value; // 1ページあたりの件数を維持（もしくは新しい値に更新）
-
+    searchParams.per = postdata.pagination.limit_value; // 1ページあたりの件数を維持（もしくは新しい値に更新）
     const queryString = new URLSearchParams(searchParams).toString();
+   
     router.push(`/?${queryString}`);
   };
 
@@ -47,7 +102,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
   return (
     <Layout>
       <TopImage />
-      <NewsList news={props.news} />
+      {!isLoading && <NewsList news={newsdata} />}
       <div className="lg:flex">
         <div className="mx-10 mt-28 lg:sticky lg:top-24 lg:w-1/2 lg:h-192">
           <SearchForm sort_by={sort_by} sortDirection={sortDirection} />
@@ -65,7 +120,7 @@ const Home: React.FC<HomeProps> = (props: any) => {
             onSortChange={handleSortChange}
           />
           </div>
-          {props.posts.map((post: { post_id: any }) => (
+          {postdata && postdata.posts.map((post: { post_id: any }) => (
             <PostCard key={post.post_id} post={post} />
           ))}
         </div>
@@ -73,49 +128,26 @@ const Home: React.FC<HomeProps> = (props: any) => {
 
 
       <div className="justify-center my-10 flex">
+        {postdata &&
         <Pagination
-          count={props.pagination.total_pages} //総ページ数
+          count={postdata.pagination.total_pages} //総ページ数
           color="primary" //ページネーションの色
           onChange={handlePageChange}
-          page={props.pagination.current_page} //現在のページ番号
+          page={postdata.pagination.current_page} //現在のページ番号
         />
+}
       </div>
     </Layout>
   );
 };
 
 export const getServerSideProps = async ({ query }: any) => {
-  try {
-    const page = query.page || 1;
-    const per = query.per || 8;
-    const queryString = new URLSearchParams(query).toString();
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/search?${queryString}&paged=${page}&per=${per}`,
-      { method: "GET" }
-    );
-    const json = await response.json();
-    const newsResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVERSIDE_RAILS_API}/news_items`,
-      { method: "GET" }
-    );
-    const news = await newsResponse.json();
-
+  
     return {
       props: {
-        posts: json.posts || [],
-        pagination: json.pagination || [],
         query: query || [],
-        news: news as NewsItemProps[] || [],
       },
     };
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    return {
-      props: {
-        posts: [],
-      },
-    };
-  }
 };
 
 export default Home;
