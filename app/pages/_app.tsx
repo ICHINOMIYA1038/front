@@ -4,17 +4,16 @@ import '@/styles/PostCard.css'
 import '@/styles/PostForm.css'
 import '@/styles/searchForm.css'
 import type { AppProps } from 'next/app'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+
+
+const queryClient = new QueryClient()
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
-
-const LoginPopup = () => {
-  return (
-    <div className="popup">
-      <h2>Please Login</h2>
-      <p>You need to be logged in to access this site.</p>
-      {/* ログインフォームやログインボタンなど、適宜追加してください */}
-    </div>
+  return(
+  <QueryClientProvider client={queryClient}>
+    <Component {...pageProps} />
+  </QueryClientProvider>
   );
-};
+
+}
