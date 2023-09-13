@@ -6,6 +6,10 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    colors: {
+      'maroon': '#8D2828',
+      'antique': '#faebd7',
+    },
     extend: {
       height: {
         112: "28rem",
