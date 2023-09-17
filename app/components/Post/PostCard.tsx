@@ -55,7 +55,6 @@ function PostCard({ post }: any) {
 
   const handleDownload = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    // ファイルをダウンロードする処理を記述する
     window.open(post.file_url, "_blank");
   };
 
@@ -114,12 +113,12 @@ function PostCard({ post }: any) {
 
   return (
     <div
-      className={`PostCard relative`}
+      className="bg-antique p-5 border border-solid border-black m-5 rounded-lg cursor-pointer relative max-w-full ease-in-out hover:translate-y-1 hover:scale-105 duration-200"
       onClick={HandleCardClick}
     >
-      <div className="PostCardHeadar">
-        <div className="PostCardHeaderLeft">
-          <div className="flex px-15">
+      <div className="flex">
+        <div className="w-1/2">
+          <div className="flex items-center px-15">
             {post.user_image_url &&
             <img
               src={post.user_image_url}
@@ -145,7 +144,7 @@ function PostCard({ post }: any) {
           </div>
           <Button />
         </div>
-        <div className="PostCardHeaderRight">
+        <div className="w-1/2">
           <div className="tagsContainer">
             {post.tags &&
               post.tags
@@ -169,23 +168,23 @@ function PostCard({ post }: any) {
               />
             )}
           </div>
-          <div className="PlotDetail">
-            <p className="Playtime">
+          <div className="">
+            <p className="">
               上演時間:{" "}
-              <span className="Underline">
+              <span className="font-bold underline">
                 {ChangeNameforPlaytime(post.playtime)}
               </span>
             </p>
-            <div className="PersonCount">
+            <div className="flex gap-2">
               <p>
-                男: <span className="Emphasize">{post.number_of_men}</span>
+                男: <span className="font-bold underline">{post.number_of_men}</span>
               </p>
               <p>
-                女: <span className="Emphasize">{post.number_of_women}</span>
+                女: <span className="font-bold underline">{post.number_of_women}</span>
               </p>
               <p>
                 総人数:{" "}
-                <span className="Emphasize">{post.total_number_of_people}</span>
+                <span className="font-bold underline">{post.total_number_of_people}</span>
               </p>
             </div>
           </div>
@@ -206,17 +205,20 @@ function PostCard({ post }: any) {
           }
         </div>
       </div>
+      <div>
+
+      </div>
       <div className="PostCardFooter">
         <embed src={post.file_url} className="embedPDF" />
       </div>
 
-      <div className="impressionContainer">
-        <div className="DownloadIcon" onClick={handleDownload}>
+      <div className="flex justify-around">
+        <div className="" onClick={handleDownload}>
           <DownloadIcon id="interactive-icon" component="svg" />
            <span className="invisible md:visible icon_text">download</span>
         </div>
         <div
-          className="FavoriteIcon"
+          className=""
           onClick={(event: React.MouseEvent<HTMLDivElement>) => {
             event.stopPropagation();
             if (isFavorite) {
