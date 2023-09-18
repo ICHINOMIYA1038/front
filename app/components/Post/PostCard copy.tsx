@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { Chip } from "@mui/material";
+import { Button, Chip, TextField } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -47,9 +47,10 @@ function PostCard({ post }: any) {
   const [isShareClicked, setisShareClicked] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [favo_num, setFavoNum] = useState(post.favo_num);
+  const [favo_num, setFavoNum] = useState(0);
   useEffect(() => {
     checkFavo();
+    setFavoNum(post.favo_num);
   }, []);
 
   const handleDownload = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -112,93 +113,107 @@ function PostCard({ post }: any) {
 
   return (
     <div
-      className="max-w-xl bg-antique  border border-solid border-black m-5 rounded-lg cursor-pointer relative max-w-full ease-in-out hover:translate-y-1 hover:scale-105 duration-200"
+      className="max-w-2xl bg-antique p-5 border border-solid border-black m-5 rounded-lg cursor-pointer relative max-w-full ease-in-out hover:translate-y-1 hover:scale-105 duration-200"
       onClick={HandleCardClick}
     >
-      <div className="h-20 flex items-center justify-between">
-        <div className="p-3 flex items-center">
-          {post.user_image_url && (
+      <div className="flex">
+        <div className="w-1/3">
+          <div className="flex items-center px-15">
+            {post.user_image_url && (
+              <img
+                src={post.user_image_url}
+                alt="Avatar"
+                style={{ width: "80px", height: "80px" }}
+              />
+            )}
+            {!post.user_image_url && (
+              <Image
+                src="/default_avatar.png"
+                alt="Avatar"
+                width={100}
+                height={100}
+              />
+            )}
+            <p>{post.user.name}</p>
+          </div>
+          <div className="PostCardTitle">
+            <p>{post.title}</p>
+          </div>
+          <div className="PostCardDescription">
+            <p>{post.catchphrase}</p>
+          </div>
+          <Button />
+        </div>
+        <div className="w-1/3">
+          <div className="tagsContainer">
+            {post.tags &&
+              post.tags
+                .slice(0, 3)
+                .map((elem: any) => (
+                  <Chip
+                    key={elem}
+                    label={elem.name}
+                    clickable
+                    style={{ margin: "0.5rem" }}
+                    color="secondary"
+                  />
+                ))}
+            {post.tags && post.tags.length > 3 && (
+              <Chip
+                key="ellipsis"
+                label="..."
+                clickable
+                color="secondary"
+                style={{ margin: "0.5rem" }}
+              />
+            )}
+          </div>
+          <div className="">
+            <p className="">
+              上演時間:{" "}
+              <span className="font-bold underline">
+                {ChangeNameforPlaytime(post.playtime)}
+              </span>
+            </p>
+            <div className="flex gap-2">
+              <p>
+                男:{" "}
+                <span className="font-bold underline">
+                  {post.number_of_men}
+                </span>
+              </p>
+              <p>
+                女:{" "}
+                <span className="font-bold underline">
+                  {post.number_of_women}
+                </span>
+              </p>
+              <p>
+                総人数:{" "}
+                <span className="font-bold underline">
+                  {post.total_number_of_people}
+                </span>
+              </p>
+            </div>
+          </div>
+          {post.image_url && (
             <img
-              src={post.user_image_url}
+              src={post.image_url}
               alt="Avatar"
-              style={{ width: "80px", height: "80px" }}
+              style={{ width: "120px", height: "120px" }}
             />
           )}
-          {!post.user_image_url && (
-            <Image
-              src="/default_avatar.png"
-              alt="Avatar"
-              width={80}
-              height={80}
-            />
-          )}
-          <p>{post.user.name}</p>
-        </div>
-        <div>
-          {post.tags &&
-            post.tags
-              .slice(0, 3)
-              .map((elem: any) => (
-                <Chip
-                  key={elem}
-                  label={elem.name}
-                  clickable
-                  style={{ margin: "0.5rem" }}
-                  color="secondary"
-                />
-              ))}
-          {post.tags && post.tags.length > 3 && (
-            <Chip
-              key="ellipsis"
-              label="..."
-              clickable
-              color="secondary"
-              style={{ margin: "0.5rem" }}
-            />
+          {!post.image_url && (
+            <Image src="/NoImage.jpg" alt="Avatar" width={120} height={120} />
           )}
         </div>
       </div>
-      <div className="pl-5">
-        <p className="">
-          上演時間:{" "}
-          <span className="font-bold underline">
-            {ChangeNameforPlaytime(post.playtime)}
-          </span>
-        </p>
-        <div className="flex gap-2">
-          <p>
-            男:{" "}
-            <span className="font-bold underline">{post.number_of_men}</span>
-          </p>
-          <p>
-            女:{" "}
-            <span className="font-bold underline">{post.number_of_women}</span>
-          </p>
-          <p>
-            総人数:{" "}
-            <span className="font-bold underline">
-              {post.total_number_of_people}
-            </span>
-          </p>
-        </div>
+      <div></div>
+      <div className="PostCardFooter">
+        <embed src={post.file_url} className="embedPDF" />
       </div>
-      <div className="font-bold text-2xl text-center">
-        <p>{post.title}</p>
-      </div>
-      <div className="font-bold text-xl text-center">
-        <p>{post.catchphrase}</p>
-      </div>
-      <div className="h-96 w-full">
-        {post.image_url && (
-          <img
-            className="object-cover w-full h-full"
-            src={post.image_url}
-            alt="Avatar"
-          />
-        )}
-        {!post.image_url && <Image src="/NoImage.jpg" alt="Avatar" fill />}
-      </div>
-      <div className="h-20 p-5 flex justify-around">
+
+      <div className="flex justify-around">
         <div className="" onClick={handleDownload}>
           <DownloadIcon id="interactive-icon" component="svg" />
           <span className="invisible md:visible icon_text">download</span>
